@@ -105,7 +105,7 @@ class PageController extends Controller
             // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
             // Return 404
             // Make sure not to return a hidden/non-visible page
-            logger($e);
+            logger(print_r($e, true));
             $pages = Page::where('visible', '=', 1)->inRandomOrder()
                 ->limit(4)
                 ->get();
