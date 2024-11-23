@@ -16,80 +16,40 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
-
+{{-- TODO: Figure this out to display success/error message --}}
 <body class="font-sans antialiased">
     <div class="bg-white">
-        <!-- Header -->
-        <header class="absolute inset-x-0 top-0 z-50">
-            <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div class="flex lg:flex-1">
-                    <a href="/" class="-m-1.5 p-1.5">
-                        <span class="sr-only">AstroDocs</span>
-                        <img class="h-20 w-20" src="{{ asset('img/Astro-logo.png') }}" alt="">
-                    </a>
-                </div>
-                <div class="flex lg:hidden">
-                    <button type="button"
-                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            aria-hidden="true" data-slot="icon">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        <main>
+            {{-- Success message --}}
+            <div class="rounded-md bg-green-50 p-4">
+                <div class="flex">
+                    <div class="shrink-0">
+                        <svg class="size-5 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                            data-slot="icon">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+                                clip-rule="evenodd" />
                         </svg>
-                    </button>
-                </div>
-                <div class="hidden lg:flex lg:gap-x-12">
-                    {{-- <a href="product" class="text-sm/6 font-semibold text-white">Product</a> --}}
-                    <a href="#product" class="text-sm/6 font-semibold text-white">Features</a>
-                    {{-- <a href="#" class="text-sm/6 font-semibold text-white">Marketplace</a> TODO: Send this URL to atlassian marketplace --}}
-                    <a href="#contact" class="text-sm/6 font-semibold text-white">Contact</a>
-                    <a href="#faq" class="text-sm/6 font-semibold text-white">FAQ</a>
-                </div>
-                <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-
-                </div>
-            </nav>
-            <!-- Mobile menu, show/hide based on menu open state. -->
-            <div class="lg:hidden hidden" role="dialog" aria-modal="true">
-                <!-- Background backdrop, show/hide based on slide-over state. -->
-                <div class="fixed inset-0 z-50"></div>
-                <div
-                    class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
-                    <div class="flex items-center justify-between">
-                        <a href="#" class="-m-1.5 p-1.5">
-                            <span class="sr-only">Your Company</span>
-                            <img class="h-8 w-auto"
-                                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                                alt="">
-                        </a>
-                        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400">
-                            <span class="sr-only">Close menu</span>
-                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true" data-slot="icon">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                        </button>
                     </div>
-                    <div class="mt-6 flow-root">
-                        <div class="-my-6 divide-y divide-gray-500/25">
-                            <div class="space-y-2 py-6">
-                                <a href="#"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Product</a>
-                                <a href="#"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Features</a>
-                                <a href="#"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Marketplace</a>
-                                <a href="#"
-                                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Company</a>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-green-800">Order completed</h3>
+                        <div class="mt-2 text-sm text-green-700">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid pariatur, ipsum
+                                similique veniam.</p>
+                        </div>
+                        <div class="mt-4">
+                            <div class="-mx-2 -my-1.5 flex">
+                                <button type="button"
+                                    class="rounded-md bg-green-50 px-2 py-1.5 text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">View
+                                    status</button>
+                                <button type="button"
+                                    class="ml-3 rounded-md bg-green-50 px-2 py-1.5 text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">Dismiss</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
 
-        <main>
             {{-- Hero section --}}
             <div class="relative isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
                 {{-- TODO: Update this image --}}
@@ -163,7 +123,7 @@
                                 </svg>
                                 Click to index.
                             </dt>
-                            <dd class="inline">Publish your knowledge base with a click of a button.
+                            <dd class="inline">Publish your knowledge base with a click of a button
                             </dd>
                         </div>
                         <div class="relative pl-9">
@@ -193,6 +153,12 @@
                         </div>
                         <div class="relative pl-9">
                             <dt class="inline font-semibold text-gray-900">
+                                {{-- <svg class="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20"
+                                    fill="currentColor" aria-hidden="true" data-slot="icon">
+                                    <path fill-rule="evenodd"
+                                        d="M10 2.5c-1.31 0-2.526.386-3.546 1.051a.75.75 0 0 1-.82-1.256A8 8 0 0 1 18 9a22.47 22.47 0 0 1-1.228 7.351.75.75 0 1 1-1.417-.49A20.97 20.97 0 0 0 16.5 9 6.5 6.5 0 0 0 10 2.5ZM4.333 4.416a.75.75 0 0 1 .218 1.038A6.466 6.466 0 0 0 3.5 9a7.966 7.966 0 0 1-1.293 4.362.75.75 0 0 1-1.257-.819A6.466 6.466 0 0 0 2 9c0-1.61.476-3.11 1.295-4.365a.75.75 0 0 1 1.038-.219ZM10 6.12a3 3 0 0 0-3.001 3.041 11.455 11.455 0 0 1-2.697 7.24.75.75 0 0 1-1.148-.965A9.957 9.957 0 0 0 5.5 9c0-.028.002-.055.004-.082a4.5 4.5 0 0 1 8.996.084V9.15l-.005.297a.75.75 0 1 1-1.5-.034c.003-.11.004-.219.005-.328a3 3 0 0 0-3-2.965Zm0 2.13a.75.75 0 0 1 .75.75c0 3.51-1.187 6.745-3.181 9.323a.75.75 0 1 1-1.186-.918A13.687 13.687 0 0 0 9.25 9a.75.75 0 0 1 .75-.75Zm3.529 3.698a.75.75 0 0 1 .584.885 18.883 18.883 0 0 1-2.257 5.84.75.75 0 1 1-1.29-.764 17.386 17.386 0 0 0 2.078-5.377.75.75 0 0 1 .885-.584Z"
+                                        clip-rule="evenodd" />
+                                </svg> --}}
                                 <svg class="absolute left-1 top-1 size-5 text-indigo-600" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path fill-rule="evenodd"
@@ -243,7 +209,9 @@
                         <div class="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
                             <h2 class="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Get
                                 in touch</h2>
-                            <p class="mt-6 text-lg/8 text-gray-600">If you had any questions, we'd love to connect. Fill out the contact form with your message or reach out to the email below to get in touch.</p>
+                            <p class="mt-6 text-lg/8 text-gray-600">If you had any questions, we'd love to connect.
+                                Fill out the contact form with your message or reach out to the email below to get in
+                                touch.</p>
                             <dl class="mt-10 space-y-4 text-base/7 text-gray-600">
                                 <div class="flex gap-x-4">
                                     <dt class="flex-none">
@@ -291,85 +259,27 @@
                                             class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                     </div>
                                 </div>
-                                </div>
-                                <div class="sm:col-span-2">
-                                    <label for="message"
-                                        class="block text-sm/6 font-semibold text-gray-900">Message</label>
-                                    <div class="mt-2.5">
-                                        <textarea name="message" id="message" rows="4"
-                                            class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"></textarea>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="mt-8 flex justify-end">
-                                <button type="submit"
-                                    class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Send
-                                    message</button>
+                            <div class="sm:col-span-2">
+                                <label for="message"
+                                    class="block text-sm/6 font-semibold text-gray-900">Message</label>
+                                <div class="mt-2.5">
+                                    <textarea name="message" id="message" rows="4"
+                                        class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"></textarea>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="mt-8 flex justify-end">
+                            <button type="submit"
+                                class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Send
+                                message</button>
+                        </div>
                 </div>
+                </form>
             </div>
+    </div>
 
-            {{-- TODO: Fill out the FAQ section --}}
-            <div id="faq" class="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
-                <div class="mx-auto max-w-4xl divide-y divide-gray-900/10">
-                    <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Frequently asked
-                        questions</h2>
-                    <dl class="mt-10 space-y-6 divide-y divide-gray-900/10">
-                        <div class="pt-6">
-                            <dt>
-                                <!-- Expand/collapse question button -->
-                                <div class="flex w-full items-start justify-between text-left text-gray-900"
-                                    aria-controls="faq-0" aria-expanded="false">
-                                    <span class="text-base/7 font-semibold">What&#039;s the best thing about
-                                        Switzerland?</span>
-                                </div>
-                            </dt>
-                            <dd class="mt-2 pr-12" id="faq-0">
-                                <p class="text-base/7 text-gray-600">I don&#039;t know, but the flag is a big plus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam
-                                    fugiat.</p>
-                            </dd>
-                        </div>
-                    </dl>
-                    <dl class="mt-10 space-y-6 divide-y divide-gray-900/10">
-                        <div class="pt-6">
-                            <dt>
-                                <!-- Expand/collapse question button -->
-                                <div class="flex w-full items-start justify-between text-left text-gray-900"
-                                    aria-controls="faq-0" aria-expanded="false">
-                                    <span class="text-base/7 font-semibold">What&#039;s the best thing about
-                                        Switzerland?</span>
-                                </div>
-                            </dt>
-                            <dd class="mt-2 pr-12" id="faq-0">
-                                <p class="text-base/7 text-gray-600">I don&#039;t know, but the flag is a big plus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam
-                                    fugiat.</p>
-                            </dd>
-                        </div>
-                    </dl>
-                    <dl class="mt-10 space-y-6 divide-y divide-gray-900/10">
-                        <div class="pt-6">
-                            <dt>
-                                <!-- Expand/collapse question button -->
-                                <div class="flex w-full items-start justify-between text-left text-gray-900"
-                                    aria-controls="faq-0" aria-expanded="false">
-                                    <span class="text-base/7 font-semibold">What&#039;s the best thing about
-                                        Switzerland?</span>
-                                </div>
-                            </dt>
-                            <dd class="mt-2 pr-12" id="faq-0">
-                                <p class="text-base/7 text-gray-600">I don&#039;t know, but the flag is a big plus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam
-                                    fugiat.</p>
-                            </dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-        </main>
+    </main>
     </div>
     {{-- Footer --}}
     <footer class="mt-32 bg-gray-900 sm:mt-56">

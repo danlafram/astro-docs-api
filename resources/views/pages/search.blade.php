@@ -5,7 +5,7 @@
 
         <div class='mx-auto m-5 text-center'>
             {{-- TODO: Swap this out with company name --}}
-            <p>Company X's knowledge base</p>
+            <p>{{$site_name}}'s knowledge base</p>
             <h1 class=' text-4xl my-5'>Search for anything in our documentation</h1>
         </div>
         {{-- Search form --}}

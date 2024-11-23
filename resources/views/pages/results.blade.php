@@ -28,17 +28,15 @@
             @else
                 <p>No results found for query</p>
             @endif
-            
         </div>
         {{-- Keep the Search bar available --}}
         <x-searchbar :query="$query"/>
 
         {{-- Search results --}}
-        <div class="grid grid-cols-1 gap-4 content-center m-2 lg:m-10">
+        <div class="grid grid-cols-1 gap-4 justify-center m-2 lg:m-10">
             @if (count($results) > 0)
                 @foreach ($results as $result)
-                    <div class='mx-auto'>
-                        <div>
+                    <div class='mx-auto max-w-3xl'>
                             <a class="text-2xl text-sky-400 hover:underline"
                                 href="{{ url(strtolower(str_replace(' ', '-', $result->fields->title[0]))) }}">{{ $result->fields->title[0] }}</a>
 
@@ -49,7 +47,6 @@
                                     ?>...
                                 </p>
                             @endforeach
-                        </div>
                     </div>
                 @endforeach
             @else

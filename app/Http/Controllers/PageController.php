@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Site;
 use Illuminate\Http\Request;
 use Elastic\Elasticsearch\ClientBuilder;
 
@@ -11,6 +12,8 @@ class PageController extends Controller
 
     /**
      * This function is responsible for searching elasticsearch based on the user's query.
+     * Required parameters:
+     * query - String - The search query that will be used to query Elasticsearch
      */
     public function search(Request $request)
     {
@@ -21,8 +24,10 @@ class PageController extends Controller
             ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
             ->build();
 
+        $index = tenant()->site->index;
+
         $params = [
-            'index' => 'astro-docs',
+            'index' => $index,
             'body'  => [
                 'size' => 10,
                 '_source' => false, // Don't get the full document yet
@@ -54,10 +59,13 @@ class PageController extends Controller
     }
 
     /**
-     * 
+     * This function will retrieve the page data and display it.
+     * TODO: When implementing caching, cache a stringified object of { body, title, and last_updated } so we won't have to hit ES or MySQL on subsequent requests
+     * TODO: Consider a cache key of 
      */
     public function renderPage(Request $request)
     {
+        // TODO: First, check the Cache to see if we already have this page stored.
         try {
             // get the route URL
             $url = explode('/', $request->url());
@@ -65,15 +73,22 @@ class PageController extends Controller
 
             $page = Page::where('slug', '=', $page_slug)->first();
 
+            if(!$page->visible){
+                $pages = Page::where('visible', '=', 1)->inRandomOrder()
+                ->limit(4)
+                ->get();
+                return view('errors.404')->with('pages', $pages);
+            }
+
             // get the page associated to it
             $client = ClientBuilder::create()
                 ->setHosts(['http://localhost:9200']) // TODO: Move to .env
                 ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
                 ->build();
-
+            $index = tenant()->site->index;
             $params = [
-                'index' => 'astro-docs', // TODO: Made this dynamic depending on the tenant
-                'id'    => $page->search_id // TODO - swap this out with something dynamic based on page rendering strategy
+                'index' => $index,
+                'id'    => $page->search_id
             ];
 
             $response = $client->get($params);
@@ -83,14 +98,15 @@ class PageController extends Controller
 
             // return the page with retrieved data
             return view('pages.page')
-                        ->with('body', $data->_source->document)
-                        ->with('title', $data->_source->title)
-                        ->with('last_updated', $page->confluence_updated_at);
+                        ->with('body', $data->_source->document) // TODO: Cache this value
+                        ->with('title', $data->_source->title) // TODO: Cache this value
+                        ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
         } catch (\Exception $e) {
             // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
             // Return 404
+            // Make sure not to return a hidden/non-visible page
             logger($e);
-            $pages = Page::inRandomOrder()
+            $pages = Page::where('visible', '=', 1)->inRandomOrder()
                 ->limit(4)
                 ->get();
             return view('errors.404')->with('pages', $pages);
@@ -98,18 +114,38 @@ class PageController extends Controller
     }
 
     /**
-     * Displays the search page alongside any useful data
+     * Displays the search page with 4 random pages to suggest to users
      */
     public function showSearch(Request $request)
     {
         // First, get 4 (max) random pages
         // TODO: Random order now, but start tracking page analytics and display the most frequented pages (?)
+        $site = Site::where('tenant_id', '=', tenant()->id)->first();
         $pages = Page::inRandomOrder()
             ->limit(4)
             ->get();
 
+        return view('pages.search')->with('pages', $pages)->with('site_name', $site->site_name);
+    }
 
-        return view('pages.search')->with('pages', $pages);
+    /**
+     * Toggle and update the visibility of the specified page
+     * Required parameters:
+     * confluence_id - String - ID of the specific Confluence page
+     */
+    public function toggleVisibility(string $id)
+    {
+        // Find the page based on the ID
+        $page = Page::find($id);
+        // Update the visibility
+        if(isset($page)){
+            $page->visible = !$page->visible;
+            $page->update();
+        } else {
+            return response()->json(['success' => false, 'message' => "Page with ID {$id} not found"], 404);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Successfully toggled page visibility'], 200);
     }
 
     /**

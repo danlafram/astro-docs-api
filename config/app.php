@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'suffix_domain' => env('APP_DOMAIN_SUFFIX', '.astro-docs-api.test')
+
 ];

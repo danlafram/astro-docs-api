@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Site extends Model
 {
+    use BelongsToTenant;
+
     protected $guarded = [];
 
     /**
@@ -15,5 +19,13 @@ class Site extends Model
     public function pages(): HasMany
     {
         return $this->hasMany(Page::class);
+    }
+
+    /**
+     * Get the site that owns the page.
+     */
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }

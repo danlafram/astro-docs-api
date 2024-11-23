@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('siteName')->nullable();
-            $table->string('siteUrl')->nullable();
+            $table->string('site_name')->nullable();
+            $table->string('site_url')->nullable();
             $table->string('index')->nullable();
-            $table->string('cloudId');
-            $table->string('installerAccountId')->nullable();
-            $table->string('ownerAccountId')->nullable();
+            $table->string('cloud_id');
+            $table->string('installer_account_id')->nullable();
+            $table->string('owner_account_id')->nullable();
             $table->timestamps();
         });
     }

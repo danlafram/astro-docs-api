@@ -3,29 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Models\Page;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Elastic\Elasticsearch\ClientBuilder;
 
 class SiteController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Create a new site and an index to go with that site.
+     * TODO: Site names need to be unique since, but Atlassian should be good at handling that for us already
+     * Required parameters:
+     * siteName - String - The name of the Atlassian site (e.g spoke-dev)
+     * cloudId - String - UUID of the Atlassian tenant
+     * siteUrl - String - The domain of the Atlassian tenant
+     * installerAccountId - String - Atlassian ID of the person installing the
+     * ownerAccountId - String - Atlassian ID of the person who owns the app
      */
     public function store(Request $request)
     {
@@ -45,58 +38,45 @@ class SiteController extends Controller
         $response = $client->indices()->create($params);
         $data = $response->asObject();
 
+        // Create the tenant here
+        $tenant = Tenant::create();
+
         // Store the site with any additional details provided
         $site = Site::create([
-            'siteName' => $bodyContent['siteName'],
-            'cloudId' => $bodyContent['cloudId'],
-            'siteUrl' => $bodyContent['siteUrl'],
-            'installerAccountId' => $bodyContent['installerAccountId'],
-            'ownerAccountId' => $bodyContent['ownerAccountId'],
-            'index' => $data->index
+            'site_name' => $bodyContent['siteName'],
+            'cloud_id' => $bodyContent['cloudId'],
+            'site_url' => $bodyContent['siteUrl'],
+            'installer_account_id' => $bodyContent['installerAccountId'],
+            'owner_account_id' => $bodyContent['ownerAccountId'],
+            'index' => $data->index,
+            'tenant_id' => $tenant->id
         ]);
-        // Anything else?
+
+        $tenant->domains()->create(['domain' => $bodyContent['siteName'] . '.' . config('app.suffix_domain')]);
+        
         return response()->json(['success' => 'success'], 200);
     }
 
     /**
-     * Display the specified resource.
+     * Returns the site associated with the cloudId
+     * Required parameters:
+     * cloudId - String - UUID of the Atlassian tenant
      */
-    public function show(string $cloudId)
+    public function show(string $cloud_id)
     {
-        $site = Site::where('cloudId', '=', $cloudId)->first();
+        $site = Site::where('cloud_id', '=', $cloud_id)->first();
+        
+        
         if(isset($site)){
+            $pages = Page::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
             // Installation not required. Exisitng account
             // Return all of the indexed pages for this site
-            return response()->json(['success' => true, 'site' => $site], 200);
+            return response()->json(['success' => true, 'pages' => $pages], 200); // TODO: Consider optimizign by only getting the page attributes we need
         } else {
             // First time logging in. We will require a bit of installation
             // Need them to give us a name for the site (or just default to the atlassian URL?)
             // Site names have to be unique for domains and tenancy
-            return response()->json(['success' => false], 200); // Update this
+            return response()->json(['success' => false], 200); // TODO: Update this
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Site $site)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Site $site)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Site $site)
-    {
-        //
     }
 }
