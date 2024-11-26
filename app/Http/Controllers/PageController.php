@@ -121,9 +121,9 @@ class PageController extends Controller
         // First, get 4 (max) random pages
         // TODO: Random order now, but start tracking page analytics and display the most frequented pages (?)
         $site = Site::where('tenant_id', '=', tenant()->id)->first();
-        $pages = Page::inRandomOrder()
-            ->limit(4)
-            ->get();
+        $pages = Page::where('visible', '=', 1)->inRandomOrder()
+                ->limit(4)
+                ->get();
 
         return view('pages.search')->with('pages', $pages)->with('site_name', $site->site_name);
     }
@@ -133,7 +133,7 @@ class PageController extends Controller
      * Required parameters:
      * confluence_id - String - ID of the specific Confluence page
      */
-    public function toggleVisibility(string $id)
+    public function toggle_visibility(string $id)
     {
         // Find the page based on the ID
         $page = Page::find($id);

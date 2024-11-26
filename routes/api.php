@@ -7,22 +7,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\IndexingController;
+use App\Http\Controllers\JobStatusController;
 
 // Sites
 Route::get('site/{cloud_id}', [SiteController::class, 'show']);
 Route::post('site', [SiteController::class, 'store']);
 
 // Indexing
-Route::post('initiateIndexing', [IndexingController::class, 'indexData']);
+Route::post('initiateIndexing', [IndexingController::class, 'index_data']);
 // TODO Add a route for single page indexing (?) maybe...
-Route::post('delete-page', [IndexingController::class, 'deletePage']);
+Route::post('delete-page', [IndexingController::class, 'delete_page']);
 
 // Pages
 Route::post('page', [PageController::class, 'store']);
-Route::patch('page/{id}/visible', [PageController::class, 'toggleVisibility']);
+Route::patch('page/{id}/visible', [PageController::class, 'toggle_visibility']);
 
-// Test emails
+// Job APIs
+Route::get('/jobs/status/{id}', [JobStatusController::class, 'get_job_status']);
 
+// Emails
 Route::post('email', function(Request $request){
     try {
         $first_name = $request->input('first-name');

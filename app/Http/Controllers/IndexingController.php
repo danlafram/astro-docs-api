@@ -14,6 +14,7 @@ use Elastic\Elasticsearch\ClientBuilder;
 class IndexingController extends Controller
 {
     /**
+     * TODO: Update this since it has changed
      * This function handles the indexing of a single page to ElasticSearch
      * 
      * Required parameters:
@@ -22,15 +23,12 @@ class IndexingController extends Controller
      * title - String - The title of the Confluence page
      * document - String - The contents of the Confluence page
      */
-    public function indexData(Request $request)
+    public function index_data(Request $request)
     {
-        logger("starting index data request...");
         $batch = Bus::batch([]);
 
-        // TODO: Take most of this logic out and put it into the IndexingService
         // This function will now be responsible for creating a batch
         // and adding pages to the batch then returning the batch ID
-        // logger("Indexing single document...");
         $api_token = $request->header()['x-forge-oauth-system'][0];
 
         // Get first 250 pages in the selected space
@@ -61,49 +59,9 @@ class IndexingController extends Controller
                 'batch' => $batch,
                 'success' => true,
             ], 200);
+        } else {
+            logger("Something went wrong with Confluence API request to get pages");
         }
-
-        // // Get the site we are using
-        // logger("Getting site...");
-        // $site = Site::where('cloud_id', '=', $bodyContent['cloudId'])->first();
-        // logger("Getting site...");
-        
-        // $client = ClientBuilder::create()
-        //     ->setHosts(['http://localhost:9200']) // TODO: Move to .env
-        //     ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
-        //     ->build();
-
-        // $params = [
-        //     'index' => $site->index,
-        //     'id' => $bodyContent['confluence_id'], // Confluence page ID is unique enough since all users will have their own index.
-        //     'body'  => [
-        //         'title' => $bodyContent['title'],
-        //         'document' => $bodyContent['document'],
-        //         'stripped_document' => strip_tags($bodyContent['document'])
-        //     ]
-        // ];
-
-        // $response = $client->index($params);
-
-        // $data = $response->asObject();
-
-        // // Ensure the page isn't already indexed before creating using firstOrCreate.
-        // // TODO: Add tenant_id to the query to ensure absolute uniqueness.
-        // $page = Page::firstOrCreate(
-        //     ['confluence_id' => $bodyContent['confluence_id']],
-        //     [
-        //         'title' => $bodyContent['title'],
-        //         'slug' => $this->getSlug($bodyContent['title']),
-        //         'search_id' => $data->_id,
-        //         'confluence_id' => $bodyContent['confluence_id'],
-        //         'confluence_created_at' => Carbon::parse($bodyContent['confluence_created_at']),
-        //         'confluence_updated_at' => Carbon::parse($bodyContent['confluence_updated_at']),
-        //         'site_id' => $site->id,
-        //         'visible' => true,
-        //     ]
-        // );
-
-        // return response()->json(['success' => true, 'page' => $page], 200);
     }
 
     /**
@@ -112,7 +70,7 @@ class IndexingController extends Controller
      * Required parameters:
      * confluence_id - String - ID of the specific Confluence page
      */
-    public function deletePage(Request $request)
+    public function delete_page(Request $request)
     {
         $bodyContent = json_decode($request->getContent(), true);
 
@@ -135,11 +93,5 @@ class IndexingController extends Controller
         $page->delete();
 
         return response()->json(['success' => 'success'], 200);
-    }
-
-    private function getSlug($string)
-    {
-        $updated_string = strtolower(str_replace(' ', '-', $string));
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $updated_string);
     }
 }

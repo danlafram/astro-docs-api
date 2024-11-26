@@ -17,10 +17,7 @@ class IndexingService
             // Get the page data
             $page_data = $this->get_page_data($page_id, $cloud_id, $api_token);
 
-            logger(print_r($page_data, true));
-
             $site = Site::where('cloud_id', '=', $cloud_id)->first();
-            logger(print_r($site));
 
             // Index the page data
             $client = ClientBuilder::create()
@@ -46,7 +43,7 @@ class IndexingService
                 ['confluence_id' => $page_data->id],
                 [
                     'title' => $page_data->title,
-                    'slug' => $this->getSlug($page_data->title),
+                    'slug' => $this->get_slug($page_data->title),
                     'search_id' => $data->_id,
                     'confluence_id' => $page_data->id,
                     'confluence_created_at' => Carbon::parse($page_data->createdAt),
@@ -55,8 +52,6 @@ class IndexingService
                     'visible' => true,
                 ]
             );
-
-
 
             return true;
         } catch (\Exception $e) {
@@ -77,7 +72,7 @@ class IndexingService
         }
     }
 
-    private function getSlug($string)
+    private function get_slug($string)
     {
         $updated_string = strtolower(str_replace(' ', '-', $string));
         return preg_replace('/[^A-Za-z0-9\-]/', '', $updated_string);

@@ -1,6 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+{{-- <link rel="icon" href="{{ asset('img/Astro-logo.png') }}"> --}}
+
 <title>
     {{-- TODO: We should default to the company name here instead of AstroDocs --}}
     <?php
