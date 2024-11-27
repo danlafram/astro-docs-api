@@ -19,7 +19,8 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
-        'astro-docs-api.test'
+        'astro-docs-api.test',
+        'astro-docs-b3p42.ondigitalocean.app'
         // TODO: Add more here based on the APP_URL or SUBDOMAINS .env data
     ],
 
