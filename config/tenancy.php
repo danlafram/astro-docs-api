@@ -20,7 +20,8 @@ return [
         '127.0.0.1',
         'localhost',
         'astro-docs-api.test',
-        'astro-docs-b3p42.ondigitalocean.app'
+        'astro-docs-b3p42.ondigitalocean.app',
+        'astro-docs.com'
         // TODO: Add more here based on the APP_URL or SUBDOMAINS .env data
     ],
 
