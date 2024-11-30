@@ -38,9 +38,9 @@
                 @foreach ($results as $result)
                     <div class='mx-auto max-w-3xl'>
                             <a class="text-2xl text-sky-400 hover:underline"
-                                href="{{ url(strtolower(str_replace(' ', '-', $result->fields->title[0]))) }}">{{ $result->fields->title[0] }}</a>
+                                href="{{ url(strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) }}">{{ $result['fields']['title'][0] }}</a>
 
-                            @foreach ($result->highlight->stripped_document as $highlight)
+                            @foreach ($result['highlight']['stripped_document'] as $highlight)
                                 <p class="ml-5 text-base">
                                     <?php
                                         echo $highlight;

@@ -6,6 +6,7 @@ use App\Models\Site;
 use App\Models\Page;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use App\Services\OpenSearchService;
 use Elastic\Elasticsearch\ClientBuilder;
 
 class SiteController extends Controller
@@ -25,18 +26,14 @@ class SiteController extends Controller
         // Create the new site for the user
         $bodyContent = json_decode($request->getContent(), true);
 
-        // Create an ES index
-        $client = ClientBuilder::create()
-            ->setHosts(['http://localhost:9200']) // TODO: Move to .env
-            ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
-            ->build();
+        // Create an OS index
+        $openSearchService = new OpenSearchService();
         
         $params = [
             'index' => str_replace('-', '_', $bodyContent['siteName']), // Format is spoke_dev instead of spoke-dev
         ];
         
-        $response = $client->indices()->create($params);
-        $data = $response->asObject();
+        $response = $openSearchService->client->indices()->create($params);
 
         // Create the tenant here
         $tenant = Tenant::create();
@@ -48,7 +45,7 @@ class SiteController extends Controller
             'site_url' => $bodyContent['siteUrl'],
             'installer_account_id' => $bodyContent['installerAccountId'],
             'owner_account_id' => $bodyContent['ownerAccountId'],
-            'index' => $data->index,
+            'index' => $response['index'],
             'tenant_id' => $tenant->id
         ]);
 

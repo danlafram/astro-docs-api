@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use App\Services\OpenSearchService;
 use Elastic\Elasticsearch\ClientBuilder;
+
 
 class PageController extends Controller
 {
@@ -19,10 +21,7 @@ class PageController extends Controller
     {
         $query = $request->input('query');
 
-        $client = ClientBuilder::create()
-            ->setHosts(['http://localhost:9200']) // TODO: Move to .env
-            ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
-            ->build();
+        $openSearchService = new OpenSearchService();
 
         $index = tenant()->site->index;
 
@@ -52,10 +51,10 @@ class PageController extends Controller
             ]
         ];
 
-        $response = $client->search($params);
-        $data = $response->asObject();
+        $response = $openSearchService->client->search($params);
+        
 
-        return view('pages.results')->with('results', $data->hits->hits)->with('query', $query)->with('hits', $data->hits->total->value);
+        return view('pages.results')->with('results', $response['hits']['hits'])->with('query', $query)->with('hits', $response['hits']['total']['value']);
     }
 
     /**
@@ -80,31 +79,28 @@ class PageController extends Controller
                 return view('errors.404')->with('pages', $pages);
             }
 
-            // get the page associated to it
-            $client = ClientBuilder::create()
-                ->setHosts(['http://localhost:9200']) // TODO: Move to .env
-                ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
-                ->build();
+            $openSearchService = new OpenSearchService();
+
             $index = tenant()->site->index;
             $params = [
                 'index' => $index,
                 'id'    => $page->search_id
             ];
 
-            $response = $client->get($params);
-            $data = $response->asObject();
+            $response = $openSearchService->client->get($params);
 
             defer(fn() => $page->increment('views'));
 
             // return the page with retrieved data
             return view('pages.page')
-                        ->with('body', $data->_source->document) // TODO: Cache this value
-                        ->with('title', $data->_source->title) // TODO: Cache this value
+                        ->with('body', $response['_source']['document']) // TODO: Cache this value
+                        ->with('title', $response['_source']['title']) // TODO: Cache this value
                         ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
         } catch (\Exception $e) {
             // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
             // Return 404
             // Make sure not to return a hidden/non-visible page
+            logger('Error occured in renderPage method');
             logger(print_r($e, true));
             $pages = Page::where('visible', '=', 1)->inRandomOrder()
                 ->limit(4)

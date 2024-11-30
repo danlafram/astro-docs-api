@@ -11,8 +11,7 @@
 </title>
 
 {{-- JQuery import --}}
-{{-- TODO: Use local import in production --}}
-<script src="{{asset('js/jquery.min.js')}}"></script>
+<script src="{{ global_asset('js/jquery.min.js') }}"></script>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.bunny.net">

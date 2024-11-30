@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 use Elastic\Elasticsearch\ClientBuilder;
+use App\Services\OpenSearchService;
 
 class IndexingController extends Controller
 {
@@ -74,10 +75,7 @@ class IndexingController extends Controller
     {
         $bodyContent = json_decode($request->getContent(), true);
 
-        $client = ClientBuilder::create()
-            ->setHosts(['http://localhost:9200']) // TODO: Move to .env
-            ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
-            ->build();
+        $openSearchService = new OpenSearchService();
         
         $index = tenant()->site->index;
 
@@ -86,7 +84,7 @@ class IndexingController extends Controller
             'id' => $bodyContent['confluence_id'], // Confluence page ID is unique enough since all users will have their own index.
         ];
 
-        $client->delete($params);
+        $openSearchService->client->delete($params);
 
         $page = Page::where('confluence_id', '=', $bodyContent['confluence_id'])->first();
 

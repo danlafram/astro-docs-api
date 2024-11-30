@@ -5,6 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\Page;
 use App\Models\Site;
+use App\Services\OpenSearchService;
 use Illuminate\Support\Facades\Http;
 use Elastic\Elasticsearch\ClientBuilder;
 
@@ -20,10 +21,7 @@ class IndexingService
             $site = Site::where('cloud_id', '=', $cloud_id)->first();
 
             // Index the page data
-            $client = ClientBuilder::create()
-                ->setHosts(['http://localhost:9200']) // TODO: Move to .env
-                ->setApiKey('NTRjQUZKTUJaVHludXl4ZE81X246OXNFSWEzV1NSRmF4dlFMeUlnZ1hLQQ==') // TODO: Move to .env
-                ->build();
+            $openSearchService = new OpenSearchService();
 
             $params = [
                 'index' => $site->index,
@@ -35,16 +33,14 @@ class IndexingService
                 ]
             ];
 
-            $response = $client->index($params);
-
-            $data = $response->asObject();
+            $response = $openSearchService->client->index($params);
 
             $page = Page::firstOrCreate(
                 ['confluence_id' => $page_data->id],
                 [
                     'title' => $page_data->title,
                     'slug' => $this->get_slug($page_data->title),
-                    'search_id' => $data->_id,
+                    'search_id' => $response['_id'],
                     'confluence_id' => $page_data->id,
                     'confluence_created_at' => Carbon::parse($page_data->createdAt),
                     'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
