@@ -2,8 +2,11 @@
     <div class="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
         <div class="xl:grid xl:grid-cols-3 xl:gap-8">
             <div class="space-y-8">
-                <img class="h-9" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Company name">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                </svg>
                 <p class="text-balance text-sm/6 text-gray-600">Making the world a better place through constructing
                     elegant hierarchies.</p>
                 <div class="flex gap-x-6">
@@ -124,7 +127,7 @@
             </div>
         </div>
         <div class="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
-            <p class="text-sm/6 text-gray-600">&copy; 2024 AstroDocs, Inc. All rights reserved.</p>
+            <p class="text-sm/6 text-gray-600">&copy; <?php echo date('Y'); ?> AstroDocs, Inc. All rights reserved.</p>
         </div>
     </div>
 </footer>
