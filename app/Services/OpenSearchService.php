@@ -9,15 +9,23 @@ class OpenSearchService
 
     public function __construct()
     {
-        $client = ClientBuilder::fromConfig([
-            'Hosts' => [
-               'http://localhost:9200' // Make this .env driven
-            ],
-            'Retries' => 2,
-            'SSLVerification' => false // If prod, this is true
-         ]);
-
-         $this->client = $client;
+        if(app()->isProduction()) {
+            $this->client = (new ClientBuilder())
+            ->setHosts([config('app.opensearch_host') . ':' . config('app.opensearch_port')])
+            ->setBasicAuthentication(config('app.opensearch_user'), config('app.opensearch_password')) // For testing only. Don't store credentials in code.
+            ->build();
+        } else {
+            $client = ClientBuilder::fromConfig([
+                'Hosts' => [
+                    config('app.opensearch_host') . ':' . config('app.opensearch_port') // Make this .env driven
+                ],
+                'Retries' => 2,
+                'SSLVerification' => false // If prod, this is true
+             ]);
+    
+             $this->client = $client;
+        }
+        
     }
     
 }

@@ -123,6 +123,14 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'suffix_domain' => env('APP_DOMAIN_SUFFIX', '.astro-docs-api.test')
+    'suffix_domain' => env('APP_DOMAIN_SUFFIX', '.astro-docs-api.test'),
+
+    'opensearch_host' => env('OPENSEARCH_HOST', 'http://localhost'),
+
+    'opensearch_port' => env('OPENSEARCH_PORT', '9200'),
+
+    'opensearch_user' => env('OPENSEARCH_USER', 'admin'),
+
+    'opensearch_password' => env('OPENSEARCH_PASSWORD', 'admin'),
 
 ];
