@@ -10,6 +10,9 @@
     ?>
 </title>
 
+{{-- TODO: Let users upload their own logos --}}
+<link rel="icon" href="{{ global_asset('img/Astro-logo.png') }}">
+
 {{-- JQuery import --}}
 <script src="{{ global_asset('js/jquery.min.js') }}"></script>
 
