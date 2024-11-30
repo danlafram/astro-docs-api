@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\IndexPageJob;
-use Carbon\Carbon;
 use App\Models\Page;
-use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Http;
-use Elastic\Elasticsearch\ClientBuilder;
 use App\Services\OpenSearchService;
+use Illuminate\Support\Facades\Http;
+
 
 class IndexingController extends Controller
 {

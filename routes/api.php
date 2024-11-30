@@ -8,7 +8,6 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\IndexingController;
 use App\Http\Controllers\JobStatusController;
-use OpenSearch\ClientBuilder;
 
 // Sites
 Route::get('site/{cloud_id}', [SiteController::class, 'show']);

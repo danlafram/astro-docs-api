@@ -7,7 +7,6 @@ use App\Models\Page;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 use App\Services\OpenSearchService;
-use Elastic\Elasticsearch\ClientBuilder;
 
 class SiteController extends Controller
 {

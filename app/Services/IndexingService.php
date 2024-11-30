@@ -7,7 +7,6 @@ use App\Models\Page;
 use App\Models\Site;
 use App\Services\OpenSearchService;
 use Illuminate\Support\Facades\Http;
-use Elastic\Elasticsearch\ClientBuilder;
 
 class IndexingService
 {
