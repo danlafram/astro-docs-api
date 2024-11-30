@@ -10,8 +10,6 @@ class OpenSearchService
     public function __construct()
     {
         if(app()->isProduction()) {
-            logger('Client builder in production');
-            logger(config('app.opensearch_host') . ':' . config('app.opensearch_port'));
             $this->client = (new ClientBuilder())
             ->setHosts([config('app.opensearch_host') . ':' . config('app.opensearch_port')])
             ->setBasicAuthentication(config('app.opensearch_user'), config('app.opensearch_password')) // For testing only. Don't store credentials in code.
