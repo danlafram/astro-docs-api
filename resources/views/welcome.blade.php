@@ -265,7 +265,15 @@
                         </div>
                     </dl>
                 </div>
-                <div class="relative overflow-hidden pt-16">
+                <div class="mx-auto max-w-7xl px-6 lg:px-8 pt-10">
+                    <div class="mx-auto max-w-2xl sm:text-center">
+                        <h3
+                            class="mt-2 text-pretty text-2xl font-semibold tracking-tight text-gray-900 sm:text-balance sm:text-5xl">
+                            Search results</h3>
+                        <p class="mt-6 text-lg/8 text-gray-600">Display search results and preview content that appeared in the search</p>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden">
                     <div class="mx-auto max-w-7xl px-6 lg:px-8">
                         {{-- TODO: Record a screen of using astro docs in Confluence and then go to a site, search something, then click a page. Turn that into a GIF and add it here. --}}
                         <img src="{{ asset('/img/search-results.png') }}"
@@ -276,7 +284,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative overflow-hidden pt-16">
+                <div class="mx-auto max-w-7xl px-6 lg:px-8 pt-10">
+                    <div class="mx-auto max-w-2xl sm:text-center">
+                        <h3
+                            class="mt-2 text-pretty text-2xl font-semibold tracking-tight text-gray-900 sm:text-balance sm:text-5xl">
+                            Give your customers the information they need</h3>
+                        <p class="mt-6 text-lg/8 text-gray-600">Render pages just as they look in Confluence</p>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden">
                     <div class="mx-auto max-w-7xl px-6 lg:px-8">
                         {{-- TODO: Record a screen of using astro docs in Confluence and then go to a site, search something, then click a page. Turn that into a GIF and add it here. --}}
                         <img src="{{ asset('/img/page.png') }}"
@@ -284,6 +300,25 @@
                             width="2432" height="1442">
                         <div class="relative" aria-hidden="true">
                             <div class="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-white pt-[7%]"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mx-auto max-w-7xl px-6 lg:px-8 pt-10">
+                    <div class="mx-auto max-w-2xl sm:text-center">
+                        <h3
+                            class="mt-2 text-pretty text-2xl font-semibold tracking-tight text-gray-900 sm:text-balance sm:text-5xl">
+                            Manage your pages</h3>
+                        <p class="mt-6 text-lg/8 text-gray-600">Hide and show pages at the individual level.</p>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden">
+                    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                        {{-- TODO: Record a screen of using astro docs in Confluence and then go to a site, search something, then click a page. Turn that into a GIF and add it here. --}}
+                        <img src="{{ asset('/img/manage.png') }}"
+                            alt="App screenshot" class="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
+                            width="2432" height="1442">
+                        <div class="relative" aria-hidden="true">
+                            <div class="absolute -inset-x-20"></div>
                         </div>
                     </div>
                 </div>
@@ -375,14 +410,11 @@
                                 <!-- Expand/collapse question button -->
                                 <div class="flex w-full items-start justify-between text-left text-gray-900"
                                     aria-controls="faq-0" aria-expanded="false">
-                                    <span class="text-base/7 font-semibold">What&#039;s the best thing about
-                                        Switzerland?</span>
+                                    <span class="text-base/7 font-semibold">What happens when I update one of my Confluence pages?</span>
                                 </div>
                             </dt>
                             <dd class="mt-2 pr-12" id="faq-0">
-                                <p class="text-base/7 text-gray-600">I don&#039;t know, but the flag is a big plus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam
-                                    fugiat.</p>
+                                <p class="text-base/7 text-gray-600">Astro Docs will automatically update the page data when you click save so that your customers will always see the most up to date version of any page.</p>
                             </dd>
                         </div>
                     </dl>
@@ -392,14 +424,11 @@
                                 <!-- Expand/collapse question button -->
                                 <div class="flex w-full items-start justify-between text-left text-gray-900"
                                     aria-controls="faq-0" aria-expanded="false">
-                                    <span class="text-base/7 font-semibold">What&#039;s the best thing about
-                                        Switzerland?</span>
+                                    <span class="text-base/7 font-semibold">How easy is it to set up my Confluence space as a public website?</span>
                                 </div>
                             </dt>
                             <dd class="mt-2 pr-12" id="faq-0">
-                                <p class="text-base/7 text-gray-600">I don&#039;t know, but the flag is a big plus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam
-                                    fugiat.</p>
+                                <p class="text-base/7 text-gray-600">No technical background is required to launch a public knowledge base with Astro Docs. It takes two clicks to deploy a fully searchable knowledge site based on a Confluence space.</p>
                             </dd>
                         </div>
                     </dl>
@@ -409,14 +438,11 @@
                                 <!-- Expand/collapse question button -->
                                 <div class="flex w-full items-start justify-between text-left text-gray-900"
                                     aria-controls="faq-0" aria-expanded="false">
-                                    <span class="text-base/7 font-semibold">What&#039;s the best thing about
-                                        Switzerland?</span>
+                                    <span class="text-base/7 font-semibold">Can I control which pages are visible on my public site?</span>
                                 </div>
                             </dt>
                             <dd class="mt-2 pr-12" id="faq-0">
-                                <p class="text-base/7 text-gray-600">I don&#039;t know, but the flag is a big plus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam
-                                    fugiat.</p>
+                                <p class="text-base/7 text-gray-600">Yes. You can toggle the visibility of each page individually to manage which pages your customers can see and which to keep private.</p>
                             </dd>
                         </div>
                     </dl>
