@@ -173,7 +173,7 @@
                 <div class="relative overflow-hidden pt-16">
                     <div class="mx-auto max-w-7xl px-6 lg:px-8">
                         {{-- TODO: Record a screen of using astro docs in Confluence and then go to a site, search something, then click a page. Turn that into a GIF and add it here. --}}
-                        <img src="https://tailwindui.com/plus/img/component-images/project-app-screenshot.png"
+                        <img src="{{ asset('/img/search-screen.png') }}"
                             alt="App screenshot" class="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
                             width="2432" height="1442">
                         <div class="relative" aria-hidden="true">
@@ -264,6 +264,28 @@
                             </dd>
                         </div>
                     </dl>
+                </div>
+                <div class="relative overflow-hidden pt-16">
+                    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                        {{-- TODO: Record a screen of using astro docs in Confluence and then go to a site, search something, then click a page. Turn that into a GIF and add it here. --}}
+                        <img src="{{ asset('/img/search-results.png') }}"
+                            alt="App screenshot" class="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
+                            width="2432" height="1442">
+                        <div class="relative" aria-hidden="true">
+                            <div class="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-white pt-[7%]"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden pt-16">
+                    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                        {{-- TODO: Record a screen of using astro docs in Confluence and then go to a site, search something, then click a page. Turn that into a GIF and add it here. --}}
+                        <img src="{{ asset('/img/page.png') }}"
+                            alt="App screenshot" class="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
+                            width="2432" height="1442">
+                        <div class="relative" aria-hidden="true">
+                            <div class="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-white pt-[7%]"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
