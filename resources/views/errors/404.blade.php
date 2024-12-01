@@ -21,6 +21,6 @@
         {{-- Random content end --}}
         </div>
     </main>
-    <x-contact />
-    <x-footer />
+    {{-- <x-contact /> --}}
+    {{-- <x-footer /> --}}
 @stop

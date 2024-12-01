@@ -24,8 +24,8 @@
         </div>
         {{-- Page content ends --}}
     </main>
-    <x-contact />
-    <x-footer />
+    {{-- <x-contact />
+    <x-footer /> --}}
 </body>
 <script>
     $(document).ready(function() {

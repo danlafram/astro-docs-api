@@ -23,6 +23,6 @@
 
         {{-- TODO: Consider adding categories here based on Confluence folders or tags? --}}
     </main>
-    <x-contact />
-    <x-footer />
+    {{-- <x-contact />
+    <x-footer /> --}}
 @stop
