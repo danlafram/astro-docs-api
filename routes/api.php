@@ -8,6 +8,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\IndexingController;
 use App\Http\Controllers\JobStatusController;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 
 // Sites
 Route::get('site/{cloud_id}', [SiteController::class, 'show']);
@@ -33,13 +35,13 @@ Route::post('email', function(Request $request){
         $email = $request->input('email');
         $question = $request->input('message');
         // TODO: Queue the message instead of inline
-        Mail::to('dan.laframb@gmail.com')->send(new TestMail($first_name, $last_name, $email, $question));
+        Mail::to('dan@spoke.dev')->send(new TestMail($first_name, $last_name, $email, $question));
 
         // Return to success page.
-        return view('feedback')->with('success', true);
+        return view('feedback');
     } catch(\Exception $e){
         // Return to error page.
-        return view('feedback')->with('success', false);
+        return view('feedback');
     }
     
 });
