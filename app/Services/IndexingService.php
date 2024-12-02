@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Http;
 
 class IndexingService
 {
-    // Maybe use cloud_id instead of cloud_id here since its not used...
+    /**
+     * This function is responsible for indexing a specific Confluence page in Opensearch.
+     */
     public function index($page_id, $cloud_id, $api_token)
     {
         try {
@@ -24,34 +26,72 @@ class IndexingService
 
             $params = [
                 'index' => $site->index,
-                'id' => $page_data->id, // TODO: Swap this out with $page_data
+                'id' => $page_data->id,
                 'body'  => [
-                    'title' => $page_data->title, // TODO: Swap this out with $page_data
-                    'document' => $page_data->body->view->value, // TODO: Swap this out with $page_data
-                    'stripped_document' => strip_tags($page_data->body->view->value) // TODO: Swap this out with $page_data
+                    'title' => $page_data->title,
+                    'document' => $page_data->body->view->value,
+                    'stripped_document' => strip_tags($page_data->body->view->value)
                 ]
             ];
 
             $response = $openSearchService->client->index($params);
 
-            $page = Page::firstOrCreate(
-                ['confluence_id' => $page_data->id],
-                [
-                    'title' => $page_data->title,
-                    'slug' => $this->get_slug($page_data->title),
-                    'search_id' => $response['_id'],
-                    'confluence_id' => $page_data->id,
-                    'confluence_created_at' => Carbon::parse($page_data->createdAt),
-                    'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
-                    'site_id' => $site->id,
-                    'visible' => true,
-                ]
-            );
+            // Upsert the Page record:
+            // Page::upsert([
+            //     [
+            //         'title' => $page_data->title,
+            //         'slug' => $this->get_slug($page_data->title),
+            //         'search_id' => $response['_id'],
+            //         'confluence_id' => $page_data->id,
+            //         'confluence_created_at' => Carbon::parse($page_data->createdAt),
+            //         'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
+            //         'site_id' => $site->id,
+            //         'visible' => true,
+            //     ]
+            // ], uniqueBy: ['confluence_id', 'search_id'], update: ['title', 'slug', 'search_id']);
+            // $page = Page::firstOrCreate(
+            //     ['confluence_id' => $page_data->id],
+            //     [
+            //         'title' => $page_data->title,
+            //         'slug' => $this->get_slug($page_data->title),
+            //         'search_id' => $response['_id'],
+            //         'confluence_id' => $page_data->id,
+            //         'confluence_created_at' => Carbon::parse($page_data->createdAt),
+            //         'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
+            //         'site_id' => $site->id,
+            //         'visible' => true,
+            //     ]
+            // );
+            $page = Page::where('confluence_id', '=', $page_data->id)
+                            ->where('search_id', '=', $response['_id'])
+                            ->first();
+
+            if (isset($page)) {
+                // Update it
+                $page->title = $page_data->title;
+                $page->slug = $this->get_slug($page_data->title);
+                $page->confluence_updated_at = Carbon::parse($page_data->version->createdAt);
+                $page->save();
+            } else {
+                $page = Page::firstOrCreate(
+                    ['confluence_id' => $page_data->id],
+                    [
+                        'title' => $page_data->title,
+                        'slug' => $this->get_slug($page_data->title),
+                        'search_id' => $response['_id'],
+                        'confluence_id' => $page_data->id,
+                        'confluence_created_at' => Carbon::parse($page_data->createdAt),
+                        'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
+                        'site_id' => $site->id,
+                        'visible' => true,
+                    ]
+                );
+            }
 
             return true;
         } catch (\Exception $e) {
             logger('Error processing index job');
-            logger(print_r($e, true));
+            logger(print_r($e->getMessage(), true));
         }
     }
 

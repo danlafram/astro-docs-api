@@ -13,14 +13,11 @@ use Illuminate\Support\Facades\Http;
 class IndexingController extends Controller
 {
     /**
-     * TODO: Update this since it has changed
-     * This function handles the indexing of a single page to ElasticSearch
+     * This function handles the indexing of a space in Confluence
      * 
      * Required parameters:
      * cloudId - String - UUID of the Atlassian tenant
-     * confluence_id - String - ID of the specific Confluence page
-     * title - String - The title of the Confluence page
-     * document - String - The contents of the Confluence page
+     * spaceId - String - ID of the specific Confluence space
      */
     public function index_data(Request $request)
     {
@@ -63,7 +60,26 @@ class IndexingController extends Controller
         }
     }
 
+    // TODO: We will need to check here if the site has the space indexed. We currently receive updates for all page updates in the confluence space.
+    public function index_page(Request $request)
+    {
+        $api_token = $request->header()['x-forge-oauth-system'][0];
+
+        $bodyContent = json_decode($request->getContent(), true);
+        $page_id = $bodyContent['pageId'];
+        $space_id = $bodyContent['spaceId']; // Use this later to ensure we are querying only for the specific space + combo since page IDs aren't unique
+        $cloud_id = $bodyContent['cloudId'];
+
+        // Dispatch the single job
+        IndexPageJob::dispatch($page_id, $cloud_id, $api_token);
+        
+        return response()->json([
+            'success' => true,
+        ], 200);
+    }
+
     /**
+     * TODO: Convert this to a job and handle async.
      * This function handles removing the page from Elastic search and the database
      * 
      * Required parameters:
@@ -74,8 +90,10 @@ class IndexingController extends Controller
         $bodyContent = json_decode($request->getContent(), true);
 
         $openSearchService = new OpenSearchService();
-        
-        $index = tenant()->site->index;
+
+        $page = Page::where('confluence_id', '=', $bodyContent['confluence_id'])->first();
+
+        $index = $page->site->index;
 
         $params = [
             'index' => $index, 
@@ -83,8 +101,6 @@ class IndexingController extends Controller
         ];
 
         $openSearchService->client->delete($params);
-
-        $page = Page::where('confluence_id', '=', $bodyContent['confluence_id'])->first();
 
         $page->delete();
 

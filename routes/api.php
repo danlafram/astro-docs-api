@@ -17,6 +17,7 @@ Route::post('site', [SiteController::class, 'store']);
 
 // Indexing
 Route::post('initiateIndexing', [IndexingController::class, 'index_data']);
+Route::post('indexPage', [IndexingController::class, 'index_page']);
 // TODO Add a route for single page indexing (?) maybe...
 Route::post('delete-page', [IndexingController::class, 'delete_page']);
 

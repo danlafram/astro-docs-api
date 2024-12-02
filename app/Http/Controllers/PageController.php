@@ -99,7 +99,7 @@ class PageController extends Controller
             // Return 404
             // Make sure not to return a hidden/non-visible page
             logger('Error occured in renderPage method');
-            logger(print_r($e, true));
+            logger(print_r($e->getMessage(), true));
             $pages = Page::where('visible', '=', 1)->inRandomOrder()
                 ->limit(4)
                 ->get();
