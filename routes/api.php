@@ -8,6 +8,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\IndexingController;
 use App\Http\Controllers\JobStatusController;
+use App\Http\Controllers\QueryController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
 
@@ -18,14 +19,16 @@ Route::post('site', [SiteController::class, 'store']);
 // Indexing
 Route::post('initiateIndexing', [IndexingController::class, 'index_data']);
 Route::post('indexPage', [IndexingController::class, 'index_page']);
-// TODO Add a route for single page indexing (?) maybe...
 Route::post('delete-page', [IndexingController::class, 'delete_page']);
+
+// Queries
+Route::get('query/{cloud_id}', [QueryController::class, 'index']);
 
 // Pages
 Route::post('page', [PageController::class, 'store']);
 Route::patch('page/{id}/visible', [PageController::class, 'toggle_visibility']);
 
-// Job APIs
+// Jobs
 Route::get('/jobs/status/{id}', [JobStatusController::class, 'get_job_status']);
 
 // Emails

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TrackQueryJob;
 use App\Models\Page;
 use App\Models\Site;
 use Illuminate\Http\Request;
@@ -50,7 +51,8 @@ class PageController extends Controller
         ];
 
         $response = $openSearchService->client->search($params);
-        
+
+        TrackQueryJob::dispatch($query, tenant()->site->id, $response['hits']['total']['value']);
 
         return view('pages.results')->with('results', $response['hits']['hits'])->with('query', $query)->with('hits', $response['hits']['total']['value']);
     }
