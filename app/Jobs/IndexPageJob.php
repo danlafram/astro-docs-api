@@ -9,7 +9,6 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Bus\Batchable;
-use App\Services\ProductService;
 
 class IndexPageJob implements ShouldQueue
 {
@@ -29,8 +28,6 @@ class IndexPageJob implements ShouldQueue
      * The ID of the site we are indexing for
      */
     protected $api_token;
-
-    protected $body_content;
 
     /**
      * Create a new job instance.
