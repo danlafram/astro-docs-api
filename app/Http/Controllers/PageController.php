@@ -64,11 +64,15 @@ class PageController extends Controller
      */
     public function renderPage(Request $request)
     {
+        logger("Rendering page");
+        logger("Tenant: " . tenant()->id);
         // TODO: First, check the Cache to see if we already have this page stored.
         try {
             // get the route URL
             $url = explode('/', $request->url());
+            logger("url: " . $url);
             $page_slug = end($url);
+            logger("page_slug: " . $page_slug);
 
             $page = Page::where('slug', '=', $page_slug)->first();
 
@@ -89,7 +93,9 @@ class PageController extends Controller
 
             $response = $openSearchService->client->get($params);
 
-            defer(fn() => $page->increment('views'));
+            logger('starting defer');
+            // defer(fn() => $page->increment('views'));
+            logger("Returning page");
 
             // return the page with retrieved data
             return view('pages.page')

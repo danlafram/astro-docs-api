@@ -31,5 +31,4 @@ Route::middleware([
     Route::post('/search', [PageController::class, 'search']);
 
     Route::get('/{path}', [PageController::class, 'renderPage']);
-
 });
