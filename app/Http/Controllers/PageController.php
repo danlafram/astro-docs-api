@@ -69,6 +69,7 @@ class PageController extends Controller
         // TODO: First, check the Cache to see if we already have this page stored.
         try {
             // get the route URL
+            logger("Request URL: " . $request->url());
             $url = explode('/', $request->url());
             logger("url: " . $url);
             $page_slug = end($url);
