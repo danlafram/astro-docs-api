@@ -70,10 +70,10 @@ class PageController extends Controller
         try {
             // get the route URL
             logger("Request URL: " . $request->url());
-            $url = explode('/', $request->url());
-            logger("url: " . $url);
-            $page_slug = end($url);
-            logger("page_slug: " . $page_slug);
+            $exploded_url = explode('/', $request->url());
+            logger(print_r($exploded_url));
+            $page_slug = end($exploded_url);
+            logger(print_r($page_slug));
 
             $page = Page::where('slug', '=', $page_slug)->first();
 
