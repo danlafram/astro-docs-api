@@ -9,9 +9,7 @@ class OpenSearchService
 
     public function __construct()
     {
-        logger("isProduction: " . app()->isProduction());
         if(app()->isProduction()) {
-            logger("Connection string: " . config('app.opensearch_host') . ':' . config('app.opensearch_port'));
             $this->client = (new ClientBuilder())
             ->setHosts([config('app.opensearch_host') . ':' . config('app.opensearch_port')])
             ->setBasicAuthentication(config('app.opensearch_user'), config('app.opensearch_password')) // For testing only. Don't store credentials in code.
