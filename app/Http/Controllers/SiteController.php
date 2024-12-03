@@ -24,7 +24,7 @@ class SiteController extends Controller
     {
         // Create the new site for the user
         $bodyContent = json_decode($request->getContent(), true);
-
+        
         // Create an OS index
         $openSearchService = new OpenSearchService();
         

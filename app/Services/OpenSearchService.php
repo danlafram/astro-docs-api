@@ -9,6 +9,7 @@ class OpenSearchService
 
     public function __construct()
     {
+        logger("isProduction: " . app()->isProduction());
         if(app()->isProduction()) {
             logger("Connection string: " . config('app.opensearch_host') . ':' . config('app.opensearch_port'));
             $this->client = (new ClientBuilder())
