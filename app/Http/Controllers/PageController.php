@@ -70,10 +70,10 @@ class PageController extends Controller
             $exploded_url = explode('/', $request->url());
             $page_slug = end($exploded_url);
 
-            $page = Page::where('slug', '=', $page_slug)->first();
+            $page = Page::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
 
             if(!$page->visible){
-                $pages = Page::where('visible', '=', 1)->inRandomOrder()
+                $pages = Page::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
                 ->limit(4)
                 ->get();
                 return view('errors.404')->with('pages', $pages);
@@ -102,7 +102,7 @@ class PageController extends Controller
             // Make sure not to return a hidden/non-visible page
             logger('Error occured in renderPage method');
             logger(print_r($e->getMessage(), true));
-            $pages = Page::where('visible', '=', 1)->inRandomOrder()
+            $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
                 ->limit(4)
                 ->get();
             return view('errors.404')->with('pages', $pages);
@@ -117,7 +117,7 @@ class PageController extends Controller
         // First, get 4 (max) random pages
         // TODO: Random order now, but start tracking page analytics and display the most frequented pages (?)
         $site = Site::where('tenant_id', '=', tenant()->id)->first();
-        $pages = Page::where('visible', '=', 1)->inRandomOrder()
+        $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
                 ->limit(4)
                 ->get();
 
