@@ -9,5 +9,9 @@ foreach (config('tenancy.central_domains') as $domain) {
         Route::get('/', function () {
             return view('welcome');
         });
+
+        Route::get('/install', function () {
+            return view('install');
+        });
     });
 }
