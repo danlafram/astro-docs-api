@@ -15,7 +15,7 @@
         {{-- Random content --}}
         <div class='grid grid-cols-2 mx-auto gap-4 mt-10 text-center'>
             @foreach ($pages as $page)
-                <div class='rounded-full bg-gray-200 py-1 px-5 flex flex-col'><a class='my-auto text-centre hover:underline'
+                <div class='rounded-full bg-gray-200 py-1 px-5 flex flex-col'><a class='my-auto text-centre hover:underline text-black'
                         href="{{ url($page->slug) }}">{{ $page->title }}</a></div>
             @endforeach
         </div>

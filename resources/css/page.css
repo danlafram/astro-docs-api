@@ -5,3 +5,15 @@ h2 {
     margin-top: 1em;
     margin-bottom: 1em;
 }
+
+em {
+    font-weight: 700;
+}
+
+a {
+    color: blue;
+}
+
+a:hover {
+    text-decoration: underline;
+}
