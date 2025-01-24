@@ -16,12 +16,15 @@ return [
      *
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
+    // A thought here... if we want to allow users to add their own domains, this will have to be read from DB.
     'central_domains' => [
         '127.0.0.1',
         'localhost',
         'astro-docs-api.test',
         'astro-docs.com',
-        'www.astro-docs.com'
+        'www.astro-docs.com',
+        'spoke.dev',
+        'www.spoke.dev'
         // TODO: Add more here based on the APP_URL or SUBDOMAINS .env data
     ],
 
