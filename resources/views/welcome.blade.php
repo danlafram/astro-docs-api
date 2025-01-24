@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
-
+@include('includes.analytics')
 <body class="font-sans antialiased">
     <div class="bg-white">
         <!-- Header -->
