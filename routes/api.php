@@ -9,8 +9,6 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\IndexingController;
 use App\Http\Controllers\JobStatusController;
 use App\Http\Controllers\QueryController;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Redis;
 
 // Sites
 Route::get('site/{cloud_id}', [SiteController::class, 'show']);

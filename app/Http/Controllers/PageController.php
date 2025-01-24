@@ -30,11 +30,13 @@ class PageController extends Controller
                 'size' => 10,
                 '_source' => false, // Don't get the full document yet
                 'fields' => [
-                    'title' // Only care about the field and the highlights (TODO: highlights)
+                    'stripped_document',
+                    'title',
                 ],
                 'query' => [
-                    'match' => [
-                        'stripped_document' => $query
+                    'multi_match' => [
+                        'query' => $query,
+                        'fields' => ['title', 'stripped_document']
                     ]
                 ],
                 'highlight' => [
@@ -42,7 +44,11 @@ class PageController extends Controller
                     'post_tags' => ['</b>'],
                     'fields' => [
                         'stripped_document' => [
-                            'pre_tags' => ['<em class="font-bold">'],
+                            'pre_tags' => ['<em class="font-bold">'], // TODO: Add inline styles here since they aren't getting picked up by Vite or something on the fly
+                            'post_tags' => ['</em>']
+                        ],
+                        'title' => [
+                            'pre_tags' => ['<em class="font-bold">'], // TODO: Add inline styles here since they aren't getting picked up by Vite or something on the fly
                             'post_tags' => ['</em>']
                         ]
                     ]
@@ -51,6 +57,8 @@ class PageController extends Controller
         ];
 
         $response = $openSearchService->client->search($params);
+
+        // dd($response);
 
         TrackQueryJob::dispatch($query, tenant()->site->id, $response['hits']['total']['value']);
 
@@ -72,10 +80,10 @@ class PageController extends Controller
 
             $page = Page::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
 
-            if(!$page->visible){
+            if (!$page->visible) {
                 $pages = Page::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
-                ->limit(4)
-                ->get();
+                    ->limit(4)
+                    ->get();
                 return view('errors.404')->with('pages', $pages);
             }
 
@@ -93,9 +101,9 @@ class PageController extends Controller
 
             // return the page with retrieved data
             return view('pages.page')
-                        ->with('body', $response['_source']['document']) // TODO: Cache this value
-                        ->with('title', $response['_source']['title']) // TODO: Cache this value
-                        ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
+                ->with('body', $response['_source']['document']) // TODO: Cache this value
+                ->with('title', $response['_source']['title']) // TODO: Cache this value
+                ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
         } catch (\Exception $e) {
             // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
             // Return 404
@@ -118,8 +126,8 @@ class PageController extends Controller
         // TODO: Random order now, but start tracking page analytics and display the most frequented pages (?)
         $site = Site::where('tenant_id', '=', tenant()->id)->first();
         $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
-                ->limit(4)
-                ->get();
+            ->limit(4)
+            ->get();
 
         return view('pages.search')->with('pages', $pages)->with('site_name', $site->site_name);
     }
@@ -134,7 +142,7 @@ class PageController extends Controller
         // Find the page based on the ID
         $page = Page::find($id);
         // Update the visibility
-        if(isset($page)){
+        if (isset($page)) {
             $page->visible = !$page->visible;
             $page->update();
         } else {

@@ -39,13 +39,26 @@
                             <a class="text-2xl text-sky-400 hover:underline"
                                 href="{{ url(strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) }}">{{ $result['fields']['title'][0] }}</a>
 
-                            @foreach ($result['highlight']['stripped_document'] as $highlight)
-                                <p class="ml-5 text-base">
-                                    <?php
-                                        echo $highlight;
-                                    ?>...
-                                </p>
-                            @endforeach
+
+                            {{-- Check if we are looking at stripped_document or title --}}
+                            @if(isset($result['highlight']['stripped_document']))
+                                @foreach ($result['highlight']['stripped_document'] as $highlight)
+                                    <p class="ml-5 text-base">
+                                        <?php
+                                            echo $highlight;
+                                        ?>...
+                                    </p>
+                                @endforeach
+                            @endif
+                            @if(isset($result['highlight']['title']))
+                                @foreach ($result['highlight']['title'] as $highlight)
+                                    <p class="ml-5 text-base">
+                                        <?php
+                                            echo $highlight;
+                                        ?>
+                                    </p>
+                                @endforeach
+                            @endif
                     </div>
                 @endforeach
             @else

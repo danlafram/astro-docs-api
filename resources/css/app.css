@@ -47,3 +47,7 @@ img {
     overflow-wrap: break-word;
     white-space: pre-wrap;
 }
+
+.font-bold {
+    font-weight: 700;
+}

@@ -29,7 +29,6 @@
 </body>
 <script>
     $(document).ready(function() {
-
         $('a').each(function (tag) {
             // NOTE: There are a lot of bold assumptions here. 
             // May have to revisit depending on URL formatting
@@ -39,11 +38,7 @@
                 let new_path = split_path.at(-1).replaceAll('+', '-').toLowerCase();
                 $(this).attr('href', new_path);
             }
-
         })
-
-    
-
     });
 </script>
 
