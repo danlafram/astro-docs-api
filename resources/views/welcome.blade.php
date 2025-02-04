@@ -18,7 +18,7 @@
 </head>
 @include('includes.analytics')
 <body class="font-sans antialiased">
-    <div class="bg-white">
+    <div class="bg-white mb-20">
         <!-- Header -->
         <header class="absolute inset-x-0 top-0 z-50">
             <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -90,7 +90,7 @@
             </div>
         </header>
 
-        <main>
+        <main class='mb-20'>
             {{-- Feedback --}}
             @if(session()->has('message'))
                 <div class="rounded-md bg-green-50 p-4">
@@ -401,7 +401,7 @@
             </div>
 
             {{-- TODO: Fill out the FAQ section --}}
-            <div id="faq" class="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
+            <div id="faq" class="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8 mb-20">
                 <div class="mx-auto max-w-4xl divide-y divide-gray-900/10">
                     <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Frequently asked
                         questions</h2>
