@@ -36,32 +36,6 @@ class IndexingService
 
             $response = $openSearchService->client->index($params);
 
-            // Upsert the Page record:
-            // Page::upsert([
-            //     [
-            //         'title' => $page_data->title,
-            //         'slug' => $this->get_slug($page_data->title),
-            //         'search_id' => $response['_id'],
-            //         'confluence_id' => $page_data->id,
-            //         'confluence_created_at' => Carbon::parse($page_data->createdAt),
-            //         'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
-            //         'site_id' => $site->id,
-            //         'visible' => true,
-            //     ]
-            // ], uniqueBy: ['confluence_id', 'search_id'], update: ['title', 'slug', 'search_id']);
-            // $page = Page::firstOrCreate(
-            //     ['confluence_id' => $page_data->id],
-            //     [
-            //         'title' => $page_data->title,
-            //         'slug' => $this->get_slug($page_data->title),
-            //         'search_id' => $response['_id'],
-            //         'confluence_id' => $page_data->id,
-            //         'confluence_created_at' => Carbon::parse($page_data->createdAt),
-            //         'confluence_updated_at' => Carbon::parse($page_data->version->createdAt),
-            //         'site_id' => $site->id,
-            //         'visible' => true,
-            //     ]
-            // );
             $page = Page::where('confluence_id', '=', $page_data->id)
                             ->where('search_id', '=', $response['_id'])
                             ->first();
@@ -92,6 +66,7 @@ class IndexingService
         } catch (\Exception $e) {
             logger('Error processing index job');
             logger(print_r($e->getMessage(), true));
+            
         }
     }
 
@@ -101,7 +76,7 @@ class IndexingService
             'Accept' => 'application/json',
             'Authorization' => "Bearer $api_token"
         ])->get("https://api.atlassian.com/ex/confluence/$cloud_id/wiki/api/v2/pages/$page_id?body-format=view");
-
+        
         if ($response->status() === 200) {
             return json_decode($response->body());
         }

@@ -8,9 +8,11 @@
         "php": "^8.2",
         "elasticsearch/elasticsearch": "^8.15",
         "facile-it/php-jose-verifier": "^0.4.5",
+        "firebase/php-jwt": "^6.11",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "lcobucci/jwt": "^5.5",
         "opensearch-project/opensearch-php": "^2.3",
         "stancl/tenancy": "^3.8"
     },

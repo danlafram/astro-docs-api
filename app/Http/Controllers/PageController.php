@@ -137,7 +137,7 @@ class PageController extends Controller
      * Required parameters:
      * confluence_id - String - ID of the specific Confluence page
      */
-    public function toggle_visibility(string $id)
+    public function toggle_visibility(Request $request, string $id)
     {
         // Find the page based on the ID
         $page = Page::find($id);
@@ -153,11 +153,21 @@ class PageController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Return a list of all the indexed pages we have
      */
-    public function index()
+    public function indexed_pages(Request $request)
     {
-        //
+        $jwt_token = $request->bearerToken();
+
+        $decoded_token = $this->decode_jwt($jwt_token);
+
+        $cloud_id = $decoded_token->context->cloudId;
+
+        $site = Site::where('cloud_id', '=', $cloud_id)->first();
+
+        $pages = Page::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
+
+        return $pages;
     }
 
     /**
@@ -205,5 +215,10 @@ class PageController extends Controller
     public function destroy(Request $request)
     {
         //   
+    }
+
+    private function decode_jwt($token)
+    {
+        return json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
     }
 }

@@ -11,11 +11,12 @@ use App\Http\Controllers\JobStatusController;
 use App\Http\Controllers\QueryController;
 
 // Sites
-Route::get('site/{cloud_id}', [SiteController::class, 'show']);
+Route::get('site', [SiteController::class, 'show']);
 Route::post('site', [SiteController::class, 'store']);
 
 // Indexing
 Route::post('initiateIndexing', [IndexingController::class, 'index_data']);
+Route::post('reindex', [IndexingController::class, 'reindex_data']);
 Route::post('indexPage', [IndexingController::class, 'index_page']);
 Route::post('delete-page', [IndexingController::class, 'delete_page']);
 
@@ -24,6 +25,7 @@ Route::get('query/{cloud_id}', [QueryController::class, 'index']);
 
 // Pages
 Route::post('page', [PageController::class, 'store']);
+Route::get('indexed_pages', [PageController::class, 'indexed_pages']);
 Route::patch('page/{id}/visible', [PageController::class, 'toggle_visibility']);
 
 // Jobs

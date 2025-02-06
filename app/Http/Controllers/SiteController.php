@@ -24,6 +24,12 @@ class SiteController extends Controller
     {
         // Create the new site for the user
         $bodyContent = json_decode($request->getContent(), true);
+
+        $jwt_token = $request->bearerToken();
+
+        $decoded_token = $this->decode_jwt($jwt_token);
+
+        $cloud_id = $decoded_token->context->cloudId;
         
         // Create an OS index
         $openSearchService = new OpenSearchService();
@@ -40,7 +46,7 @@ class SiteController extends Controller
         // Store the site with any additional details provided
         $site = Site::create([
             'site_name' => $bodyContent['siteName'],
-            'cloud_id' => $bodyContent['cloudId'],
+            'cloud_id' => $cloud_id,
             'site_url' => $bodyContent['siteUrl'],
             'installer_account_id' => $bodyContent['installerAccountId'],
             'owner_account_id' => $bodyContent['ownerAccountId'],
@@ -58,10 +64,15 @@ class SiteController extends Controller
      * Required parameters:
      * cloudId - String - UUID of the Atlassian tenant
      */
-    public function show(string $cloud_id)
+    public function show(Request $request)
     {
+        $jwt_token = $request->bearerToken();
+
+        $decoded_token = $this->decode_jwt($jwt_token);
+
+        $cloud_id = $decoded_token->context->cloudId;
+
         $site = Site::where('cloud_id', '=', $cloud_id)->first();
-        
         
         if(isset($site)){
             $pages = Page::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
@@ -74,5 +85,10 @@ class SiteController extends Controller
             // Site names have to be unique for domains and tenancy
             return response()->json(['success' => false], 200); // TODO: Update this
         }
+    }
+
+    private function decode_jwt($token)
+    {
+        return json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
     }
 }
