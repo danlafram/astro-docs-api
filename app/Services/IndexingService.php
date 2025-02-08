@@ -13,13 +13,25 @@ class IndexingService
     /**
      * This function is responsible for indexing a specific Confluence page in Opensearch.
      */
-    public function index($page_id, $cloud_id, $api_token)
+    public function index($page_id, $cloud_id, $api_token, $space_id)
     {
         try {
             // Get the page data
             $page_data = $this->get_page_data($page_id, $cloud_id, $api_token);
 
             $site = Site::where('cloud_id', '=', $cloud_id)->first();
+
+            // Sometimes, the app can be installed but not actually setup.
+            if(!isset($site)){
+                return true;
+            }
+
+            // Check if the page is even part of the Space we have indexed.
+            // Currently only allowed to index one Space
+            if($site->space_id !== $space_id){
+                return true;
+            }
+
 
             // Index the page data
             $openSearchService = new OpenSearchService();

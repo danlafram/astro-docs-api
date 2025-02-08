@@ -44,11 +44,11 @@ class PageController extends Controller
                     'post_tags' => ['</b>'],
                     'fields' => [
                         'stripped_document' => [
-                            'pre_tags' => ['<em class="font-bold">'], // TODO: Add inline styles here since they aren't getting picked up by Vite or something on the fly
+                            'pre_tags' => ['<em class="font-bold">'], 
                             'post_tags' => ['</em>']
                         ],
                         'title' => [
-                            'pre_tags' => ['<em class="font-bold">'], // TODO: Add inline styles here since they aren't getting picked up by Vite or something on the fly
+                            'pre_tags' => ['<em class="font-bold">'],
                             'post_tags' => ['</em>']
                         ]
                     ]

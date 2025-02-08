@@ -30,13 +30,19 @@ class IndexPageJob implements ShouldQueue
     protected $api_token;
 
     /**
+     * The ID of the space the page belongs to
+     */
+    protected $space_id;
+
+    /**
      * Create a new job instance.
      */
-    public function __construct($page_id, $cloud_id, $api_token)
+    public function __construct($page_id, $cloud_id, $api_token, $space_id)
     {
         $this->page_id = $page_id;
         $this->cloud_id = $cloud_id;
         $this->api_token = $api_token;
+        $this->space_id = $space_id;
     }
 
     /**
@@ -44,6 +50,6 @@ class IndexPageJob implements ShouldQueue
      */
     public function handle(IndexingService $indexingService): void
     {
-        $indexingService->index($this->page_id, $this->cloud_id, $this->api_token);
+        $indexingService->index($this->page_id, $this->cloud_id, $this->api_token, $this->space_id);
     }
 }

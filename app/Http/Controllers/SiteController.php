@@ -51,7 +51,8 @@ class SiteController extends Controller
             'installer_account_id' => $bodyContent['installerAccountId'],
             'owner_account_id' => $bodyContent['ownerAccountId'],
             'index' => $response['index'],
-            'tenant_id' => $tenant->id
+            'tenant_id' => $tenant->id,
+            'space_id' => $bodyContent['spaceId'],
         ]);
 
         $tenant->domains()->create(['domain' => $bodyContent['siteName'] . '.' . config('app.suffix_domain')]);

@@ -43,7 +43,7 @@
                  <div class="hidden lg:flex lg:gap-x-12">
                      {{-- <a href="product" class="text-sm/6 font-semibold text-white">Product</a> --}}
                      <a href="/#product" class="text-sm/6 font-semibold text-black">Features</a>
-                     {{-- <a href="#" class="text-sm/6 font-semibold text-white">Marketplace</a> TODO: Send this URL to atlassian marketplace --}}
+                     {{-- <a href="#" class="text-sm/6 font-semibold text-white">Marketplace</a> TODO: Set this URL to atlassian marketplace --}}
                      <a href="/#contact" class="text-sm/6 font-semibold text-black">Contact</a>
                      <a href="/#faq" class="text-sm/6 font-semibold text-black">FAQ</a>
                      <a href="/install" class="text-sm/6 font-semibold text-white">Install</a>

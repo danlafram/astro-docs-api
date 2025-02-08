@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 class IndexingController extends Controller
 {
     /**
-     * This function handles the indexing of a space in Confluence
+     * This function handles the indexing of a Space in Confluence
      * 
      * Required parameters:
      * cloudId - String - UUID of the Atlassian tenant
@@ -49,7 +49,7 @@ class IndexingController extends Controller
             foreach ($confluence_response->results as $page) {
                 if (isset($page->parentType)) {
                     $batch->add([
-                        new IndexPageJob($page->id, $cloud_id, $api_token)
+                        new IndexPageJob($page->id, $cloud_id, $api_token, $space_id)
                     ]);
                 } else {
                     continue;
@@ -67,7 +67,6 @@ class IndexingController extends Controller
         }
     }
 
-    // TODO: We will need to check here if the site has the space indexed. We currently receive updates for all page updates in the confluence space.
     public function index_page(Request $request)
     {
         $api_token = $request->header()['x-forge-oauth-system'][0];
@@ -80,11 +79,12 @@ class IndexingController extends Controller
 
         $bodyContent = json_decode($request->getContent(), true);
         $page_id = $bodyContent['pageId'];
-        $space_id = $bodyContent['spaceId']; // Use this later to ensure we are querying only for the specific space + combo since page IDs aren't unique
+        
+        $space_id = $bodyContent['spaceId'];
 
 
         // Dispatch the single job
-        IndexPageJob::dispatch($page_id, $cloud_id, $api_token);
+        IndexPageJob::dispatch($page_id, $cloud_id, $api_token, $space_id);
 
         return response()->json([
             'success' => true,
@@ -146,7 +146,7 @@ class IndexingController extends Controller
             // Now loop over response body results and add a job to the batch with the ID of each page that isn't the space home page
             foreach ($pages as $page) {
                 $batch->add([
-                    new IndexPageJob($page->confluence_id, $cloud_id, $api_token)
+                    new IndexPageJob($page->confluence_id, $cloud_id, $api_token, $site->space_id)
                 ]);
             }
 
