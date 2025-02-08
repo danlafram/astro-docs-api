@@ -29,6 +29,7 @@ Route::middleware([
     Route::get('/search', [PageController::class, 'showSearch']);
 
     Route::post('/search', [PageController::class, 'search']);
+    Route::post('/live_search', [PageController::class, 'live_search']);
 
     Route::get('/{path}', [PageController::class, 'renderPage']);
 });

@@ -17,7 +17,7 @@ class PageController extends Controller
      * query - String - The search query that will be used to query Elasticsearch
      */
     public function search(Request $request)
-    {
+    {   
         $query = $request->input('query');
 
         $openSearchService = new OpenSearchService();
@@ -63,6 +63,49 @@ class PageController extends Controller
         TrackQueryJob::dispatch($query, tenant()->site->id, $response['hits']['total']['value']);
 
         return view('pages.results')->with('results', $response['hits']['hits'])->with('query', $query)->with('hits', $response['hits']['total']['value']);
+    }
+
+    public function live_search(Request $request)
+    {   
+        $query = $request->input('query');
+
+        $openSearchService = new OpenSearchService();
+
+        $index = tenant()->site->index;
+
+        $params = [
+            'index' => $index,
+            'body'  => [
+                'size' => 10,
+                '_source' => false, // Don't get the full document yet
+                'fields' => [
+                    'title',
+                ],
+                'query' => [
+                    'multi_match' => [
+                        'query' => $query,
+                        'fields' => ['title', 'stripped_document']
+                    ]
+                ],
+                'highlight' => [
+                    'pre_tags' => ['<b>'],
+                    'post_tags' => ['</b>'],
+                    'fields' => [
+                        'title' => [
+                            'pre_tags' => ['<em class="font-bold">'], // TODO: Add inline styles here since they aren't getting picked up by Vite or something on the fly
+                            'post_tags' => ['</em>']
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = $openSearchService->client->search($params);
+
+        return response()->json([
+            'success' => true,
+            'results' => $response['hits']['hits']
+        ], 200);
     }
 
     /**

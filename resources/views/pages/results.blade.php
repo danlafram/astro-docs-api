@@ -32,10 +32,10 @@
         <x-searchbar :query="$query"/>
 
         {{-- Search results --}}
-        <div class="grid grid-cols-1 gap-4 justify-center m-2 lg:m-10">
+        <div class="flex flex-col max-w-fit content-center mx-auto lg:mt-10">
             @if (count($results) > 0)
                 @foreach ($results as $result)
-                    <div class='mx-auto max-w-3xl'>
+                    <div class='m-2 max-w-fit'>
                             <a class="text-2xl text-sky-400 hover:underline"
                                 href="{{ url(strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) }}">{{ $result['fields']['title'][0] }}</a>
 
