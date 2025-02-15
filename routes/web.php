@@ -10,10 +10,6 @@ foreach (config('tenancy.central_domains') as $domain) {
             return view('welcome');
         });
 
-        Route::get('/install', function () {
-            return view('install');
-        });
-
         Route::get('/eula', function () {
             return view('eula');
         });

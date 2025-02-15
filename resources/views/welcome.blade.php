@@ -45,7 +45,7 @@
                     {{-- <a href="#" class="text-sm/6 font-semibold text-white">Marketplace</a> TODO: Send this URL to atlassian marketplace --}}
                     <a href="#contact" class="text-sm/6 font-semibold text-white">Contact</a>
                     <a href="#faq" class="text-sm/6 font-semibold text-white">FAQ</a>
-                    <a href="/install" class="text-sm/6 font-semibold text-white">Install</a>
+                    <a target="_blank" href="https://marketplace.atlassian.com/apps/1236625/astro-docs?hosting=cloud&tab=overview" class="text-sm/6 font-semibold text-white">Install</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
 
