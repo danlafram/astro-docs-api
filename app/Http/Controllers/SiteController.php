@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\NewInstallJob;
 use App\Models\Site;
 use App\Models\Page;
 use App\Models\Tenant;
@@ -56,6 +57,9 @@ class SiteController extends Controller
         ]);
 
         $tenant->domains()->create(['domain' => $bodyContent['siteName'] . '.' . config('app.suffix_domain')]);
+
+        // Notify that a new install came in.
+        NewInstallJob::dispatch($bodyContent['siteName'], $bodyContent['siteUrl']);
         
         return response()->json(['success' => 'success'], 200);
     }
