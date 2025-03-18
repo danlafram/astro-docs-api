@@ -1,0 +1,16 @@
+A few things that are different from how Hosto is used:
+1. Tenant and domain are created BEFORE a user is actually created
+2. There could be a Tenant and a Domain that exist without ever creating a User or Team (they just use the app view and never modify theme files)
+
+This means we need to consider a few things:
+1. How does authentication work for the first time? Someone who first used the app through Confluence admin then goes to "customize" should then be prompted to create an account with the cloud ID of the tenant hidden in the field so that we can make the association.
+2. We need to associate the newly created user/team to the tenant/domain pair so that the dashboard and page builder work as expected
+
+TODO:
+1. Quick script to create a fake tenant and domain and associate them to an existing user just so we can get past the testing part
+2. Continue setting up the page builder 
+    1) Default pages
+    2) Themes
+    3) etc.
+3. Update Team name to Company name at some point
+    1) Also, make this editable so you can change company name or at least set it during registration

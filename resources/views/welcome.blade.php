@@ -46,6 +46,8 @@
                     <a href="#contact" class="text-sm/6 font-semibold text-white">Contact</a>
                     <a href="#faq" class="text-sm/6 font-semibold text-white">FAQ</a>
                     <a target="_blank" href="https://marketplace.atlassian.com/apps/1236625/astro-docs?hosting=cloud&tab=overview" class="text-sm/6 font-semibold text-white">Install</a>
+                    <a href="/login" class="text-sm/6 font-semibold text-white">Login</a>
+                    <a href="/register" class="text-sm/6 font-semibold text-white">Sign up</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
 
@@ -123,7 +125,7 @@
                 </div>
             @endif
             {{-- Hero section --}}
-            <div class="relative isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
+            <div class="relative h-screen isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
                 {{-- TODO: Update this image --}}
                 {{-- <img src={{ asset('img/Background.avif')}}
                     alt="" class="absolute inset-0 -z-10 size-full object-cover"> --}}

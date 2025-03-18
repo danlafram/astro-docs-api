@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pages', function (Blueprint $table) {
+        Schema::table('content_pages', function (Blueprint $table) {
             $table->foreignId('site_id')
                 ->constrained()
                 ->onUpdate('cascade')
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pages', function (Blueprint $table) {
+        Schema::table('content_pages', function (Blueprint $table) {
             $table->dropForeign('pages_site_id_foreign');
         });
     }

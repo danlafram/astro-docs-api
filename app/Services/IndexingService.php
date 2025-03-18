@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Carbon\Carbon;
-use App\Models\Page;
+use App\Models\ContentPage;
 use App\Models\Site;
 use App\Services\OpenSearchService;
 use Illuminate\Support\Facades\Http;
@@ -48,7 +48,7 @@ class IndexingService
 
             $response = $openSearchService->client->index($params);
 
-            $page = Page::where('confluence_id', '=', $page_data->id)
+            $page = ContentPage::where('confluence_id', '=', $page_data->id)
                             ->where('search_id', '=', $response['_id'])
                             ->first();
 
@@ -59,7 +59,7 @@ class IndexingService
                 $page->confluence_updated_at = Carbon::parse($page_data->version->createdAt);
                 $page->save();
             } else {
-                $page = Page::firstOrCreate(
+                $page = ContentPage::firstOrCreate(
                     ['confluence_id' => $page_data->id],
                     [
                         'title' => $page_data->title,

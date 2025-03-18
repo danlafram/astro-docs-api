@@ -4,15 +4,34 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/PHPageBuilder",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/Laravel-Pagebuilder",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require": {
         "php": "^8.2",
         "elasticsearch/elasticsearch": "^8.15",
         "facile-it/php-jose-verifier": "^0.4.5",
         "firebase/php-jwt": "^6.11",
+        "hansschouten/laravel-pagebuilder": "dev-main",
         "laravel/framework": "^11.9",
+        "laravel/jetstream": "^5.3",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "lcobucci/jwt": "^5.5",
+        "livewire/livewire": "^3.0",
         "opensearch-project/opensearch-php": "^2.3",
         "stancl/tenancy": "^3.8"
     },
@@ -72,6 +91,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
