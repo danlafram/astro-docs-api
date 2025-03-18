@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PageBuilderController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\AuthTenantMiddlware;
 use App\Models\Tenant;
@@ -28,8 +29,25 @@ Route::middleware([
     'verified',
     AuthTenantMiddlware::class
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        logger("Current tenant: " . tenant()->id);
-        return view('dashboard');
-    })->name('dashboard');
+    Route::prefix('dashboard')->group(function() {
+        Route::get('/', function() {
+            return view('dashboard');
+        })->name('dashboard');
+
+        // The following routes will serve the page builder UI
+        Route::any('/pages/{id}/build', [PageBuilderController::class, "build"])->name('pagebuilder.build');
+        Route::any('/pages/build', [PageBuilderController::class, "build"]);
+
+        Route::controller(PageController::class)->group(function () {
+            Route::get('/theme', 'index')->name('theme');
+            Route::get('/page/create', 'create');
+            Route::post('/page/create', 'store');
+            Route::get('/page/{id}/edit', 'edit');
+            Route::post('/page/{id}', 'update');
+            Route::get('/page/{id}/duplicate', 'duplicate');
+            Route::post('/page/{id}/duplicate', 'clone');
+            Route::get('/page/{id}/delete', 'delete');
+            Route::post('/page/{id}/delete', 'destroy');
+        });
+    });
 });

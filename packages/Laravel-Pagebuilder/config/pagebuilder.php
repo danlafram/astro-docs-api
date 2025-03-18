@@ -34,7 +34,7 @@ return [
             'password'  => env('DB_PASSWORD'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'prefix'    => 'pagebuilder__',
+            'prefix'    => '',
         ],
         'uploads_folder' => storage_path('app/pagebuilder/uploads')
     ],

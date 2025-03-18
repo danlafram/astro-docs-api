@@ -4,7 +4,7 @@ use App\Mail\TestMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\IndexingController;
 use App\Http\Controllers\JobStatusController;
@@ -24,9 +24,9 @@ Route::post('delete-page', [IndexingController::class, 'delete_page']);
 Route::get('query/{cloud_id}', [QueryController::class, 'index']);
 
 // Pages
-Route::post('page', [PageController::class, 'store']);
-Route::get('indexed_pages', [PageController::class, 'indexed_pages']);
-Route::patch('page/{id}/visible', [PageController::class, 'toggle_visibility']);
+Route::post('page', [ContentController::class, 'store']);
+Route::get('indexed_pages', [ContentController::class, 'indexed_pages']);
+Route::patch('page/{id}/visible', [ContentController::class, 'toggle_visibility']);
 
 // Jobs
 Route::get('/jobs/status/{id}', [JobStatusController::class, 'get_job_status']);

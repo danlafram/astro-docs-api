@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContentController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -43,15 +43,11 @@ Route::middleware([
         });
     });
     
-    // Route::get('/', [PageController::class, 'showSearch']);
-    Route::get('/', function(){
-        return "Hello tenant";
-    });
-    
-    Route::get('/search', [PageController::class, 'showSearch']);
+    // Think about re-doing the following
+    Route::get('/search', [ContentController::class, 'showSearch']);
 
-    Route::post('/search', [PageController::class, 'search']);
-    Route::post('/live_search', [PageController::class, 'live_search']);
+    Route::post('/search', [ContentController::class, 'search']);
+    Route::post('/live_search', [ContentController::class, 'live_search']);
 
-    Route::get('/{path}', [PageController::class, 'renderPage']);
+    Route::get('/{path}', [ContentController::class, 'renderPage']);
 });
