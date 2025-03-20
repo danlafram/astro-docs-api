@@ -20,6 +20,9 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
+        'localhost:8000',
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
         'astro-docs-api.test',
         'astro-docs.com',
         'www.astro-docs.com',

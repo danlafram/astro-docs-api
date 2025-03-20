@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\TrackQueryJob;
+use App\Models\ContentPage;
 use App\Models\Page;
 use App\Models\Site;
 use Illuminate\Http\Request;
@@ -121,10 +122,10 @@ class ContentController extends Controller
             $exploded_url = explode('/', $request->url());
             $page_slug = end($exploded_url);
 
-            $page = Page::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
+            $page = ContentPage::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
 
             if (!$page->visible) {
-                $pages = Page::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
+                $pages = ContentPage::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
                     ->limit(4)
                     ->get();
                 return view('errors.404')->with('pages', $pages);
@@ -153,7 +154,7 @@ class ContentController extends Controller
             // Make sure not to return a hidden/non-visible page
             logger('Error occured in renderPage method');
             logger(print_r($e->getMessage(), true));
-            $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
+            $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
                 ->limit(4)
                 ->get();
             return view('errors.404')->with('pages', $pages);
@@ -168,7 +169,7 @@ class ContentController extends Controller
         // First, get 4 (max) random pages
         // TODO: Random order now, but start tracking page analytics and display the most frequented pages (?)
         $site = Site::where('tenant_id', '=', tenant()->id)->first();
-        $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
+        $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
             ->limit(4)
             ->get();
 
@@ -183,7 +184,7 @@ class ContentController extends Controller
     public function toggle_visibility(Request $request, string $id)
     {
         // Find the page based on the ID
-        $page = Page::find($id);
+        $page = ContentPage::find($id);
         // Update the visibility
         if (isset($page)) {
             $page->visible = !$page->visible;
@@ -208,17 +209,9 @@ class ContentController extends Controller
 
         $site = Site::where('cloud_id', '=', $cloud_id)->first();
 
-        $pages = Page::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
+        $pages = ContentPage::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
 
         return $pages;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -227,37 +220,13 @@ class ContentController extends Controller
     public function store(Request $request)
     {
         // $configuration = Configuration::create($request->except(['_token', 'images']));
-        $page = Page::create([
+        $page = ContentPage::create([
             'name' => $request->input('name'),
             'route' => $request->input('route'),
             'data' => $request->input('data'),
         ]);
 
         return $page;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Page $page)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Page $page)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
-    {
-        //   
     }
 
     private function decode_jwt($token)

@@ -92,9 +92,9 @@ return [
      */
     'pagebuilder' => [
         'class' => PHPageBuilder\Modules\GrapesJS\PageBuilder::class,
-        'url' => '/admin/pages/build',
+        'url' => '/dashboard/pages/build',
         'actions' => [
-            'back' => '/admin/theme'
+            'back' => '/dashboard/theme'
         ]
     ],
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\PageBuilderController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -24,30 +25,26 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
-    ])->group(function () {
-        Route::prefix('admin')->group(function () {
-
-            Route::get('/', function () {
-                return "Hello there admin";
-                // logger("Here");
-                // return view('admin');
-            })->name('admin');
-
-            // The following routes will serve the page builder UI
-            // Route::any('/pages/{id}/build', [PageBuilderController::class, "build"])->name('pagebuilder.build');
-            // Route::any('/pages/build', [PageBuilderController::class, "build"]);
-        });
-    });
-    
     // Think about re-doing the following
-    Route::get('/search', [ContentController::class, 'showSearch']);
+    // This might still be necessary?
+    // Route::get('/search', [ContentController::class, 'showSearch']);
 
-    Route::post('/search', [ContentController::class, 'search']);
-    Route::post('/live_search', [ContentController::class, 'live_search']);
+    // Route::post('/search', [ContentController::class, 'search']);
+    Route::post('/search', function() {
+        dd("Search query received");
+    });
+    // Route::post('/live_search', [ContentController::class, 'live_search']);
 
-    Route::get('/{path}', [ContentController::class, 'renderPage']);
+    // This can probably go away...
+    // Route::get('/{path}', [ContentController::class, 'renderPage']);
+
+    Route::any('/page/{title}', [
+        'uses' => 'App\Http\Controllers\WebsiteController@page',
+    ])->where('title', '.*')->name('page.show');
+
+    // This MUST remain at the bottom of the document.
+    Route::any('{uri}', [
+        'uses' => 'App\Http\Controllers\WebsiteController@uri',
+        'as' => 'page',
+    ])->where('uri', '.*');
 });

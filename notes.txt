@@ -5,6 +5,7 @@ A few things that are different from how Hosto is used:
 This means we need to consider a few things:
 1. How does authentication work for the first time? Someone who first used the app through Confluence admin then goes to "customize" should then be prompted to create an account with the cloud ID of the tenant hidden in the field so that we can make the association.
 2. We need to associate the newly created user/team to the tenant/domain pair so that the dashboard and page builder work as expected
+    1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
 TODO:
 1. Quick script to create a fake tenant and domain and associate them to an existing user just so we can get past the testing part

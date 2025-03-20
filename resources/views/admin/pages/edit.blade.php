@@ -8,7 +8,7 @@
     <div class="pb-12 w-1/3">
       <h2 class="text-base font-semibold leading-7 text-gray-900">Page Information</h2>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+      <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8">
         <div class="sm:col-span-3">
           <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Page name</label>
           <div class="mt-2">
@@ -17,16 +17,20 @@
         </div>
       </div>
 
-      <div>
-        <label for="layout" class="block text-sm font-medium leading-6 text-gray-900">Layout</label>
-        <select id="layout" name="layout" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-            @foreach ($layouts as $layout)
-              <option value="{{ $layout }}" {{ $page->getLayout() == $layout ? 'selected' : '' }}>{{ $layout }}</option>
-            @endforeach
-        </select>
+      <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8">
+        <div class="sm:col-span-3">
+          <label for="layout" class="block text-sm font-medium leading-6 text-gray-900">Layout</label>
+          <div class="mt-2">  
+            <select id="layout" name="layout" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                @foreach ($layouts as $layout)
+                  <option value="{{ $layout }}" {{ $page->getLayout() == $layout ? 'selected' : '' }}>{{ $layout }}</option>
+                @endforeach
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+      <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8">
         <div class="sm:col-span-3">
           <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Page menu title</label>
           <div class="mt-2">
@@ -35,7 +39,7 @@
         </div>
       </div>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+      <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 ">
         <div class="sm:col-span-3">
           <label for="meta_title" class="block text-sm font-medium leading-6 text-gray-900">Page meta title</label>
           <div class="mt-2">
@@ -44,7 +48,7 @@
         </div>
       </div>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+      <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8">
         <div class="sm:col-span-3">
           <label for="meta_description" class="block text-sm font-medium leading-6 text-gray-900">Page meta description</label>
           <div class="mt-2">
@@ -53,7 +57,7 @@
         </div>
       </div>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+      <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 ">
         <div class="sm:col-span-3">
           <label for="route" class="block text-sm font-medium leading-6 text-gray-900">URL</label>
           <div class="mt-2">

@@ -286,7 +286,7 @@ if (! function_exists('phpb_tenant_url')) {
      */
     function phpb_tenant_url($module, array $parameters = [], $fullUrl = true)
     {
-        $url = $fullUrl ? tenant()->domain()->first()->domain : '';
+        $url = "localhost:8000"; //$fullUrl ? tenant()->domain()->first()->domain : '';
         $url .= phpb_config($module . '.url');
 
         if (! empty($parameters)) {
