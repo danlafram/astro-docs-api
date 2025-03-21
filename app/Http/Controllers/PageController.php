@@ -16,16 +16,30 @@ class PageController extends Controller
     {
         $pages = Page::where('tenant_id', '=', tenant()->id)->get();
 
-        return view("admin.themes")->with("pages", $pages);
+        // Currently, just display the themes that are in the folder. Eventually, this will have to be database driven.
+        $themes = $this->getThemes();
+
+        return view('admin.themes')->with('pages', $pages)->with('themes', $themes);
+    }
+
+    /**
+     * This function handles the ability to publish to different themes that are uploaded to a tenant's account.
+     * TODO: Maybe have a "Confirm" screen just to make sure what they are doing is intentional.
+     */
+    public function publish(string $theme)
+    {
+        $domain = tenant()->domain()->first();
+        $domain->active_theme = $theme;
+        $domain->save();
+        return redirect()->route('theme')->with('success', 'Theme published successfully');
     }
 
     public function create()
     {
         // At some point, we'll likely need to move these to S3 under an account prefix
         $layouts = $this->getLayouts();
-        // $configurations = Configuration::where('tenant_id', '=', tenant()->id)->get();
 
-        return view("admin.pages.new")->with("layouts", $layouts);
+        return view('admin.pages.new')->with('layouts', $layouts);
     }
 
     public function store(Request $request)
@@ -56,8 +70,6 @@ class PageController extends Controller
         $page = Page::find($id);
 
         $layouts = $this->getLayouts();
-
-        // $configurations = Configuration::where('tenant_id', '=', tenant()->id)->get();
 
         return view('admin.pages.edit')->with('page', $page)->with('layouts', $layouts);
     }
@@ -145,17 +157,32 @@ class PageController extends Controller
     private function getLayouts()
     {
         $layouts = [];
-        if (file_exists(base_path() . '/themes/demo' . '/layouts')) {
-            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes/demo' . '/layouts');
+        $theme = tenant()->domain()->first()->active_theme;
+        if (file_exists(base_path() . '/themes/' . $theme . '/layouts')) {
+            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes/' . $theme . '/layouts');
             foreach ($layoutsDirectory as $entry) {
                 if ($entry->isDir() && ! $entry->isDot()) {
                     array_push($layouts, $entry->getFilename());
                 }
-                
             }
         }
 
         return $layouts;
+    }
+
+    private function getThemes()
+    {
+        $themes = [];
+        if (file_exists(base_path() . '/themes')) {
+            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes');
+            foreach ($layoutsDirectory as $entry) {
+                if ($entry->isDir() && ! $entry->isDot()) {
+                    array_push($themes, $entry->getFilename());
+                }
+            }
+        }
+
+        return $themes;
     }
 
     /**

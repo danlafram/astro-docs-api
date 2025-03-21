@@ -55,7 +55,12 @@ if (! function_exists('phpb_theme_asset')) {
      */
     function phpb_theme_asset($path)
     {
-        $themeFolder = phpb_config('theme.folder_url') . '/' . phpb_config('theme.active_theme');
+        // logger("Identify the subdomain here to apply appropriate theme");
+        // logger(tenant()->id); GET THE ACTIVE THEME AND SET IT HERE!!!
+        // logger(tenant()->domain()->first()->active_theme);
+        $theme = tenant()->domain()->first()->active_theme;
+        config()->set('pagebuilder.theme.active_theme', tenant()->domain()->first()->active_theme);
+        $themeFolder = phpb_config('theme.folder_url') . '/' . $theme;
         return phpb_full_url($themeFolder . '/' . $path);
     }
 }

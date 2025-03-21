@@ -37,6 +37,7 @@ Route::middleware([
 
         Route::controller(PageController::class)->group(function () {
             Route::get('/theme', 'index')->name('theme');
+            Route::get('/theme/{theme}/publish', 'publish')->name('publish_theme');
             Route::get('/page/create', 'create');
             Route::post('/page/create', 'store');
             Route::get('/page/{id}/edit', 'edit');

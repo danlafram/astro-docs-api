@@ -147,7 +147,7 @@ return [
         'class' => PHPageBuilder\Theme::class,
         'folder' => base_path('themes'), // Change this to be the S3 path instead of the base_path. Could maybe be storage path.
         'folder_url' => '/themes', // Pull this out of config and add this to the tenat resource (maybe) in the database
-        'active_theme' => 'demo'
+        'active_theme' => 'default'
     ],
 
     /*

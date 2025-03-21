@@ -19,7 +19,11 @@ class WebsiteController extends Controller
      */
     public function uri(Request $request)
     {
-        $pageBuilder = app()->make('phpPageBuilder');
+        $theme = tenant()->domain()->first()->active_theme;
+        config()->set('pagebuilder.theme.active_theme', $theme);
+        $pageBuilder = app()->make('phpPageBuilder', [
+            'theme' => $theme
+        ]);
         $pageBuilder->handlePublicRequest();
     }
 
@@ -30,50 +34,51 @@ class WebsiteController extends Controller
         $page_slug = end($exploded_url); // Use the page slug to find the content
         dd($page_slug);
         
-        try {
-            // get the route URL
-            $exploded_url = explode('/', $request->url());
-            $page_slug = end($exploded_url);
+        // try {
+        //     // get the route URL
+        //     $exploded_url = explode('/', $request->url());
+        //     $page_slug = end($exploded_url);
 
-            $page = ContentPage::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
+        //     $page = ContentPage::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
 
-            if (!$page->visible) {
-                $pages = ContentPage::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
-                    ->limit(4)
-                    ->get();
-                return view('errors.404')->with('pages', $pages);
-            }
+        //     if (!$page->visible) {
+        //         $pages = ContentPage::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
+        //             ->limit(4)
+        //             ->get();
+        //         return view('errors.404')->with('pages', $pages);
+        //     }
 
-            $openSearchService = new OpenSearchService();
+        //     $openSearchService = new OpenSearchService();
 
-            $index = tenant()->site->index;
-            $params = [
-                'index' => $index,
-                'id'    => $page->search_id
-            ];
+        //     $index = tenant()->site->index;
+        //     $params = [
+        //         'index' => $index,
+        //         'id'    => $page->search_id
+        //     ];
 
-            $response = $openSearchService->client->get($params);
+        //     $response = $openSearchService->client->get($params);
 
-            $page->increment('views'); // TODO: Put this on a queue
+        //     $page->increment('views'); // TODO: Put this on a queue
 
-            // return the page with retrieved data
-            // TODO: Need to echo this out instead of returning a page
-            return view('pages.page')
-                ->with('body', $response['_source']['document']) // TODO: Cache this value
-                ->with('title', $response['_source']['title']) // TODO: Cache this value
-                ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
+        //     // return the page with retrieved data
+        //     // TODO: Need to echo this out instead of returning a page
+        //     return view('pages.page')
+        //         ->with('body', $response['_source']['document']) // TODO: Cache this value
+        //         ->with('title', $response['_source']['title']) // TODO: Cache this value
+        //         ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
 
-        } catch (\Exception $e) {
-            // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
-            // Return 404
-            // Make sure not to return a hidden/non-visible page
-            logger('Error occured in renderPage method');
-            logger(print_r($e->getMessage(), true));
-            $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
-                ->limit(4)
-                ->get();
-            return view('errors.404')->with('pages', $pages);
-        }
+        // } catch (\Exception $e) {
+        //     // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
+        //     // Return 404
+        //     // Make sure not to return a hidden/non-visible page
+        //     logger('Error occured in renderPage method');
+        //     logger(print_r($e->getMessage(), true));
+        //     $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
+        //         ->limit(4)
+        //         ->get();
+        //     // TODO: Not sure how this will work with page builder... Should probably return echo'd content instead.
+        //     return view('errors.404')->with('pages', $pages);
+        // }
 
         // $pageBuilder = app()->make('phpPageBuilder');
         // $page = (new PageRepository)->findWhere('name', 'content'); // findWhere is using tenant_id.

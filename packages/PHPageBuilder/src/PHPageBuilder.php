@@ -85,6 +85,9 @@ class PHPageBuilder
         // init the default page builder, active theme and page router
         $this->pageBuilder = phpb_instance('pagebuilder');
 
+
+        // TODO: Figure out how to apply proper theme here and not read from the config
+        // $theme = tenant()->domain()->first()->active_theme;
         $this->theme = phpb_instance('theme', [
             phpb_config('theme'), 
             phpb_config('theme.active_theme')
