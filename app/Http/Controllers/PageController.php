@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Theme;
 use DirectoryIterator;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,7 @@ class PageController extends Controller
     {
         $pages = Page::where('tenant_id', '=', tenant()->id)->get();
 
-        // Currently, just display the themes that are in the folder. Eventually, this will have to be database driven.
-        $themes = $this->getThemes();
+        $themes = Theme::where('tenant_id', '=', tenant()->id)->get();
 
         return view('admin.themes')->with('pages', $pages)->with('themes', $themes);
     }
@@ -26,10 +26,10 @@ class PageController extends Controller
      * This function handles the ability to publish to different themes that are uploaded to a tenant's account.
      * TODO: Maybe have a "Confirm" screen just to make sure what they are doing is intentional.
      */
-    public function publish(string $theme)
+    public function publish($theme_id)
     {
         $domain = tenant()->domain()->first();
-        $domain->active_theme = $theme;
+        $domain->theme_id = $theme_id;
         $domain->save();
         return redirect()->route('theme')->with('success', 'Theme published successfully');
     }
@@ -157,9 +157,10 @@ class PageController extends Controller
     private function getLayouts()
     {
         $layouts = [];
-        $theme = tenant()->domain()->first()->active_theme;
-        if (file_exists(base_path() . '/themes/' . $theme . '/layouts')) {
-            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes/' . $theme . '/layouts');
+        $theme_id = tenant()->domain()->first()->theme_id;
+        $theme = Theme::find($theme_id);
+        if (file_exists(base_path() . '/themes/' . $theme->name . '/layouts')) {
+            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes/' . $theme->name . '/layouts');
             foreach ($layoutsDirectory as $entry) {
                 if ($entry->isDir() && ! $entry->isDot()) {
                     array_push($layouts, $entry->getFilename());

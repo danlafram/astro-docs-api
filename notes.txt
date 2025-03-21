@@ -8,7 +8,7 @@ This means we need to consider a few things:
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
 TODO:
-Add 'active_theme' to the domain/tenant/site
+Connect to development forge app and connect to populate the tables and opensearch
 Update Team name to Company name at some point
     1) Also, make this editable so you can change company name or at least set it during registration
 Let users upload their own logos and display it in the dashboard AND on the website

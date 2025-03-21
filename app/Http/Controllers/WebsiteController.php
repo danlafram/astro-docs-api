@@ -7,6 +7,7 @@ use App\Models\Configuration;
 use \Stripe\StripeClient;
 use App\Models\Booking;
 use App\Models\ContentPage;
+use App\Models\Theme;
 use App\Services\OpenSearchService;
 use App\Services\PageRepository;
 use Carbon\Carbon;
@@ -19,10 +20,11 @@ class WebsiteController extends Controller
      */
     public function uri(Request $request)
     {
-        $theme = tenant()->domain()->first()->active_theme;
-        config()->set('pagebuilder.theme.active_theme', $theme);
+        $theme_id = tenant()->domain()->first()->theme_id;
+        $theme = Theme::find($theme_id);
+        config()->set('pagebuilder.theme.active_theme', $theme->name);
         $pageBuilder = app()->make('phpPageBuilder', [
-            'theme' => $theme
+            'theme' => $theme->name
         ]);
         $pageBuilder->handlePublicRequest();
     }

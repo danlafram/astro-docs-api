@@ -35,31 +35,15 @@
                                     <tr>
                                         <td
                                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                                            {{ $theme }}</td>
+                                            {{ $theme->name }}</td>
                                         <td
                                             class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 grid grid-cols-5 gap-5">
                                             {{-- TODO: Update this to be theme id when we have themes in DB --}}
 
-                                            <a href="{{ url('dashboard/theme/' . $theme . '/publish') }}"
+                                            <a href="{{ url('dashboard/theme/' . $theme->id . '/publish') }}"
                                                 class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
                                                 Publish
                                             </a>
-                                            {{-- <a href='{{ url($theme) }}' target="_blank"
-                                                class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                                                View
-                                            </a>
-                                            <a href="{{ url('dashboard/page/' . $theme . '/edit') }}"
-                                                class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                                                Settings
-                                            </a>
-                                            <a href="{{ url('dashboard/page/' . $theme . '/duplicate') }}"
-                                                class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                                                Duplicate
-                                            </a>
-                                            <a href="{{ url('dashboard/page/' . $theme . '/delete') }}"
-                                                class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-black bg-red hover:bg-gray-50 hover:text-indigo-600">
-                                                Delete
-                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach
