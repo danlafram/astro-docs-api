@@ -55,6 +55,7 @@ class PageController extends Controller
             'meta_description' => $request->input('meta_description'),
             'route' => $request->input('route'),
             'tenant_id' => tenant()->getTenantKey(),
+            'theme_id' => tenant()->domain()->first()->theme_id,
         ]);
 
         if($success) {

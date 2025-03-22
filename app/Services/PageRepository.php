@@ -54,6 +54,7 @@ class PageRepository extends BaseRepository implements PageRepositoryContract
             'name' => $data['name'],
             'layout' => $data['layout'],
             'tenant_id' => $data['tenant_id'],
+            'theme_id' => $data['theme_id'],
         ]);
 
         if (! ($page instanceof PageContract)) {
@@ -76,6 +77,7 @@ class PageRepository extends BaseRepository implements PageRepositoryContract
             'layout' => $data['layout'],
             'data' => $data['data'],
             'tenant_id' => $data['tenant_id'],
+            'theme_id' => $data['theme_id'],
         ]);
         
         $page->invalidateCache();
@@ -141,6 +143,7 @@ class PageRepository extends BaseRepository implements PageRepositoryContract
                 'meta_description' => $data['meta_description'][$languageCode],
                 'route' => $data['route'][$languageCode],
                 'tenant_id' => $data['tenant_id'],
+                'theme_id' => $data['theme_id'],
             ]);
         }
 

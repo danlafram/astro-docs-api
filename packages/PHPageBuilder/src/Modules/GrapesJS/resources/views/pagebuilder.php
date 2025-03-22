@@ -150,7 +150,6 @@ require __DIR__ . '/grapesjs/trait-manager.php';
         <?= phpb_trans('pagebuilder.save-page') ?>
     </button>
 
-    <!-- TODO: This doesn't work for the listing page -->
     <a id="view-page" href="<?= phpb_e(phpb_tenant_full_url($page->getRoute())) ?>" target="_blank" class="btn">
         <i class="fa fa-external-link"></i>
         <?= phpb_trans('pagebuilder.view-page') ?>

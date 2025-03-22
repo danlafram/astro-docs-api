@@ -58,7 +58,7 @@ if (! function_exists('phpb_theme_asset')) {
         $theme_id = tenant()->domain()->first()->theme_id;
         $theme = \App\Models\Theme::find($theme_id);
         $themeFolder = phpb_config('theme.folder_url') . '/' . $theme->name;
-        return phpb_full_url($themeFolder . '/' . $path);
+        return phpb_tenant_full_url($themeFolder . '/' . $path);
     }
 }
 
@@ -71,7 +71,6 @@ if (! function_exists('phpb_universal_asset')) {
      */
     function phpb_universal_asset($path)
     {
-        // $themeFolder = phpb_config('theme.folder_url') . '/' . phpb_config('theme.active_theme');
         $publicFolder = '/public';
         return phpb_full_url($publicFolder . '/' . $path);
     }
@@ -267,7 +266,7 @@ if (! function_exists('phpb_tenant_full_url')) {
         }
 
         // TODO: Update this for prod/non-prod for http vs https.
-        $baseUrl = tenant()->domain()->first()->domain;
+        $baseUrl = tenant()->domain()->first()->domain . ':8000';
         if(config('app.env') === 'local'){
             return 'http://' . rtrim($baseUrl, '/') . $urlRelativeToBaseUrl;
         } else {

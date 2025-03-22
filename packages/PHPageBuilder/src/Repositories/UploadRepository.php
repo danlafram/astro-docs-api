@@ -28,7 +28,6 @@ class UploadRepository extends BaseRepository
      */
     public function create(array $data)
     {
-        // TODO: Add tenant_id to this create.
         $fields = ['public_id', 'original_file', 'mime_type', 'server_file', 'tenant_id'];
         foreach ($fields as $field) {
             if (! isset($data[$field]) || ! is_string($data[$field])) {

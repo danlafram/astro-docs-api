@@ -11,6 +11,7 @@ use PHPageBuilder\Modules\GrapesJS\Upload\Uploader;
 use PHPageBuilder\Repositories\PageRepository;
 use PHPageBuilder\Repositories\UploadRepository;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class PageBuilder implements PageBuilderContract
 {

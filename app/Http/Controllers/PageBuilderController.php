@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Theme;
 use Illuminate\Http\Request;
+use PHPageBuilder\PHPageBuilder;
 use Throwable;
 
 class PageBuilderController extends Controller
@@ -15,18 +17,24 @@ class PageBuilderController extends Controller
      */
     public function build($pageId = null)
     {
+        // Set theme ID dynamically
+        $theme_id = tenant()->domain()->first()->theme_id;
+        $theme = Theme::find($theme_id);
+        logger($theme->name);
+        config(['pagebuilder.theme.active_theme' => $theme->name]);
+        // config()->set('pagebuilder.theme.active_theme', $theme->name);
+
         $route = $_GET['route'] ?? null;
         $action = $_GET['action'] ?? null;
         $pageId = is_numeric($pageId) ? $pageId : ($_GET['page'] ?? null);
         $pageRepository = new \App\Services\PageRepository;
         $page = $pageRepository->findWithId($pageId);
-
-        $phpPageBuilder = app()->make('phpPageBuilder');
-        $pageBuilder = $phpPageBuilder->getPageBuilder();
+        
+        $phpPageBuilder = new PHPageBuilder(config('pagebuilder'));
 
         $customScripts = view("pagebuilder.scripts")->render();
-        $pageBuilder->customScripts('head', $customScripts);
+        $phpPageBuilder->getPageBuilder()->customScripts('head', $customScripts);
 
-        $pageBuilder->handleRequest($route, $action, $page);
+        $phpPageBuilder->getPageBuilder()->handleRequest($route, $action, $page);
     }
 }
