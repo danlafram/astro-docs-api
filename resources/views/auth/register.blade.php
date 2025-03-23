@@ -19,6 +19,23 @@
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             </div>
 
+            @if(isset($cloud_id))
+                <x-input id="cloud_id" class="block mt-1 w-full" type="hidden" name="cloud_id" value="{{ $cloud_id }}" />
+            @endif
+
+            @if(isset($site_name))
+                <div class="mt-4">
+                    <x-label for="site" value="{{ __('Site name') }}" />
+                    <x-input id="site" class="block mt-1 w-full" type="text" name="site" value="{{ $site_name }}" required/>
+                </div>
+            @else
+                <div class="mt-4">
+                    <x-label for="domain" value="{{ __('Company name') }}" />
+                    <x-input id="domain" class="block mt-1 w-full" type="text" name="domain" :value="old('domain')" required/>
+                </div>
+            @endif
+            
+
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />

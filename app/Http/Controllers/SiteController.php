@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\NewInstallJob;
+use App\Models\ContentPage;
 use App\Models\Site;
 use App\Models\Page;
 use App\Models\Tenant;
@@ -80,7 +81,7 @@ class SiteController extends Controller
         $site = Site::where('cloud_id', '=', $cloud_id)->first();
         
         if(isset($site)){
-            $pages = Page::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
+            $pages = ContentPage::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
             // Installation not required. Exisitng account
             // Return all of the indexed pages for this site
             return response()->json(['success' => true, 'pages' => $pages], 200); // TODO: Consider optimizign by only getting the page attributes we need

@@ -31,6 +31,7 @@ Route::patch('page/{id}/visible', [ContentController::class, 'toggle_visibility'
 // Jobs
 Route::get('/jobs/status/{id}', [JobStatusController::class, 'get_job_status']);
 
+
 // Emails
 Route::post('email', function(Request $request){
     try {

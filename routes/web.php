@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\PageBuilderController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\AuthTenantMiddlware;
@@ -14,6 +15,8 @@ foreach (config('tenancy.central_domains') as $domain) {
         Route::get('/eula', function () {
             return view('eula');
         });
+
+        Route::get('/register/{cloudId}', [AuthenticationController::class, 'show']);
     });
 }
 

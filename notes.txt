@@ -9,12 +9,14 @@ This means we need to consider a few things:
 
 TODO:
 Make 2 themes with 'Search', 'Results', and 'Content' pages.
-Connect to development forge app and connect to populate the tables and opensearch
+Thinking of login flow. It might make more sense to force people to start in Confluence instead of astro-docs.com.
+    Like maybe you cannot register unless you have already installed the app? Not sure if that's ideal but it simplifies back-end stuff for sure.
 Rework the publishing visuals for admin around themes and pages. Maybe have "active" section on the top.
 Update Team name to Company name at some point
     1) Also, make this editable so you can change company name or at least set it during registration
 Let users upload their own logos and display it in the dashboard AND on the website
 Figure out how to include raw tailwind css instead of using CDN (Error message always pops about using the CDN)
+
 
 
 
