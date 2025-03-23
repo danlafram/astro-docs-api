@@ -1,17 +1,8 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    
+[block slug="header"]
 
-    <title><?= $page->get('title') ?></title>
-    <link rel="stylesheet" href="<?= phpb_theme_asset('css/style.css') ?>" />
-    <link rel="stylesheet" href="<?= phpb_universal_asset('css/style.css') ?>" />
-    <link rel="stylesheet" href="<?= 'localhost:8000/themes/discovery/css/style.css' ?>" />
-</head>
 <body>
 
 <!-- TODO: Add php calls here to populate required data -->

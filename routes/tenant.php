@@ -34,10 +34,14 @@ Route::middleware([
         dd("Search query received");
     });
     // Route::post('/live_search', [ContentController::class, 'live_search']);
+    Route::post('/live_search', function() {
+        logger("ITS WORKING");
+    });
 
     // This can probably go away...
     // Route::get('/{path}', [ContentController::class, 'renderPage']);
 
+    // TODO: This hasn't been tested yet.
     Route::any('/page/{title}', [
         'uses' => 'App\Http\Controllers\WebsiteController@page',
     ])->where('title', '.*')->name('page.show');

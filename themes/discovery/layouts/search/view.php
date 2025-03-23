@@ -41,6 +41,52 @@
 <!-- </div> -->
 
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+
+<script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var input_value = $('#search').val();
+            if (input_value !== undefined && input_value.length) {
+                $.ajax({
+                    type: "POST",
+                    url: "/live_search",
+                    data: {
+                        '_token': '<?= csrf_token() ?>',
+                        'query': input_value
+                    },
+                    success: function(data) {
+                        if(data?.results?.length > 0){
+                            $("#results-list").empty();
+                            if($('#results-list').hasClass('hidden')){
+                                $('#results-list').toggleClass('hidden');
+                                $('#results-list').toggleClass('border-t-0');
+                                $('#search').toggleClass('border-b-0 rounded-t-lg rounded-lg');
+                            }
+                        }
+
+                        data.results.forEach((hit) => {
+                            let href = hit.fields.title[0].replaceAll(' ', '-').toLowerCase();
+                            $('#results-list').append(`
+                                <div class='border p-2'><a class='text-black' href="/${href}">${hit.fields.title}</a></div>
+                            `)
+                        })
+                    }
+                });
+            } else {
+                if(input_value == ''){
+                    $("#results-list").empty();
+                    $('#results-list').toggleClass('hidden');
+                    $('#search').toggleClass('border-b-0 rounded-t-lg rounded-lg');
+                }
+            }
+
+        });
+    });
+</script>
 </body>
 </html>

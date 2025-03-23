@@ -44,7 +44,7 @@
                     type: "POST",
                     url: "/live_search",
                     data: {
-                        '_token': '{{ csrf_token() }}',
+                        '_token': '<?= csrf_field() ?>',
                         'query': input_value
                     },
                     success: function(data) {
