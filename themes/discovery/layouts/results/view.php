@@ -6,59 +6,64 @@
 <body>
 
 <!-- TODO: Add php calls here to populate required data -->
+<?php
+
+use App\Services\FrontendSearchService;
+$response = FrontendSearchService::search(htmlspecialchars($_GET["query"]));
+
+?>
 
 <main>
         <div class='mt-10 mx-auto text-center'>
-            <h1 class='text-3xl'>Search results for "{{ $query }}"</h1>
-            @if($hits > 1)
-                <p>{{ $hits }} pages found</p>
-            @elseif($hits == 1)
-                <p>{{ $hits }} page found</p>
-            @else
-                <p>No results found for query</p>
-            @endif
+            <h1 class='text-3xl'>Search results for "<?php $response['query'] ?>"</h1>
+            <?php 
+                if($response['hits'] > 1){
+                    echo  "<p>" . $response['hits'] . " pages found</p>";
+                } elseif($response['hits'] == 1){
+                    echo  "<p>" . $response['hits'] . " page found</p>";
+                } else {
+                    echo  "<p>No results found for query</p>";
+                }
+            ?>
         </div>
-        {{-- Keep the Search bar available --}}
-        <x-searchbar :query="$query"/>
 
-        {{-- Search results --}}
+        [block slug="searchbar"]
+
         <div class="flex flex-col max-w-fit content-center mx-auto lg:mt-10">
-            @if (count($results) > 0)
-                @foreach ($results as $result)
-                    <div class='m-2 max-w-fit'>
-                            <a class="text-2xl text-sky-400 hover:underline"
-                                href="{{ url(strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) }}">{{ $result['fields']['title'][0] }}</a>
-
-
-                            {{-- Check if we are looking at stripped_document or title --}}
-                            @if(isset($result['highlight']['stripped_document']))
-                                @foreach ($result['highlight']['stripped_document'] as $highlight)
-                                    <p class="ml-5 text-base">
-                                        <?php
-                                            echo $highlight;
-                                        ?>...
-                                    </p>
-                                @endforeach
-                            @endif
-                            @if(isset($result['highlight']['title']))
-                                @foreach ($result['highlight']['title'] as $highlight)
-                                    <p class="ml-5 text-base">
-                                        <?php
-                                            echo $highlight;
-                                        ?>
-                                    </p>
-                                @endforeach
-                            @endif
-                    </div>
-                @endforeach
-            @else
-                <p class='mx-auto text-2xl'>No results found for query "{{ $query }}"</p>
-            @endif
+            <?php
+                if(count($response['results']) > 0){
+                    foreach($response['results'] as $result){
+                        $highlight_stripped_html = '';
+                        $highlight_title_html = '';
+                        if(isset($result['highlight']['stripped_document'])){
+                            foreach($result['highlight']['stripped_document'] as $highlight){
+                                $highlight_stripped_html = "<p class='ml-5 text-base'>$highlight...</p>";
+                            }
+                        }
+                        if(isset($result['highlight']['title'])){
+                            foreach($result['highlight']['title'] as $highlight){
+                                $highlight_title_html = "<p class='ml-5 text-base'>$highlight...</p>";
+                            }
+                        }
+                        echo "
+                            <div class='m-2 max-w-fit'>
+                                <a class='text-2xl text-sky-400 hover:underline' href=" 
+                                    . url(strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) . ">" . $result['fields']['title'][0] . 
+                                "</a>
+                                $highlight_stripped_html
+                                $highlight_title_html
+                            </div>
+                        ";
+                    }
+                } else {
+                    echo "<p class='mx-auto text-2xl'>No results found for query'" . $response['query'] . "'</p>";
+                }
+            ?>
         </div>
     </main>
 
 <!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- THIS AND THAT -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 </body>
 </html>

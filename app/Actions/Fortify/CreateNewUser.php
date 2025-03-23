@@ -57,9 +57,10 @@ class CreateNewUser implements CreatesNewUsers
         $cloud_id = $input['cloud_id'];
 
         $site = Site::where('cloud_id', '=', $cloud_id)->first();
-        
+
         $site->tenant->team_id = $user->currentTeam->id;
         $site->tenant->save();
+        // TODO:
         // After this, kickoff the job to add the default theme to this account.
         // Add default theme and then add default pages for that theme. Ideally figure out theme config here too and use that.
     }

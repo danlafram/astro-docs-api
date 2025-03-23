@@ -30,9 +30,8 @@ Route::middleware([
     // Route::get('/search', [ContentController::class, 'showSearch']);
 
     // Route::post('/search', [ContentController::class, 'search']);
-    Route::post('/search', function() {
-        dd("Search query received");
-    });
+    Route::get('/search', [ContentController::class, 'search']);
+    
     // Route::post('/live_search', [ContentController::class, 'live_search']);
     Route::post('/live_search', function() {
         logger("ITS WORKING");

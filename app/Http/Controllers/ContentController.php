@@ -6,8 +6,10 @@ use App\Jobs\TrackQueryJob;
 use App\Models\ContentPage;
 use App\Models\Page;
 use App\Models\Site;
+use App\Models\Theme;
 use Illuminate\Http\Request;
 use App\Services\OpenSearchService;
+use App\Services\PageRepository;
 
 class ContentController extends Controller
 {
@@ -18,52 +20,34 @@ class ContentController extends Controller
      * query - String - The search query that will be used to query Elasticsearch
      */
     public function search(Request $request)
-    {   
+    {
+        // TODO: Cache these values
         $query = $request->input('query');
 
-        $openSearchService = new OpenSearchService();
+        $theme_id = tenant()->domain()->first()->theme_id;
+        $theme = Theme::find($theme_id);
 
-        $index = tenant()->site->index;
+        config()->set('pagebuilder.theme.active_theme', $theme->name);
 
-        $params = [
-            'index' => $index,
-            'body'  => [
-                'size' => 10,
-                '_source' => false, // Don't get the full document yet
-                'fields' => [
-                    'stripped_document',
-                    'title',
-                ],
-                'query' => [
-                    'multi_match' => [
-                        'query' => $query,
-                        'fields' => ['title', 'stripped_document']
-                    ]
-                ],
-                'highlight' => [
-                    'pre_tags' => ['<b>'],
-                    'post_tags' => ['</b>'],
-                    'fields' => [
-                        'stripped_document' => [
-                            'pre_tags' => ['<em class="font-bold">'], 
-                            'post_tags' => ['</em>']
-                        ],
-                        'title' => [
-                            'pre_tags' => ['<em class="font-bold">'],
-                            'post_tags' => ['</em>']
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        $pageBuilder = app()->make('phpPageBuilder', [
+            'theme' => $theme->name
+        ]);
 
-        $response = $openSearchService->client->search($params);
+         if(isset($query)){
 
-        // dd($response);
+            $page = (new PageRepository)->findWhere('name', 'Results');
+    
+            $renderedContent = $pageBuilder->pageBuilder->renderPage($page[0]);
+            
+            return response($renderedContent, 200)->header('Content-Type', 'text/html');
 
-        TrackQueryJob::dispatch($query, tenant()->site->id, $response['hits']['total']['value']);
-
-        return view('pages.results')->with('results', $response['hits']['hits'])->with('query', $query)->with('hits', $response['hits']['total']['value']);
+         } else {
+            $page = (new PageRepository)->findWhere('name', 'Search');
+    
+            $renderedContent = $pageBuilder->pageBuilder->renderPage($page[0]);
+            
+            return response($renderedContent, 200)->header('Content-Type', 'text/html');
+         }
     }
 
     public function live_search(Request $request)

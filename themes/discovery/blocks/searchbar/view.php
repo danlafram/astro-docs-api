@@ -1,6 +1,5 @@
 <div>
-    <form class="pt-5 w-4/5 xl:w-2/5 lg:w-1/2 mx-auto" action="/search'" method="POST">
-        <?= csrf_field() ?>
+    <form class="pt-5 w-4/5 xl:w-2/5 lg:w-1/2 mx-auto" action="/search" method="GET">
         <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
         <div class="flex flex-col items-center md:relative lg:relative">
             <div class="hidden md:flex lg:absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none ">
