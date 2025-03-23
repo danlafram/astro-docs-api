@@ -13,6 +13,8 @@ $response = FrontendSearchService::search(htmlspecialchars($_GET["query"]));
 
 ?>
 
+[block slug="navigation" id="navigation-top"]
+
 <main>
         <div class='mt-10 mx-auto text-center'>
             <h1 class='text-3xl'>Search results for "<?php $response['query'] ?>"</h1>
@@ -47,8 +49,8 @@ $response = FrontendSearchService::search(htmlspecialchars($_GET["query"]));
                         }
                         echo "
                             <div class='m-2 max-w-fit'>
-                                <a class='text-2xl text-sky-400 hover:underline' href=" 
-                                    . url(strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) . ">" . $result['fields']['title'][0] . 
+                                <a class='text-2xl text-sky-400 hover:underline' href=". url('page/' . strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) . ">" 
+                                . $result['fields']['title'][0] . 
                                 "</a>
                                 $highlight_stripped_html
                                 $highlight_title_html

@@ -18,7 +18,7 @@
                     
 
                     <?php
-                    echo $body;
+                        echo $body;
                     ?>
                 </article>
         </div>

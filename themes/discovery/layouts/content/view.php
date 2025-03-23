@@ -1,7 +1,38 @@
 <!doctype html>
 <html lang="en">
+<style>
+h2 {
+    font-size: 24px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+em {
+    font-weight: 700;
+}
+
+a {
+    color: blue;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+</style>
 
 [block slug="header"]
+
+<?php
+    use App\Services\FrontendSearchService;
+
+    $link = $_SERVER['PHP_SELF'];
+    $link_array = explode('/',$link);
+    $slug = end($link_array);
+
+    $response = FrontendSearchService::content(htmlspecialchars($slug));
+
+    // echo print_r($response, true);
+?>
 
 <body>
 
@@ -15,9 +46,12 @@
                     <h1 class='mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl'>
                         Docs page
                     </h1>
-                    <span> Content last updated Yesterday</span>
+                    <span> Content last updated <?php echo $response['last_updated']; ?></span>
 
-                    <!-- <?php echo $body; ?> -->
+                    <?php
+                        echo $response['body'];
+                    ?>
+                    
                 </article>
             </article>
         </div>
