@@ -1,37 +1,38 @@
 <!doctype html>
 <html lang="en">
 <style>
-h2 {
-    font-size: 24px;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
+    h2 {
+        font-size: 24px;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
 
-em {
-    font-weight: 700;
-}
+    em {
+        font-weight: 700;
+    }
 
-a {
-    color: blue;
-}
+    a {
+        color: blue;
+    }
 
-a:hover {
-    text-decoration: underline;
-}
+    a:hover {
+        text-decoration: underline;
+    }
 </style>
 
 [block slug="header"]
 
 <?php
-    use App\Services\FrontendSearchService;
+use App\Services\FrontendSearchService;
 
-    $link = $_SERVER['PHP_SELF'];
-    $link_array = explode('/',$link);
-    $slug = end($link_array);
+$link = $_SERVER['PHP_SELF'];
+$link_array = explode('/', $link);
+$slug = end($link_array);
 
-    $response = FrontendSearchService::content(htmlspecialchars($slug));
+$response = FrontendSearchService::content(htmlspecialchars($slug));
 
-    // echo print_r($response, true);
+// echo print_r($response, true);
+
 ?>
 
 <body>
@@ -46,12 +47,12 @@ a:hover {
                     <h1 class='mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl'>
                         Docs page
                     </h1>
-                    <span> Content last updated <?php echo $response['last_updated']; ?></span>
+                    <p class='my-5'> Content last updated <?php echo $response['last_updated']; ?></p>
 
                     <?php
-                        echo $response['body'];
+                    echo $response['body'];
                     ?>
-                    
+
                 </article>
             </article>
         </div>
@@ -63,12 +64,12 @@ a:hover {
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    
+
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    
+
 </body>
 
 </html>

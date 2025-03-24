@@ -6,12 +6,16 @@ use App\Jobs\TrackQueryJob;
 use App\Models\ContentPage;
 use App\Services\OpenSearchService;
 
+
+/**
+ * This class is what the front end usesn to interact with the API
+ * This class should be a 'contract' meaning the format that the data returned must be documented and absolutely respected. 
+ * Otherwise, it could break someone's theme.
+ */
 class FrontendSearchService
 {
     public static function search(string $query)
     {
-        logger('Static search hit');
-
         $openSearchService = new OpenSearchService();
 
         $index = tenant()->site->index;
@@ -49,7 +53,6 @@ class FrontendSearchService
 
         TrackQueryJob::dispatch($query, tenant()->site->id, $response['hits']['total']['value']);
 
-        // Here is where it gets complicated. Need to return echo or something with the data
         $data = [
             'results' => $response['hits']['hits'],
             'query' => $query,
@@ -59,6 +62,8 @@ class FrontendSearchService
         return $data;
     }
 
+    // Still need to handle 404 page here to respect the actual theme. A 404 component is necessary. 
+    // Another thing to add to config.json is auto-generate 404 component and have it required for any theme to be uploaded.
     public static function content(string $slug)
     {
         $page = ContentPage::where('slug', '=', $slug)
@@ -95,6 +100,10 @@ class FrontendSearchService
 
     public static function recommendations()
     {
-        
+        $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
+            ->limit(4)
+            ->get();
+
+        return $pages;
     }
 }

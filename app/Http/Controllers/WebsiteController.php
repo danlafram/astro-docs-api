@@ -3,15 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Configuration;
-use \Stripe\StripeClient;
-use App\Models\Booking;
 use App\Models\ContentPage;
 use App\Models\Theme;
-use App\Services\OpenSearchService;
 use App\Services\PageRepository;
-use Carbon\Carbon;
-use \DateTime;
 
 class WebsiteController extends Controller
 {
@@ -32,33 +26,8 @@ class WebsiteController extends Controller
     // We will have to build this for astro-docs specific use case.
     public function page(Request $request)
     {   
+        // Since we moved the page finding to FrontendSearchService, that now needs to handle 404 responses as well.
         try {
-            // get the route URL
-            $exploded_url = explode('/', $request->url());
-
-            $page_slug = end($exploded_url);
-
-            $page = ContentPage::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
-
-            if (!$page->visible) {
-                $pages = ContentPage::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
-                    ->limit(4)
-                    ->get();
-                return view('errors.404')->with('pages', $pages);
-            }
-
-            $openSearchService = new OpenSearchService();
-
-            $index = tenant()->site->index;
-            $params = [
-                'index' => $index,
-                'id'    => $page->search_id
-            ];
-
-            $response = $openSearchService->client->get($params);
-
-            $page->increment('views'); // TODO: Put this on a queue
-
             $theme_id = tenant()->domain()->first()->theme_id;
             $theme = Theme::find($theme_id);
 
@@ -88,13 +57,4 @@ class WebsiteController extends Controller
             return view('errors.404')->with('pages', $pages);
         }
     }
-
-    // public function show_listings()
-    // {
-    //     $pageBuilder = app()->make('phpPageBuilder');
-    //     $page =  (new PageRepository)->findWhere('name', 'listings'); // This should always return the listing page
-    //     $renderedContent = $pageBuilder->pageBuilder->renderPage($page[0]); // do we need to access [0] or can we just return first.
-
-    //     echo $renderedContent;
-    // }
 }
