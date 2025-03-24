@@ -1,24 +1,5 @@
 <!doctype html>
 <html lang="en">
-<style>
-    h2 {
-        font-size: 24px;
-        margin-top: 1em;
-        margin-bottom: 1em;
-    }
-
-    em {
-        font-weight: 700;
-    }
-
-    a {
-        color: blue;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
 
 [block slug="header"]
 
@@ -30,8 +11,6 @@ $link_array = explode('/', $link);
 $slug = end($link_array);
 
 $response = FrontendSearchService::content(htmlspecialchars($slug));
-
-// echo print_r($response, true);
 
 ?>
 
@@ -57,16 +36,19 @@ $response = FrontendSearchService::content(htmlspecialchars($slug));
             </article>
         </div>
     </main>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script>
+        $(document).ready(function() {
+            $('a').each(function(tag) {
+                // NOTE: There are a lot of bold assumptions here. 
+                // May have to revisit depending on URL formatting
+                // If there is an error in routing, start here.
+                if ($(this).attr('href').includes('/wiki/')) {
+                    let split_path = $(this).attr('href').split('/');
+                    let new_path = split_path.at(-1).replaceAll('+', '-').toLowerCase();
+                    $(this).attr('href', new_path);
+                }
+            })
+        });
     </script>
 
 </body>

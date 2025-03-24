@@ -19,16 +19,8 @@
                     <div class="w-full max-w-lg lg:max-w-xs">
                         <label for="search" class="sr-only">Search</label>
                         <div class="relative">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <svg class="size-5 text-white" viewBox="0 0 20 20" fill="currentColor"
-                                    aria-hidden="true" data-slot="icon">
-                                    <path fill-rule="evenodd"
-                                        d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z"
-                                        clip-rule="evenodd" />
-                                </svg>
                             </div>
-                            <form action="/search" method="POST">
-                                <?= csrf_field() ?>
+                            <form action="/search" method="GET">
                                 <input id="search-top" name="query"
                                     class="block w-full rounded-md border-0 bg-white py-1.5 pl-5 pr-3 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                                     placeholder="Search" type="search">

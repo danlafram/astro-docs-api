@@ -17,7 +17,7 @@ $response = FrontendSearchService::search(htmlspecialchars($_GET["query"]));
 
 <main>
         <div class='mt-10 mx-auto text-center'>
-            <h1 class='text-3xl'>Search results for "<?php $response['query'] ?>"</h1>
+            <h1 class='text-3xl'>Search results for "<?php echo $response['query'] ?>"</h1>
             <?php 
                 if($response['hits'] > 1){
                     echo  "<p>" . $response['hits'] . " pages found</p>";

@@ -52,3 +52,6 @@ For example:
         }
     ]
 }
+
+Another thing to consider is having to run `php artisan pagebuilder:publish-theme discovery` for any new theme. Obviously this gets messy if we use
+an S3 URL and different theme for every user. So how can we hot-symlink each active theme only?

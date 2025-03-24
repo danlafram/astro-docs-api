@@ -8,10 +8,26 @@ em {
     font-weight: 700;
 }
 
-a {
+img {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+p > a {
     color: blue;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+pre {
+    background-color: #D1D1D0;
+    overflow: auto;
+    padding: 0 1em;
+    font-family: monospace;
+    word-wrap: break-word;
+    box-decoration-break: clone;
+    padding: .1rem .3rem .2rem;
+    border-radius: .2rem;
 }
