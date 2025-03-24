@@ -19,8 +19,8 @@
 
         
         <div>
-            <div id='results-list'
-                class="block hidden px-0 w-full text-sm text-gray-500 bg-transparent border border-blue-500 ring-blue-500 appearance-none focus:ring-0 peer">
+            <div id='results-list' 
+                class="block hidden px-0 w-full text-sm text-gray-500 bg-transparent border rounded-lg appearance-none focus:ring-0 peer">
             </div>
         </div>
     </form>

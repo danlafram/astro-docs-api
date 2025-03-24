@@ -13,10 +13,7 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 | Tenant Routes
 |--------------------------------------------------------------------------
 |
-| Here you can register the tenant routes for your application.
-| These routes are loaded by the TenantRouteServiceProvider.
-|
-| Feel free to customize them however you want. Good luck!
+| Here are all routes that are required to be authenticated by the active tenant.
 |
 */
 
@@ -25,22 +22,10 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    // Think about re-doing the following
-    // This might still be necessary?
-    // Route::get('/search', [ContentController::class, 'showSearch']);
-
-    // Route::post('/search', [ContentController::class, 'search']);
     Route::get('/search', [ContentController::class, 'search']);
     
-    // Route::post('/live_search', [ContentController::class, 'live_search']);
-    Route::post('/live_search', function() {
-        logger("ITS WORKING");
-    });
-
-    // This can probably go away...
-    // Route::get('/{path}', [ContentController::class, 'renderPage']);
-
-    // TODO: This hasn't been tested yet.
+    Route::post('/live_search', [ContentController::class, 'live_search']);
+    
     Route::any('/page/{title}', [
         'uses' => 'App\Http\Controllers\WebsiteController@page',
     ])->where('title', '.*')->name('page.show');

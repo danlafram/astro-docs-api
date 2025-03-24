@@ -56,7 +56,6 @@ $response = FrontendSearchService::content(htmlspecialchars($slug));
                 </article>
             </article>
         </div>
-        <!-- Page content ends -->
     </main>
 
     <!-- Optional JavaScript -->

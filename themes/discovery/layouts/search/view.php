@@ -22,9 +22,9 @@ $pages = FrontendSearchService::recommendations();
             <?php
             foreach ($pages as $page) {
                 echo "<div class='rounded-full bg-gray-200 py-1 px-5 flex flex-col'>
-                                                <a class='my-auto text-centre hover:underline text-black'
-                                                href=/page/$page->slug>$page->title</a>
-                                            </div>";
+                                                            <a class='my-auto text-centre hover:underline text-black'
+                                                            href=/page/$page->slug>$page->title</a>
+                                                        </div>";
             }
             ?>
         </div>
@@ -60,7 +60,7 @@ $pages = FrontendSearchService::recommendations();
                                 let href = hit.fields.title[0].replaceAll(' ', '-')
                                     .toLowerCase();
                                 $('#results-list').append(`
-                                <div class='border p-2'><a class='text-black' href="/${href}">${hit.fields.title}</a></div>
+                                <div class='p-2 border-y-1 last:border-y-0'><a class='text-black' href="/page/${href}">${hit.fields.title}</a></div>
                             `)
                             })
                         }
