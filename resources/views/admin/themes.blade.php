@@ -102,10 +102,17 @@
                                                 class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
                                                 Duplicate
                                             </a>
-                                            <a href="{{ url('dashboard/page/' . $page->getId() . '/delete') }}"
-                                                class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-black bg-red hover:bg-gray-50 hover:text-indigo-600">
-                                                Delete
-                                            </a>
+                                            @if($page->is_default)
+                                                <button disabled
+                                                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-300">
+                                                    Delete
+                                                </button>
+                                            @else
+                                                <a href="{{ url('dashboard/page/' . $page->getId() . '/delete') }}"
+                                                    class="group hover:cursor-pointer -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-black bg-red hover:bg-gray-50 hover:text-indigo-600">
+                                                    Delete
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

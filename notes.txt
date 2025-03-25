@@ -8,6 +8,8 @@ This means we need to consider a few things:
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
 TODO:
+- Make default theme pages not editable. Not allowed to delete either. Also, not allowed to hit /delet/{id} route. OR edit route.
+
 - Make 2 themes with 'Search', 'Results', and 'Content' pages.
     Have the 2 themes built, and then add some generic components so that customers can build out their own pages using the themes like a home page, contact us page, etc.
     Use this https://colorlib.com/wp/knowledge-base-examples/ as inspiration. Just clone it.

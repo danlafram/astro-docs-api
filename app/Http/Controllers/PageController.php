@@ -15,9 +15,13 @@ class PageController extends Controller
 {
     public function index()
     {
-        $pages = Page::where('tenant_id', '=', tenant()->id)->get();
+        $tenant = tenant();
+        
+        $themes = Theme::where('tenant_id', '=', $tenant->id)->get();
 
-        $themes = Theme::where('tenant_id', '=', tenant()->id)->get();
+        $pages = Page::where('tenant_id', '=', $tenant->id)
+                        ->where('theme_id', '=', $tenant->domain()->first()->theme_id)
+                        ->get();
 
         return view('admin.themes')->with('pages', $pages)->with('themes', $themes);
     }
@@ -56,6 +60,7 @@ class PageController extends Controller
             'route' => $request->input('route'),
             'tenant_id' => tenant()->getTenantKey(),
             'theme_id' => tenant()->domain()->first()->theme_id,
+            'is_default' => false,
         ]);
 
         if($success) {
@@ -86,7 +91,7 @@ class PageController extends Controller
             'title' => $request->input('title'),
             'meta_title' => $request->input('meta_title'),
             'meta_description' => $request->input('meta_description'),
-            'route' => $request->input('route'),
+            'route' => $request->input('route'), // TODO: Think of if we want to block users from being able to edit the route of the default pages
             'tenant_id' => tenant()->getTenantKey(),
         ]);
 
@@ -145,6 +150,12 @@ class PageController extends Controller
 
     public function destroy(string $id)
     {
+        // Do not let users delete default pages. It will break theme functionality.
+        $page = Page::find($id);
+        if(isset($page) && $page->is_default){
+            return redirect()->route('theme')->with('fail', 'Unable to delete page');
+        }
+
         $pageRepository = new PageRepository;
         $success = $pageRepository->destroy($id);
 
@@ -171,53 +182,6 @@ class PageController extends Controller
 
         return $layouts;
     }
-
-    private function getThemes()
-    {
-        $themes = [];
-        if (file_exists(base_path() . '/themes')) {
-            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes');
-            foreach ($layoutsDirectory as $entry) {
-                if ($entry->isDir() && ! $entry->isDot()) {
-                    array_push($themes, $entry->getFilename());
-                }
-            }
-        }
-
-        return $themes;
-    }
-
-    /**
-     * This function serves to give dynamic data to the 'listing' page based on the current URL/route
-     * Called from the blocks/listing-details/views.php
-     * TODO: Test this with Tenancy. Likely some changes needed to query on 'tenant_id'
-     */
-    // public static function getListingData(string $url)
-    // {
-    //     if(str_contains($url, '/listing/')){
-    //         $configuration_id = last(explode('-', $url));
-
-    //         if(!is_null($configuration_id)){
-    //             $configuration = Configuration::where([
-    //                 ['id', '=', $configuration_id],
-    //                 ['tenant_id', '=', tenant()->id]
-    //                 ])->first();
-    //             return $configuration;
-    //         }
-    //     } else if(str_contains($url, '/build')){
-    //         $configuration = Configuration::select()->first();
-    //         return $configuration;
-    //     }
-    // }
-
-    // // Implement pagination as well using url/query params
-    // public static function getListings()
-    // {
-    //     // Paginate value could be configurable at some point
-    //      $configurations = Configuration::where('tenant_id', '=', tenant()->id)->get();
-
-    //      return $configurations;
-    // }
 }
 
 
