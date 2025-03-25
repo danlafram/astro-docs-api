@@ -12,7 +12,7 @@
                     </div>
                     <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
                         <a href="/search"
-                            class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-white">Search</a>
+                            class="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-white">Search</a>
                     </div>
                 </div>
                 <div class="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
@@ -51,9 +51,8 @@
         
         <div class="lg:hidden" id="mobile-menu">
             <div class="space-y-1 pb-3 pt-2">
-                <!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" -->
                 <a href="/search"
-                    class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700">Search</a>
+                    class="block border-l-4 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700">Search</a>
             </div>
         </div>
     </nav>

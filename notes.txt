@@ -8,16 +8,32 @@ This means we need to consider a few things:
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
 TODO:
-Make 2 themes with 'Search', 'Results', and 'Content' pages.
-Thinking of login flow. It might make more sense to force people to start in Confluence instead of astro-docs.com.
+- Make 2 themes with 'Search', 'Results', and 'Content' pages.
+    Have the 2 themes built, and then add some generic components so that customers can build out their own pages using the themes like a home page, contact us page, etc.
+    Use this https://colorlib.com/wp/knowledge-base-examples/ as inspiration. Just clone it.
+
+- Thinking of login flow. It might make more sense to force people to start in Confluence instead of astro-docs.com.
     Like maybe you cannot register unless you have already installed the app? Not sure if that's ideal but it simplifies back-end stuff for sure.
-Rework the publishing visuals for admin around themes and pages. Maybe have "active" section on the top.
-Update Team name to Company name at some point
+
+- Rework the publishing visuals for admin around themes and pages. Maybe have "active" section on the top.
+
+- Update Team name to Company name at some point
     1) Also, make this editable so you can change company name or at least set it during registration
-Let users upload their own logos and display it in the dashboard AND on the website
-Figure out how to include raw tailwind css instead of using CDN (Error message always pops about using the CDN)
+
+- Let users upload their own logos and display it in the dashboard AND on the website
+
+- Figure out how to include raw tailwind css instead of using CDN (Error message always pops about using the CDN)
+
+- Figure out how to get Confluence 'tags' and tag articles so that they can be filtered and searched using tags
+    Maybe even offer the ability to tag them in the astro-docs app. That way it could give them extra customizability.
 
 
+
+Initial theme ideas:
+1. Public knowledge base
+2. Job postings
+3. Company blog
+4. API documentation
 
 
 THEMES 
@@ -47,11 +63,39 @@ For example:
 {
     'name': 'discovery'
     'pages': [
+        'home': {
+            'layout': 'home',
+            'url': '/'
+        },
         'search': {
-            'layout'
+            'layout': 'search',
+            'url': '/search'        
+        },
+        'resutls': {
+            'layout': 'results',
+            'url': '/search?query="abc"'
+        },
+        'content': {
+            'layout': 'content',
+            'url': '/page/{slug}'
+        }
+    ],
+    'assets': [
+        {
+            'type': 'css',
+            'name': 'styles.css'
         }
     ]
 }
 
 Another thing to consider is having to run `php artisan pagebuilder:publish-theme discovery` for any new theme. Obviously this gets messy if we use
 an S3 URL and different theme for every user. So how can we hot-symlink each active theme only?
+    One potential solution would be to upload anything in the /public directory into a CDN automatically so we don't have to symlink at all we just reference the CDN   
+    URL always.
+
+CDN 
+    Think about ways to maximize the use of a CDN to serve images/css/json
+    This will reduce load times and make the app more enduring.
+    Something like Cloudfront where we could recognize all images that are in Confluence, download the images and upload them to our own CDN for maximized efficiency. But then we will have to listen for any new updates and re-upload if required.
+    Heavy CDN integration should also help with the Symlink problem mentioned above ^^ where we won't have to symlink anything, just manade the public files from a CDN and ensure we modify the `phpb_theme_asset` function.
+

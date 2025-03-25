@@ -12,4 +12,7 @@
             }
         }
     };
+
+    const escapeName = (name) => `${name}`.trim().replace(/([^a-z0-9\w-:/\[\]]+)/gi, '-');
+    window.customConfig = { selectorManager: {escapeName}, }; 
 </script>

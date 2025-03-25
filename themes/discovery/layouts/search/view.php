@@ -28,6 +28,8 @@ $pages = FrontendSearchService::recommendations();
             }
             ?>
         </div>
+
+        <?= $body ?>
     </main>
 
     <!-- jQuery -->

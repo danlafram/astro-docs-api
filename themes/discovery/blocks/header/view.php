@@ -12,5 +12,5 @@
     <title><?php echo $page->get('title') ?></title>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- <link rel="stylesheet" href="<?= phpb_universal_asset('css/style.css') ?>" /> -->
+    <!-- <link rel="stylesheet" href="<?= phpb_theme_asset('css/style.css') ?>" /> -->
 </head>
