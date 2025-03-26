@@ -15,6 +15,7 @@ class ThemesSeeder extends Seeder
     public function run(): void
     {
         $tenant = Tenant::take(1)->first();
+        
         Theme::create([
             'name' => 'default',
             'is_active' => true,
