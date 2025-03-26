@@ -18,7 +18,7 @@
                     <form method='POST' action="/dashboard/page/{{ $page->getId() }}/delete">
                         @csrf
                         <button type='submit'
-                        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-500 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Delete</button>
+                        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-500 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Delete</button>
                     </form>
                     
                     <a href="{{ url('/dashboard/theme') }}"

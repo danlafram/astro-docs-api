@@ -1,17 +1,41 @@
 <!doctype html>
 <html lang="en">
 
+<?php
+use App\Services\FrontendSearchService;
+if (isset($_GET['query'])) {
+    $response = FrontendSearchService::search(htmlspecialchars($_GET['query']));
+} else {
+    
+    // Need to mock the response here
+    $response = [
+        'query' => 'Test query',
+        'hits' => 2,
+        'results' => [
+            [
+                'fields' => [
+                    'title' => ['first-page-title']
+                ],
+                'highlight' => [
+                    'title' => ['First page title']
+                ],
+            ],
+            [
+                'fields' => [
+                    'title' => ['second-page-title'],
+                ],
+                'highlight' => [
+                    'title' => ['Second page title'],
+                ],
+            ],
+        ],
+    ];
+}
+?>
+
 [block slug="header"]
 
 <body>
-
-<!-- TODO: Add php calls here to populate required data -->
-<?php
-
-use App\Services\FrontendSearchService;
-$response = FrontendSearchService::search(htmlspecialchars($_GET["query"]));
-
-?>
 
 [block slug="navigation" id="navigation-top"]
 
