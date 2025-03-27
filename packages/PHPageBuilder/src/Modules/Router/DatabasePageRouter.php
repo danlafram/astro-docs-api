@@ -59,7 +59,8 @@ class DatabasePageRouter implements RouterContract
 
         // request all routes for the tenant and convert each to its segments using / as separator
         $tenant_id = tenant()->id;
-        $pageTranslations = PageTranslation::where('tenant_id', '=', $tenant_id)->get();
+        $theme_id = tenant()->domain()->first()->theme_id;
+        $pageTranslations = PageTranslation::where('tenant_id', '=', $tenant_id)->where('theme_id', '=', $theme_id)->get();
         $routes = [];
         foreach ($pageTranslations as $pageTranslation) {
             $route = $pageTranslation->route;

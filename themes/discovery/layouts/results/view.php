@@ -14,18 +14,18 @@ if (isset($_GET['query'])) {
         'results' => [
             [
                 'fields' => [
-                    'title' => ['first-page-title']
+                    'title' => ['First page title']
                 ],
                 'highlight' => [
-                    'title' => ['First page title']
+                    'title' => ['Follow these steps to install on your space today.Question - Can I control which pages are visible on.']
                 ],
             ],
             [
                 'fields' => [
-                    'title' => ['second-page-title'],
+                    'title' => ['Second page title'],
                 ],
                 'highlight' => [
-                    'title' => ['Second page title'],
+                    'title' => ['will be using this space titled “Help Center”:Step 2 - InstallationNavigate to https://astro-docs.com/install'],
                 ],
             ],
         ],

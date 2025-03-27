@@ -20,9 +20,8 @@ class PageBuilderController extends Controller
         // Set theme ID dynamically
         $theme_id = tenant()->domain()->first()->theme_id;
         $theme = Theme::find($theme_id);
-        logger($theme->name);
+
         config(['pagebuilder.theme.active_theme' => $theme->name]);
-        // config()->set('pagebuilder.theme.active_theme', $theme->name);
 
         $route = $_GET['route'] ?? null;
         $action = $_GET['action'] ?? null;

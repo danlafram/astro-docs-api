@@ -189,9 +189,11 @@ class PageRepository extends BaseRepository implements PageRepositoryContract
     public function findWhere($column, $value)
     {
         $tenant_id = tenant()->id;
+        // Need to add theme ID to this query too
+        $theme_id = tenant()->domain()->first()->theme_id;
         $column = $this->removeNonAlphaNumeric($column);
         return $this->createInstances($this->db->select(
-            "SELECT * FROM {$this->table} WHERE {$column} = ? AND tenant_id = '{$tenant_id}'",
+            "SELECT * FROM {$this->table} WHERE {$column} = ? AND tenant_id = '{$tenant_id}' AND theme_id = '{$theme_id}'",
             [$value]
         ));
     }

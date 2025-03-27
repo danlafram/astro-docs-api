@@ -64,22 +64,13 @@ class FrontendSearchService
         return $data;
     }
 
-    // Still need to handle 404 page here to respect the actual theme. A 404 component is necessary. 
-    // Another thing to add to config.json is auto-generate 404 component and have it required for any theme to be uploaded.
+    
+    // 404 handled in the WebsiteController::page function.
     public static function content(string $slug)
     {
         $page = ContentPage::where('slug', '=', $slug)
             ->where('site_id', '=', tenant()->site->id)
             ->first();
-
-        if (!$page->visible) {
-            $pages = ContentPage::where('visible', '=', 1)
-                ->where('page_id', '=', tenant()->site->id)
-                ->inRandomOrder()
-                ->limit(4)
-                ->get();
-            return view('errors.404')->with('pages', $pages); // TODO: Update this to render the 404 content instead
-        }
 
         $openSearchService = new OpenSearchService();
 
@@ -103,7 +94,7 @@ class FrontendSearchService
     public static function recommendations()
     {
         $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
-            ->limit(4)
+            ->limit(6)
             ->get();
 
         return $pages;

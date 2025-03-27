@@ -13,18 +13,18 @@ if (isset($_GET['query'])) {
         'results' => [
             [
                 'fields' => [
-                    'title' => ['first-page-title']
+                    'title' => ['First page title']
                 ],
                 'highlight' => [
-                    'title' => ['First page title']
+                    'title' => ['Follow these steps to install on your space today.Question - Can I control which pages are visible on.']
                 ],
             ],
             [
                 'fields' => [
-                    'title' => ['second-page-title'],
+                    'title' => ['Second page title'],
                 ],
                 'highlight' => [
-                    'title' => ['Second page title'],
+                    'title' => ['will be using this space titled “Help Center”:Step 2 - InstallationNavigate to https://astro-docs.com/install'],
                 ],
             ],
         ],
@@ -32,7 +32,7 @@ if (isset($_GET['query'])) {
 }
 ?>
 
-[block slug="header"]
+[block slug="header" id="header1"]
 
 <body>
 
@@ -53,7 +53,7 @@ if (isset($_GET['query'])) {
                 ?>
             </div>
 
-            [block slug="searchbar"]
+            [block slug="searchbar" id="sb1"]
         </div>
         <div class="flex flex-col max-w-fit content-center mx-auto lg:mt-10">
             <?php
@@ -88,6 +88,8 @@ if (isset($_GET['query'])) {
             }
             ?>
         </div>
+
+        <?= $body ?>
     </main>
 
     <!-- Optional JavaScript -->

@@ -116,8 +116,8 @@
         </div>
 
         <div class="inline w-screen">
-            <main class="py-10 lg:pl-18">
-                <div class="px-4 sm:px-6 lg:px-8">
+            <main class="lg:pl-8">
+                <div class="px-4 sm:px-6">
                     @yield('content')
                 </div>
             </main>

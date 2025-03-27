@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageBuilderController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\AuthTenantMiddlware;
@@ -34,9 +35,7 @@ Route::middleware([
 
 
     Route::prefix('dashboard')->group(function() {
-        Route::get('/', function() {
-            return view('dashboard');
-        })->name('dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::controller(PageController::class)->group(function () {
             Route::get('/theme', 'index')->name('theme');

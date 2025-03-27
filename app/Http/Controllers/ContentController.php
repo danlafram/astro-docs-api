@@ -97,6 +97,7 @@ class ContentController extends Controller
      * This function will retrieve the page data and display it.
      * TODO: When implementing caching, cache a stringified object of { body, title, and last_updated } so we won't have to hit ES or MySQL on subsequent requests
      * TODO: Consider a cache key of 
+     * TODO: I don't think this is being used anymore. Might be safe to remove.
      */
     public function renderPage(Request $request)
     {
@@ -132,6 +133,7 @@ class ContentController extends Controller
                 ->with('body', $response['_source']['document']) // TODO: Cache this value
                 ->with('title', $response['_source']['title']) // TODO: Cache this value
                 ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
+
         } catch (\Exception $e) {
             // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
             // Return 404

@@ -8,11 +8,12 @@ This means we need to consider a few things:
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
 TODO:
-- While working on themes, realized that we need to populate fake data for the page builder since its looking for a query
+- Still need fake data for 'recommendations' request.
 
 - Make 2 themes with 'Search', 'Results', and 'Content' pages.
-    Have the 2 themes built, and then add some generic components so that customers can build out their own pages using the themes like a home page, contact us page, etc.
-    Use this https://colorlib.com/wp/knowledge-base-examples/ as inspiration. Just clone it.
+    - Have the 2 themes built, and then add some generic components so that customers can build out their own pages using the themes like a home page, contact us page, etc.
+    - Use this https://colorlib.com/wp/knowledge-base-examples/ as inspiration. Just clone it.
+    - Make sure theme images are pointing to CDN docs and not actual Confluence files
 
 - Thinking of login flow. It might make more sense to force people to start in Confluence instead of astro-docs.com.
     Like maybe you cannot register unless you have already installed the app? Not sure if that's ideal but it simplifies back-end stuff for sure.
@@ -28,6 +29,10 @@ TODO:
 
 - Figure out how to get Confluence 'tags' and tag articles so that they can be filtered and searched using tags
     Maybe even offer the ability to tag them in the astro-docs app. That way it could give them extra customizability.
+
+- So many of these queries can be cached. Try to start adding them where possible.
+
+
 
 
 
