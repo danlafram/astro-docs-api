@@ -8,6 +8,9 @@
 
     <link rel="stylesheet" type="text/css" href="<?= phpb_theme_asset('css/page.css') ?>" />
 
+    <!-- TODO Make this an uploaded asset from the user -->
+    <link rel="icon" href="<?= global_asset('img/Astro-logo.png') ?>">
+
     <!-- TODO: This doesn't work because there is no $page value present? -->
     <title><?php echo $page->get('title') ?></title>
 
