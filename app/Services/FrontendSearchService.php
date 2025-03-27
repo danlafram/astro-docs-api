@@ -17,7 +17,6 @@ class FrontendSearchService
     public static function search(string $query)
     {
         // Check if its page builder query?
-        logger("Query: " . $query);
         $openSearchService = new OpenSearchService();
 
         $index = tenant()->site->index;

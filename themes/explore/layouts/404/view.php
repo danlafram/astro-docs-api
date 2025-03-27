@@ -3,8 +3,42 @@
 
 <?php
 use App\Services\FrontendSearchService;
-$pages = FrontendSearchService::recommendations();
-// TODO: Add default pages here?
+
+$link = $_SERVER['PHP_SELF'];
+$link_array = explode('/', $link);
+$slug = end($link_array);
+$pages = [];
+
+if($slug == 'build'){
+    $pages = (object)[
+        (object)[
+            "title" => "How to Change Your Primary Email Address",
+            "slug" => "how-to-get-started-with-your-new-saas-account",
+            "views" => 4,
+            "visible" => 1,
+            "created_at" => "2025-03-23 04:13:52",
+            "updated_at" => "2025-03-26 01:27:49",
+        ],
+        (object)[
+            "title" => "API Overview",
+            "slug" => "api-overview",
+            "views" => 3,
+            "visible" => 1,
+            "created_at" => "2025-03-23 04:13:52",
+            "updated_at" => "2025-03-26 01:27:49",
+        ],
+        (object)[
+            "title" => "Step-by-Step Guide to Adding Users to Your Account",
+            "slug" => "step-by-step-guide-to-adding-users-to-your-account",
+            "views" => 3,
+            "visible" => 1,
+            "created_at" => "2025-03-23 04:13:52",
+            "updated_at" => "2025-03-26 01:27:49",
+        ]
+    ];
+} else {
+    $pages = FrontendSearchService::recommendations();
+}
 ?>
 
 [block slug="header" id="h1"]

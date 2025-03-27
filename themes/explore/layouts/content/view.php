@@ -11,6 +11,7 @@ $link_array = explode('/', $link);
 $slug = end($link_array);
 $response = [];
 
+// Is this the right place for this?
 if ($slug === 'build') {
     $response = [
         'title' => 'API Overview',
