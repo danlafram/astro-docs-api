@@ -1,18 +1,18 @@
 @extends('layout.layout')
 
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 lg:grid md:grid lg:grid-rows-2 md:grid-rows-2">
-            <div class="mt-5 px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-base font-semibold text-gray-900">Pages</h1>
-                        <p class="mt-2 text-sm text-gray-700">A list of your pages and analyics</p>
+    {{-- <div class=""> --}}
+        <div class="max-w-7xl sm:px-6 lg:grid md:grid lg:grid-rows-2 md:grid-rows-2">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="mt-8 flow-root border border border-2 py-2 px-10">
+                    <div class="sm:flex sm:items-center">
+                        <div class="sm:flex-auto">
+                            <h1 class="text-base font-semibold text-gray-900">Pages</h1>
+                            <p class="mt-2 text-sm text-gray-700">A list of your pages and analyics</p>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-8 flow-root">
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full border border-2 py-2 align-middle sm:px-6 lg:px-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                             <table class="min-w-full divide-y divide-gray-600">
                                 <thead>
                                     <tr>
@@ -53,16 +53,16 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-5 px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-base font-semibold text-gray-900">Analytics</h1>
-                        <p class="mt-2 text-sm text-gray-700">Search analytics</p>
+            <div class="mt-5 sm:px-6 lg:px-8">
+                <div class="mt-8 flow-root border border-2 py-2 px-10">
+                    <div class="sm:flex sm:items-center">
+                        <div class="sm:flex-auto">
+                            <h1 class="text-base font-semibold text-gray-900">Analytics</h1>
+                            <p class="mt-2 text-sm text-gray-700">Search analytics</p>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-8 flow-root">
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block border border-2 min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                             <table class="min-w-full divide-y divide-gray-600">
                                 <thead>
                                     <tr>
@@ -94,5 +94,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    {{-- </div> --}}
 @endsection

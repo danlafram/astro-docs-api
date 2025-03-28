@@ -118,8 +118,8 @@
         </div>
 
         <div class="inline w-screen">
-            <main class="lg:pl-8">
-                <div class="px-4 sm:px-6">
+            <main class="">
+                <div class="sm:px-6 mx-auto">
                     @yield('content')
                 </div>
             </main>

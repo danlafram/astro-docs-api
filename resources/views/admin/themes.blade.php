@@ -1,11 +1,10 @@
 @extends('layout.layout')
 
 @section('content')
-    <div class="lg:pt-10 lg:z-50 lg:flex lg:flex-row">
-        <div class="px-4 sm:px-6 lg:px-8">
+    <div class="lg:z-50 lg:flex lg:flex-row">
+        <div class="sm:px-6">
             <div class="mt-8 flow-root">
                 <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    
                     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                         {{-- Pages section --}}
                         <div class='border border-2 py-2 px-10'>

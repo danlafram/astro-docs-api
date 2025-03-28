@@ -8,10 +8,13 @@ This means we need to consider a few things:
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
 TODO:
+
 - Make 2 themes with 'Search', 'Results', and 'Content' pages.
     - Have the 2 themes built, and then add some generic components so that customers can build out their own pages using the themes like a home page, contact us page, etc.
     - Use this https://colorlib.com/wp/knowledge-base-examples/ as inspiration. Just clone it.
     - Make sure theme images are pointing to CDN docs and not actual Confluence files
+
+- Consider also adding a 'blog' theme too so that customers can use it as a generic blog
 
 - Thinking of login flow. It might make more sense to force people to start in Confluence instead of astro-docs.com.
     Like maybe you cannot register unless you have already installed the app? Not sure if that's ideal but it simplifies back-end stuff for sure.
@@ -22,6 +25,9 @@ TODO:
     1) Also, make this editable so you can change company name or at least set it during registration
 
 - Let users upload their own logos and display it in the dashboard AND on the website
+    - User logos should be displayed on favicon
+    - User logos should also be able to be shown in components
+    - Logos on nav bar as well
 
 - Figure out how to include raw tailwind css instead of using CDN (Error message always pops about using the CDN)
 
@@ -29,6 +35,8 @@ TODO:
     Maybe even offer the ability to tag them in the astro-docs app. That way it could give them extra customizability.
 
 - So many of these queries can be cached. Try to start adding them where possible.
+
+- Need to figure out DNS routing for custom domains
 
 
 Initial theme ideas:
