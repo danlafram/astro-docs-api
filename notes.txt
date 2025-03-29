@@ -7,6 +7,11 @@ This means we need to consider a few things:
 2. We need to associate the newly created user/team to the tenant/domain pair so that the dashboard and page builder work as expected
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
 
+What is important for launch?
+- Custom domains
+- 3-4 basic themes with good enough components that will be usefull for early adopters
+- Authentication needs to work 100% in a secure way. Starting from the Confluence side OR the astro-docs.com side. Both need to work wherever the user starts.
+
 TODO:
 - Something happened when I deleted the default theme, domain disapeared. Look into this...
 

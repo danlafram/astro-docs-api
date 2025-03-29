@@ -2,6 +2,7 @@
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
+            <h1>Log in to Astro Docs</h1>
         </x-slot>
 
         <x-validation-errors class="mb-4" />
