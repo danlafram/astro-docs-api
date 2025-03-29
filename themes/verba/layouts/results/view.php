@@ -63,12 +63,12 @@ if (isset($_GET['query'])) {
                     $highlight_title_html = '';
                     if (isset($result['highlight']['stripped_document'])) {
                         foreach ($result['highlight']['stripped_document'] as $highlight) {
-                            $highlight_stripped_html = "<p class='ml-5 text-base'>$highlight...</p>";
+                            $highlight_stripped_html = "<p style='margin-top: 0; margin-bottom: 0;' class='ml-5 text-base'>$highlight...</p>";
                         }
                     }
                     if (isset($result['highlight']['title'])) {
                         foreach ($result['highlight']['title'] as $highlight) {
-                            $highlight_title_html = "<p class='ml-5 text-base'>$highlight...</p>";
+                            $highlight_title_html = "<p style='margin-top: 0; margin-bottom: 0;' class='ml-5 text-base'>$highlight...</p>";
                         }
                     }
                     echo "
