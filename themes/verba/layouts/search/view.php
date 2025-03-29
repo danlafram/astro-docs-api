@@ -51,17 +51,17 @@ if($slug == 'build'){
 
     <main class='flex flex-col lg:min-w-md h-screen'>
         <!-- This div/component should be editable -->
-        <div class='p-10 bg-linear-to-t from-sky-500 to-indigo-500'>
+        <div class='p-10 bg-linear-to-t from-gray-600 to-zinc-900 to-75%'>
             [block slug="title" id="t1"]
 
             [block slug="searchbar" id="s1"]
         </div>
-        <h3 class='mx-auto mt-10 text-2xl text-sky-800'>Popular content</h3>
+        <h3 class='mx-auto mt-10 text-2xl text-zinc-900'>Popular content</h3>
         <div class='grid grid-cols-3 mx-auto gap-4 mt-10 text-center'>
             <?php
             foreach ($pages as $page) {
                 echo "<div class='bg-white border border-gray-300 shadow-md rounded-sm py-1 px-5 flex flex-col'>
-                                                                        <a class='my-auto text-centre hover:underline text-sky-800'
+                                                                        <a class='my-auto text-centre hover:underline text-zinc-900'
                                                                         href='/page/$page->slug'>$page->title</a>
                                                                     </div>";
             }

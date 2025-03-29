@@ -32,9 +32,21 @@ class PageController extends Controller
      */
     public function publish($theme_id)
     {
+        // Set active false on active theme
+        $current_active_theme = Theme::find(tenant()->domain()->first()->theme_id);
+        $current_active_theme->is_active = false;
+        $current_active_theme->save();
+
+        // Set it on the domain
         $domain = tenant()->domain()->first();
         $domain->theme_id = $theme_id;
         $domain->save();
+        
+        // Then set active true new theme
+        $new_active_theme = Theme::find($theme_id);
+        $new_active_theme->is_active = true;
+        $new_active_theme->save();
+
         return redirect()->route('theme')->with('success', 'Theme published successfully');
     }
 

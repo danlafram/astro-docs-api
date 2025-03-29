@@ -1,5 +1,5 @@
 <header>
-    <nav class="bg-white shadow">
+    <nav class="dark:bg-gray-600 shadow text-white">
         <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
             <div class="flex h-16 justify-between">
                 <div class="flex px-2 lg:px-0">

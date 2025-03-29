@@ -16,7 +16,6 @@ class FrontendSearchService
 {
     public static function search(string $query)
     {
-        // Check if its page builder query?
         $openSearchService = new OpenSearchService();
 
         $index = tenant()->site->index;
@@ -92,7 +91,8 @@ class FrontendSearchService
 
     public static function recommendations()
     {
-        $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
+        $pages = ContentPage::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)
+            ->orderBy('views', 'desc')
             ->limit(6)
             ->get();
 

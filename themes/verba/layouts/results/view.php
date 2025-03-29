@@ -39,7 +39,7 @@ if (isset($_GET['query'])) {
     [block slug="navigation" id="navigation-top"]
 
     <main>
-        <div class="p-10 bg-linear-to-t from-sky-500 to-indigo-500">
+        <div class="p-10 bg-linear-to-t from-gray-600 to-zinc-900 to-75%">
             <div class='mt-10 mx-auto text-center'>
                 <h1 class='text-3xl text-white'>Search results for "<?php echo $response['query']; ?>"</h1>
                 <?php
@@ -73,7 +73,7 @@ if (isset($_GET['query'])) {
                     }
                     echo "
                                                     <div class='m-2 max-w-fit'>
-                                                        <a class='text-2xl text-sky-400 hover:underline' href=" .
+                                                        <a class='text-2xl text-sky-800 hover:underline' href=" .
                         url('page/' . strtolower(str_replace(' ', '-', $result['fields']['title'][0]))) .
                         '>' .
                         $result['fields']['title'][0] .
