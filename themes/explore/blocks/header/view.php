@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
 
-    <!-- <link rel="stylesheet" type="text/css" href="<?= phpb_theme_asset('css/page.css') ?>" /> -->
+    <link rel="stylesheet" type="text/css" href="<?= phpb_theme_asset('css/page.css') ?>" />
 
     <!-- TODO Make this an uploaded asset from the user -->
     <link rel="icon" href="<?= global_asset('img/Astro-logo.png') ?>">

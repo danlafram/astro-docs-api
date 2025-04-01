@@ -1,15 +1,20 @@
 <?php       
   return [
-      'title' => 'Title text',
-      'category' => 'Text',
-      'icon' => 'fa fa-font',
+      'title' => 'Centered hero',
+      'category' => 'General',
+      'icon' => 'fa fa-align-center',
       "settings" => [
         "title_text" => [
             "type" => "text",
             "label" => "Title text",
-            "value" => "We're here to help"
+            "value" => "The main title text for your hero component"
         ],
-        "text_color" => [
+        "subtitle_text" => [
+            "type" => "text",
+            "label" => "Subtitle text",
+            "value" => "Some sub-text content that will be underneath the main title text for your hero component."
+        ],
+        "text-color" => [
             "type" => "select",
             "label" => "Text color",
             "options" => [
@@ -21,9 +26,9 @@
                 ["value" => "blue", "label" => "blue"],
                 ["value" => "indigo", "label" => "indigo"],
             ],
-            "value" => "black"
+            "value" => "white"
         ],
-        "text_transparency" => [
+        "text-transparency" => [
             "type" => "select",
             "label" => "Text transparency",
             "options" => [

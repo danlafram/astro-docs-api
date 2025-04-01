@@ -5,8 +5,6 @@
 
 <body>
 
-[block slug="navigation" id="navigation-top"]
-
 <?= $body ?>
 
 <!-- Optional JavaScript -->

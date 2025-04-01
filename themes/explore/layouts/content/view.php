@@ -11,7 +11,6 @@ $link_array = explode('/', $link);
 $slug = end($link_array);
 $response = [];
 
-// Is this the right place for this?
 if ($slug === 'build') {
     $response = [
         'title' => 'API Overview',
@@ -49,33 +48,29 @@ Authorization: Bearer YOUR_API_KEY</pre>
 }
 
 ?>
-<link rel="stylesheet" type="text/css" href="<?= phpb_theme_asset('css/page.css') ?>" />
+
 <body>
 
     [block slug="navigation" id="navigation-top"]
 
-<main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
-  <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
-      <article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
-          <header class="mb-4 lg:mb-6 not-format">
-              <address class="flex items-center mb-6 not-italic">
-                  <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                      <div>
-                          <p class="text-base text-gray-500 dark:text-gray-400">Content last updated <?php echo $response['last_updated']; ?></p>
-                      </div>
-                  </div>
-              </address>
-              <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white"><?php echo $response['title']; ?></h1>
-          </header>
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white antialiased">
+        <!-- Page content starts -->
+        <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
+            <article class="mx-auto sm:w-2/3 lg:w-3/5 format format-sm sm:format-base lg:format-lg format-blue">
+                <article class="format format-sm sm:format-base lg:format-lg format-blue">
+                    <h1 class='mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl'>
+                        Docs page
+                    </h1>
+                    <p class='my-5'> Content last updated <?php echo $response['last_updated']; ?></p>
 
-          <section class="not-format dark:text-white">
-            <?php echo $response['body']; ?>
-          </section>
+                    <?php
+                    echo $response['body'];
+                    ?>
 
-      </article>
-  </div>
-</main>
-
+                </article>
+            </article>
+        </div>
+    </main>
     <script>
         $(document).ready(function() {
             $('a').each(function(tag) {

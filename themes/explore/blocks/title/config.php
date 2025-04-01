@@ -9,7 +9,7 @@
             "label" => "Title text",
             "value" => "We're here to help"
         ],
-        "text_color" => [
+        "text-color" => [
             "type" => "select",
             "label" => "Text color",
             "options" => [
@@ -21,9 +21,9 @@
                 ["value" => "blue", "label" => "blue"],
                 ["value" => "indigo", "label" => "indigo"],
             ],
-            "value" => "black"
+            "value" => "white"
         ],
-        "text_transparency" => [
+        "text-transparency" => [
             "type" => "select",
             "label" => "Text transparency",
             "options" => [
