@@ -8,7 +8,6 @@
                     <div class="sm:flex sm:items-center">
                         <div class="sm:flex-auto">
                             <h1 class="text-base font-semibold text-gray-900">Pages</h1>
-                            <p class="mt-2 text-sm text-gray-700">A list of your pages and analyics</p>
                         </div>
                     </div>
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -42,8 +41,9 @@
                                             {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td> --}}
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Hide
-                                                    page</a>
+                                                <a href="{{ url('dashboard/page/' . $page->id . '/toggle') }}" class="text-indigo-600 hover:text-indigo-900">
+                                                {{ $page->visible ? "Hide page" : "Show page" }}
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -58,7 +58,6 @@
                     <div class="sm:flex sm:items-center">
                         <div class="sm:flex-auto">
                             <h1 class="text-base font-semibold text-gray-900">Analytics</h1>
-                            <p class="mt-2 text-sm text-gray-700">Search analytics</p>
                         </div>
                     </div>
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

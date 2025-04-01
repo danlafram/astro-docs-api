@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentPage;
 use App\Models\Page;
 use App\Models\Theme;
 use DirectoryIterator;
@@ -147,10 +148,7 @@ class PageController extends Controller
             } else {
                 return redirect()->route('theme')->with('error', '');
             }
-        }
-        
-
-        
+        }        
     }
 
     public function delete(string $id)
@@ -176,6 +174,20 @@ class PageController extends Controller
         } else {
             return redirect()->route('theme')->with('fail', 'Unable to delete page');
         }
+    }
+
+    public function toggle($id)
+    {
+        $content_page = ContentPage::find($id);
+        if(isset($page) && $page->is_default){
+            return redirect()->route('dashboard')->with('fail', 'Unable to find page to toggle');
+        }
+        
+        $content_page->visible = !$content_page->visible;
+
+        $content_page->save();
+
+        return redirect()->route('dashboard')->with('success', 'Successfully toggled page visibility');
     }
 
     private function getLayouts()

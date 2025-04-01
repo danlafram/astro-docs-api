@@ -48,6 +48,7 @@ Route::middleware([
             Route::post('/page/{id}/duplicate', 'clone');
             Route::get('/page/{id}/delete', 'delete');
             Route::post('/page/{id}/delete', 'destroy');
+            Route::get('/page/{id}/toggle', 'toggle');
         });
     });
 });
