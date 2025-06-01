@@ -136,11 +136,12 @@ class IndexingController extends Controller
 
         $decoded_token = $this->decode_jwt($jwt_token);
 
+        logger(print_r($decoded_token, true));
+
         $cloud_id = $decoded_token->context->cloudId;
 
         try {
             $site = Site::where('cloud_id', '=', $cloud_id)->first();
-
             $pages = $site->pages;
 
             // Now loop over response body results and add a job to the batch with the ID of each page that isn't the space home page

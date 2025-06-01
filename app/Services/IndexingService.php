@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Jobs\DownloadImageJob;
+use App\Jobs\IndexImage;
 use Carbon\Carbon;
 use App\Models\ContentPage;
+use App\Models\Image;
 use App\Models\Site;
 use App\Services\OpenSearchService;
 use Illuminate\Support\Facades\Http;
@@ -74,11 +77,68 @@ class IndexingService
                 );
             }
 
+            // From here, kick off the image indexing job
+            IndexImage::dispatch($page_id, $cloud_id, $api_token, $space_id);
+
             return true;
         } catch (\Exception $e) {
             logger('Error processing index job');
             logger(print_r($e->getMessage(), true));
             
+        }
+    }
+
+    public function index_image($page_id, $cloud_id, $api_token, $space_id)
+    {
+        // Get the attachments on the page
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer $api_token"
+        ])->get("https://api.atlassian.com/ex/confluence/$cloud_id/wiki/api/v2/pages/$page_id/attachments");
+        
+        // logger(print_r($response, true));
+
+        if ($response->status() === 200) {
+            $results = json_decode($response->body());
+            if(!empty($results->results)){
+                logger("There are attachments on this page");
+                foreach($results->results as $attachment){
+                    if(str_contains($attachment->mediaType, 'image')){
+                        logger("Page ID: " . $page_id);
+                        logger("Attachment ID: " . $attachment->id);
+
+                        logger($api_token);
+                        // Extract things like file size, title, anything else useful and store it.
+                        // This should be create or update so we don't duplicate
+                        // This also might not even need to be persisted, but just cached temporarily.
+                        // $image = Image::create([
+                        //     'title' => $attachment->title,
+                        //     'media_type' => $attachment->mediaType,
+                        //     'download_link' => $attachment->downloadLink,
+                        //     'file_size' => $attachment->fileSize,
+                        //     'attachment_id' => $attachment->id,
+                        // ]);
+                        // Dispatch new job to actually download the link
+                        DownloadImageJob::dispatch("https://api.atlassian.com/ex/confluence/$cloud_id/wiki/rest/api/content/$page_id/child/attachment/$attachment->id/download", $api_token);
+                    } else {
+                        // Ignore for now, but think about handling video here.
+                    }
+                    // Check if attachment is an image. Don't do videos yet.
+                }
+                // Loop through them, create resources in DB, 
+                // and enqueue new jobs
+                // Extract the URL and metadata (size, extension, etc.)
+
+                // Store the metadata in DB
+
+                // Tract the full URL and what the created URL will be on CDN
+
+                // Send the image content to CDN using another background job
+                // Consider passing the batch ID and adding these jobs to the 
+                // batch so that indexing times are accurate
+            } else {
+                return;
+            }
         }
     }
 
