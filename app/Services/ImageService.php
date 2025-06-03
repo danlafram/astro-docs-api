@@ -17,26 +17,23 @@ class ImageService
      * This function is responsible for downloading the image from Confluence and 
      * Uploading it to the CDN so it can be referenced in the web.
      */
-    public function download_image($download_url, $api_token)
+    public function download_image($download_url, $api_token, $cloud_id, $img_title)
     {
         // Download the contents, or hybrid upload to the CDN.
         try {
-            logger("Download URL: " . $download_url);
-            
             $response = Http::withHeaders([
                 'Authorization' => "Bearer $api_token"
             ])->get($download_url); // Generate this instead of static...
 
-            logger($response->status());
-
-            logger(print_r($response->body(), true));
-
             $imageContent = $response->body();
 
-            Storage::disk('local')->put('imagee.jpg', $imageContent);
+            // Swap this out for a CDN
+            // Maybe use the site name or site ID as the storage prefix? Would be way nicer/readable as site name
+            // Maybe also use page ID as prefix so there layers? Is that necessary?
+            $res = Storage::disk('s3')->put("$cloud_id/$img_title", $imageContent);
         } catch(\Exception $e){
             logger($e->getMessage());
-            logger("failed to download the attachment");
+            logger("failed to upload attachment to CDN");
         }
     }
 }

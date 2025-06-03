@@ -36,12 +36,19 @@ class DownloadImageJob implements ShouldQueue
     protected $download_url;
 
     /**
+     * The download URL of the image
+     */
+    protected $img_title;
+
+    /**
      * Create a new job instance.
      */
-    public function __construct($download_url, $api_token)
+    public function __construct($download_url, $api_token, $cloud_id, $img_title)
     {
         $this->download_url = $download_url;
         $this->api_token = $api_token;
+        $this->cloud_id = $cloud_id;
+        $this->img_title = $img_title;
     }
 
     /**
@@ -49,6 +56,6 @@ class DownloadImageJob implements ShouldQueue
      */
     public function handle(ImageService $imageService): void
     {
-        $imageService->download_image($this->download_url, $this->api_token);
+        $imageService->download_image($this->download_url, $this->api_token, $this->cloud_id, $this->img_title);
     }
 }

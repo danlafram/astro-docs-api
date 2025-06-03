@@ -9,6 +9,8 @@ use App\Models\ContentPage;
 use App\Models\Image;
 use App\Models\Site;
 use App\Services\OpenSearchService;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Support\Facades\Http;
 
 class IndexingService
@@ -35,16 +37,22 @@ class IndexingService
                 return true;
             }
 
-
             // Index the page data
             $openSearchService = new OpenSearchService();
+
+            $html = $page_data->body->view->value;
+
+            $parsed_html = $this->parse_img_tags($html, $cloud_id, $page_id);
+
+            logger("Post changes: " . print_r($parsed_html, true));
 
             $params = [
                 'index' => $site->index,
                 'id' => $page_data->id,
                 'body'  => [
                     'title' => $page_data->title,
-                    'document' => $page_data->body->view->value,
+                    // TODO: Modify image tag here to swag out all values and add CDN link instead
+                    'document' => $parsed_html,
                     'stripped_document' => strip_tags($page_data->body->view->value)
                 ]
             ];
@@ -88,6 +96,10 @@ class IndexingService
         }
     }
 
+    /**
+     * TODO: Add comments
+     * TODO: Add try/catch to the call to atlassian API
+     */
     public function index_image($page_id, $cloud_id, $api_token, $space_id)
     {
         // Get the attachments on the page
@@ -95,19 +107,12 @@ class IndexingService
             'Accept' => 'application/json',
             'Authorization' => "Bearer $api_token"
         ])->get("https://api.atlassian.com/ex/confluence/$cloud_id/wiki/api/v2/pages/$page_id/attachments");
-        
-        // logger(print_r($response, true));
 
         if ($response->status() === 200) {
             $results = json_decode($response->body());
             if(!empty($results->results)){
-                logger("There are attachments on this page");
                 foreach($results->results as $attachment){
                     if(str_contains($attachment->mediaType, 'image')){
-                        logger("Page ID: " . $page_id);
-                        logger("Attachment ID: " . $attachment->id);
-
-                        logger($api_token);
                         // Extract things like file size, title, anything else useful and store it.
                         // This should be create or update so we don't duplicate
                         // This also might not even need to be persisted, but just cached temporarily.
@@ -119,7 +124,7 @@ class IndexingService
                         //     'attachment_id' => $attachment->id,
                         // ]);
                         // Dispatch new job to actually download the link
-                        DownloadImageJob::dispatch("https://api.atlassian.com/ex/confluence/$cloud_id/wiki/rest/api/content/$page_id/child/attachment/$attachment->id/download", $api_token);
+                        DownloadImageJob::dispatch("https://api.atlassian.com/ex/confluence/$cloud_id/wiki/rest/api/content/$page_id/child/attachment/$attachment->id/download", $api_token, $cloud_id, $attachment->title);
                     } else {
                         // Ignore for now, but think about handling video here.
                     }
@@ -158,5 +163,44 @@ class IndexingService
     {
         $updated_string = strtolower(str_replace(' ', '-', $string));
         return preg_replace('/[^A-Za-z0-9\-]/', '', $updated_string);
+    }
+
+    /**
+     * This function is responsible for replace existing img tags with previous Confulence CDN links
+     * with Astro Docs CDN links
+     */
+    private function parse_img_tags($html, $cloud_id, $page_id)
+    {
+        // Extract the name of the image from the property 'data-linked-resource-default-alias' inside img tag
+        $doc = new DOMDocument();
+        // There were some weird encoding things happening usign saveHTML so we need to force the encoding to avoid it
+        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+        $xpath = new DOMXPath($doc);
+
+        // Get img tags
+        $img_tags = $xpath->evaluate("//img");
+
+        // Loop through the source tags
+        if(!empty($img_tags)){
+            foreach($img_tags as $img_tag){
+                // logger(print_r($img_tag, true));
+                // Extract the file name from property 'data-linked-resource-default-alias'
+                $img_name = $img_tag->getAttribute("data-linked-resource-default-alias");
+
+                $new_src_value = "https://d20jnt108amegu.cloudfront.net/$cloud_id/$img_name";
+
+                // Remove all attribute tags Confluence adds
+                while ($img_tag->hasAttributes()){
+                    $img_tag->removeAttributeNode($img_tag->attributes->item(0));
+                }
+                
+                // Then swap out the src URL for each img tag
+                $img_tag->setAttribute('src', $new_src_value);
+            }
+        } else { 
+            return $html;
+        }
+
+        return $doc->saveHTML();
     }
 }

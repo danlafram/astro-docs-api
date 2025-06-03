@@ -25,7 +25,9 @@ class ContentController extends Controller
         $query = $request->input('query');
 
         $theme_id = tenant()->domain()->first()->theme_id;
+        logger("Theme ID: " . $theme_id);
         $theme = Theme::find($theme_id);
+        logger(print_r($theme, true));
 
         config()->set('pagebuilder.theme.active_theme', $theme->name);
 

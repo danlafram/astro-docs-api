@@ -136,8 +136,6 @@ class IndexingController extends Controller
 
         $decoded_token = $this->decode_jwt($jwt_token);
 
-        logger(print_r($decoded_token, true));
-
         $cloud_id = $decoded_token->context->cloudId;
 
         try {
