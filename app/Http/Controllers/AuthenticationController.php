@@ -14,6 +14,11 @@ class AuthenticationController extends Controller
         $site = Site::where('cloud_id', '=', $cloud_id)->first();
 
         if(isset($site)){
+            // Check if the site has a user associated with it already
+            // Do this by checking for a team
+            if($site->tenant->team){
+                return view('auth.login');
+            }
             return view('auth.register')->with('site_name', $site->site_name)->with('cloud_id', $cloud_id);
         } else {
             return view('auth.register');

@@ -44,8 +44,6 @@ class IndexingService
 
             $parsed_html = $this->parse_img_tags($html, $cloud_id, $page_id);
 
-            logger("Post changes: " . print_r($parsed_html, true));
-
             $params = [
                 'index' => $site->index,
                 'id' => $page_data->id,
@@ -183,7 +181,6 @@ class IndexingService
         // Loop through the source tags
         if(!empty($img_tags)){
             foreach($img_tags as $img_tag){
-                // logger(print_r($img_tag, true));
                 // Extract the file name from property 'data-linked-resource-default-alias'
                 $img_name = $img_tag->getAttribute("data-linked-resource-default-alias");
 

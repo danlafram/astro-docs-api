@@ -33,7 +33,7 @@ class Tenant extends BaseTenant
         return $this->hasOne(Site::class);
     }
 
-    public function tenant(): BelongsTo
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'team_id');
     }
