@@ -17,7 +17,7 @@ class AuthenticationController extends Controller
             // Check if the site has a user associated with it already
             // Do this by checking for a team
             if($site->tenant->team){
-                return view('auth.login');
+                return redirect('/login');
             }
             return view('auth.register')->with('site_name', $site->site_name)->with('cloud_id', $cloud_id);
         } else {

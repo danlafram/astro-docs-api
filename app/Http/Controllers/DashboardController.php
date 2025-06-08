@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $site = Site::where('tenant_id', '=', tenant()->id)->first();
         
-        $pages = ContentPage::where('site_id', '=', $site->id)->get();
+        $pages = ContentPage::where('site_id', '=', $site->id)->orderBy('views', 'desc')->paginate(10);
 
         $queries = Query::where('site_id', '=', $site->id)->get();
 

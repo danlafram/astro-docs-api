@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DomainController;
 use App\Http\Controllers\PageBuilderController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\AuthTenantMiddlware;
@@ -36,6 +37,8 @@ Route::middleware([
 
     Route::prefix('dashboard')->group(function() {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/domains', [DomainController::class, 'index'])->name('domains');
 
         Route::controller(PageController::class)->group(function () {
             Route::get('/theme', 'index')->name('theme');
