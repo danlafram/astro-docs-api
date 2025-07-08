@@ -1,0 +1,6 @@
+[submodule "packages/Laravel-Pagebuilder"]
+	path = packages/Laravel-Pagebuilder
+	url = https://github.com/danlafram/Laravel-Pagebuilder.git
+[submodule "packages/PHPageBuilder"]
+	path = packages/PHPageBuilder
+	url = https://github.com/danlafram/PHPageBuilder.git

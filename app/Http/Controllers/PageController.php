@@ -2,266 +2,210 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\TrackQueryJob;
+use App\Models\ContentPage;
 use App\Models\Page;
-use App\Models\Site;
+use App\Models\Theme;
+use DirectoryIterator;
 use Illuminate\Http\Request;
-use App\Services\OpenSearchService;
 
+use \App\Services\PageRepository;
+
+// TODO - Extract the page repository to be initiated on the controller
+// TODO - Validate all of the request inputs
 class PageController extends Controller
 {
-
-    /**
-     * This function is responsible for searching elasticsearch based on the user's query.
-     * Required parameters:
-     * query - String - The search query that will be used to query Elasticsearch
-     */
-    public function search(Request $request)
-    {   
-        $query = $request->input('query');
-
-        $openSearchService = new OpenSearchService();
-
-        $index = tenant()->site->index;
-
-        $params = [
-            'index' => $index,
-            'body'  => [
-                'size' => 10,
-                '_source' => false, // Don't get the full document yet
-                'fields' => [
-                    'stripped_document',
-                    'title',
-                ],
-                'query' => [
-                    'multi_match' => [
-                        'query' => $query,
-                        'fields' => ['title', 'stripped_document']
-                    ]
-                ],
-                'highlight' => [
-                    'pre_tags' => ['<b>'],
-                    'post_tags' => ['</b>'],
-                    'fields' => [
-                        'stripped_document' => [
-                            'pre_tags' => ['<em class="font-bold">'], 
-                            'post_tags' => ['</em>']
-                        ],
-                        'title' => [
-                            'pre_tags' => ['<em class="font-bold">'],
-                            'post_tags' => ['</em>']
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $response = $openSearchService->client->search($params);
-
-        // dd($response);
-
-        TrackQueryJob::dispatch($query, tenant()->site->id, $response['hits']['total']['value']);
-
-        return view('pages.results')->with('results', $response['hits']['hits'])->with('query', $query)->with('hits', $response['hits']['total']['value']);
-    }
-
-    public function live_search(Request $request)
-    {   
-        $query = $request->input('query');
-
-        $openSearchService = new OpenSearchService();
-
-        $index = tenant()->site->index;
-
-        $params = [
-            'index' => $index,
-            'body'  => [
-                'size' => 10,
-                '_source' => false, // Don't get the full document yet
-                'fields' => [
-                    'title',
-                ],
-                'query' => [
-                    'multi_match' => [
-                        'query' => $query,
-                        'fields' => ['title', 'stripped_document']
-                    ]
-                ],
-                'highlight' => [
-                    'pre_tags' => ['<b>'],
-                    'post_tags' => ['</b>'],
-                    'fields' => [
-                        'title' => [
-                            'pre_tags' => ['<em class="font-bold">'], // TODO: Add inline styles here since they aren't getting picked up by Vite or something on the fly
-                            'post_tags' => ['</em>']
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $response = $openSearchService->client->search($params);
-
-        return response()->json([
-            'success' => true,
-            'results' => $response['hits']['hits']
-        ], 200);
-    }
-
-    /**
-     * This function will retrieve the page data and display it.
-     * TODO: When implementing caching, cache a stringified object of { body, title, and last_updated } so we won't have to hit ES or MySQL on subsequent requests
-     * TODO: Consider a cache key of 
-     */
-    public function renderPage(Request $request)
+    public function index()
     {
-        // TODO: First, check the Cache to see if we already have this page stored.
-        try {
-            // get the route URL
-            $exploded_url = explode('/', $request->url());
-            $page_slug = end($exploded_url);
+        $tenant = tenant();
+        
+        $themes = Theme::where('tenant_id', '=', $tenant->id)->get();
 
-            $page = Page::where('slug', '=', $page_slug)->where('site_id', '=', tenant()->site->id)->first();
+        $pages = Page::where('tenant_id', '=', $tenant->id)
+                        ->where('theme_id', '=', $tenant->domain()->first()->theme_id)
+                        ->get();
 
-            if (!$page->visible) {
-                $pages = Page::where('visible', '=', 1)->where('page_id', '=', tenant()->site->id)->inRandomOrder()
-                    ->limit(4)
-                    ->get();
-                return view('errors.404')->with('pages', $pages);
-            }
-
-            $openSearchService = new OpenSearchService();
-
-            $index = tenant()->site->index;
-            $params = [
-                'index' => $index,
-                'id'    => $page->search_id
-            ];
-
-            $response = $openSearchService->client->get($params);
-
-            $page->increment('views'); // TODO: Put this on a queue
-
-            // return the page with retrieved data
-            return view('pages.page')
-                ->with('body', $response['_source']['document']) // TODO: Cache this value
-                ->with('title', $response['_source']['title']) // TODO: Cache this value
-                ->with('last_updated', $page->confluence_updated_at); // TODO: Cache this value
-        } catch (\Exception $e) {
-            // TODO: Add some logging here that we could maybe surface to an internal tool to keep track of exceptions
-            // Return 404
-            // Make sure not to return a hidden/non-visible page
-            logger('Error occured in renderPage method');
-            logger(print_r($e->getMessage(), true));
-            $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
-                ->limit(4)
-                ->get();
-            return view('errors.404')->with('pages', $pages);
-        }
+        return view('admin.themes')->with('pages', $pages)->with('themes', $themes);
     }
 
     /**
-     * Displays the search page with 4 random pages to suggest to users
+     * This function handles the ability to publish to different themes that are uploaded to a tenant's account.
+     * TODO: Maybe have a "Confirm" screen just to make sure what they are doing is intentional.
      */
-    public function showSearch(Request $request)
+    public function publish($theme_id)
     {
-        // First, get 4 (max) random pages
-        // TODO: Random order now, but start tracking page analytics and display the most frequented pages (?)
-        $site = Site::where('tenant_id', '=', tenant()->id)->first();
-        $pages = Page::where('visible', '=', 1)->where('site_id', '=', tenant()->site->id)->inRandomOrder()
-            ->limit(4)
-            ->get();
+        // Set active false on active theme
+        $current_active_theme = Theme::find(tenant()->domain()->first()->theme_id);
+        $current_active_theme->is_active = false;
+        $current_active_theme->save();
 
-        return view('pages.search')->with('pages', $pages)->with('site_name', $site->site_name);
+        // Set it on the domain
+        $domain = tenant()->domain()->first();
+        $domain->theme_id = $theme_id;
+        $domain->save();
+        
+        // Then set active true new theme
+        $new_active_theme = Theme::find($theme_id);
+        $new_active_theme->is_active = true;
+        $new_active_theme->save();
+
+        return redirect()->route('theme')->with('success', 'Theme published successfully');
     }
 
-    /**
-     * Toggle and update the visibility of the specified page
-     * Required parameters:
-     * confluence_id - String - ID of the specific Confluence page
-     */
-    public function toggle_visibility(Request $request, string $id)
-    {
-        // Find the page based on the ID
-        $page = Page::find($id);
-        // Update the visibility
-        if (isset($page)) {
-            $page->visible = !$page->visible;
-            $page->update();
-        } else {
-            return response()->json(['success' => false, 'message' => "Page with ID {$id} not found"], 404);
-        }
-
-        return response()->json(['success' => true, 'message' => 'Successfully toggled page visibility'], 200);
-    }
-
-    /**
-     * Return a list of all the indexed pages we have
-     */
-    public function indexed_pages(Request $request)
-    {
-        $jwt_token = $request->bearerToken();
-
-        $decoded_token = $this->decode_jwt($jwt_token);
-
-        $cloud_id = $decoded_token->context->cloudId;
-
-        $site = Site::where('cloud_id', '=', $cloud_id)->first();
-
-        $pages = Page::where('site_id', '=', $site->id)->get(['id', 'title', 'visible', 'views', 'confluence_id', 'search_id']);
-
-        return $pages;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        // At some point, we'll likely need to move these to S3 under an account prefix
+        $layouts = $this->getLayouts();
+
+        return view('admin.pages.new')->with('layouts', $layouts);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // $configuration = Configuration::create($request->except(['_token', 'images']));
-        $page = Page::create([
+        // TODO - Validation for the request
+        $pageRepository = new PageRepository;
+        
+        $success = $pageRepository->create([
             'name' => $request->input('name'),
+            'layout' => $request->input('layout'),
+            'title' => $request->input('title'),
+            'meta_title' => $request->input('meta_title'),
+            'meta_description' => $request->input('meta_description'),
             'route' => $request->input('route'),
-            'data' => $request->input('data'),
+            'tenant_id' => tenant()->getTenantKey(),
+            'theme_id' => tenant()->domain()->first()->theme_id,
+            'is_default' => false,
         ]);
 
-        return $page;
+        if($success) {
+            return redirect()->route('theme')->with('success', '');
+        } else {
+            return redirect()->route('theme')->with('error', '');
+        }
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Page $page)
+    public function edit(string $id)
     {
-        //
+        $page = Page::find($id);
+
+        $layouts = $this->getLayouts();
+
+        return view('admin.pages.edit')->with('page', $page)->with('layouts', $layouts);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Page $page)
+    public function update(Request $request, string $id)
     {
-        //
+        $pageRepository = new PageRepository;
+        $page = $pageRepository->findWithId($id);
+
+        $success = $pageRepository->update($page, [
+            'name' => $request->input('name'),
+            'layout' => $request->input('layout'),
+            'title' => $request->input('title'),
+            'meta_title' => $request->input('meta_title'),
+            'meta_description' => $request->input('meta_description'),
+            'route' => $request->input('route'), // TODO: Think of if we want to block users from being able to edit the route of the default pages
+            'tenant_id' => tenant()->getTenantKey(),
+        ]);
+
+        if($success) {
+            return redirect()->route('theme')->with('success', 'Page updated successfully');
+        } else {
+            return redirect()->route('theme')->with('fail', 'Unable to update page');
+        } 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
+    public function duplicate(string $id)
     {
-        //   
+        $pageRepository = new PageRepository;
+
+        $page = $pageRepository->findWithId($id);
+
+        return view('admin.pages.duplicate')->with('page', $page);
     }
 
-    private function decode_jwt($token)
+    public function clone(Request $request, string $id)
     {
-        return json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
+        $pageRepository = new PageRepository;
+
+        $page = Page::find($id);
+
+        if(!is_null($page)){
+            $success = $pageRepository->createWithData([
+                'name' => $request->input('name'),
+                'layout' => $page['layout'],
+                'title' => array('en' => $page->getTranslation('title')),
+                'meta_title' => array('en' => $page->getTranslation('meta_title')),
+                'meta_description' => array('en' => $page->getTranslation('meta_description')),
+                'route' => array('en' => $page->getRoute()),
+                'configuration_id' => $page->configuation_id,
+                'tenant_id' => tenant()->getTenantKey(),
+                'data' => $page->get('data'),
+            ]);
+    
+            if($success) {
+                return redirect()->route('theme')->with('success', '');
+            } else {
+                return redirect()->route('theme')->with('error', '');
+            }
+        }        
+    }
+
+    public function delete(string $id)
+    {
+        $pageRepository = new PageRepository;
+        $page = $pageRepository->findWithId($id);
+        return view('admin.pages.delete')->with('page', $page);
+    }
+
+    public function destroy(string $id)
+    {
+        // Do not let users delete default pages. It will break theme functionality.
+        $page = Page::find($id);
+        if(isset($page) && $page->is_default){
+            return redirect()->route('theme')->with('fail', 'Unable to delete page');
+        }
+
+        $pageRepository = new PageRepository;
+        $success = $pageRepository->destroy($id);
+
+        if($success) {
+            return redirect()->route('theme')->with('success', 'Page deleted successfully');
+        } else {
+            return redirect()->route('theme')->with('fail', 'Unable to delete page');
+        }
+    }
+
+    public function toggle($id)
+    {
+        $content_page = ContentPage::find($id);
+        if(isset($page) && $page->is_default){
+            return redirect()->route('dashboard')->with('fail', 'Unable to find page to toggle');
+        }
+        
+        $content_page->visible = !$content_page->visible;
+
+        $content_page->save();
+
+        return redirect()->route('dashboard')->with('success', 'Successfully toggled page visibility');
+    }
+
+    private function getLayouts()
+    {
+        $layouts = [];
+        $theme_id = tenant()->domain()->first()->theme_id;
+        $theme = Theme::find($theme_id);
+        if (file_exists(base_path() . '/themes/' . $theme->name . '/layouts')) {
+            $layoutsDirectory = new DirectoryIterator(base_path() . '/themes/' . $theme->name . '/layouts');
+            foreach ($layoutsDirectory as $entry) {
+                if ($entry->isDir() && ! $entry->isDot()) {
+                    array_push($layouts, $entry->getFilename());
+                }
+            }
+        }
+
+        return $layouts;
     }
 }
+
+

@@ -26,7 +26,7 @@
         {{-- Live search results here --}}
         <div>
             <div id='results-list'
-                class="block hidden px-0 w-full text-sm text-gray-500 bg-transparent border border-blue-500 ring-blue-500 appearance-none dark:text-gray-400 focus:ring-0 peer">
+                class="block hidden px-0 w-full text-sm text-gray-500 bg-transparent border border-blue-500 ring-blue-500 appearance-none focus:ring-0 peer">
             </div>
         </div>
     </form>
@@ -44,7 +44,7 @@
                     type: "POST",
                     url: "/live_search",
                     data: {
-                        '_token': '{{ csrf_token() }}',
+                        '_token': '<?= csrf_field() ?>',
                         'query': input_value
                     },
                     success: function(data) {

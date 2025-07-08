@@ -8,7 +8,7 @@
         <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
             <article class="mx-auto sm:w-2/3 lg:w-3/5 format format-sm sm:format-base lg:format-lg format-blue">
                 <article
-                    class="format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+                    class="format format-sm sm:format-base lg:format-lg format-blue">
                     <h1 class='mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl'>
                         <?php
                         echo $title;
@@ -18,7 +18,7 @@
                     
 
                     <?php
-                    echo $body;
+                        echo $body;
                     ?>
                 </article>
         </div>

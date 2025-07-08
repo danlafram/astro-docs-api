@@ -41,6 +41,7 @@ class NewInstallJob implements ShouldQueue
             Mail::to('dan@spoke.dev')->send(new NewInstallEmail($this->site_name, $this->site_url));
         } catch(\Exception $e){
             // Return to error page.
+            logger($e->getMessage());
             logger("failed to send new install message");
         }
     }

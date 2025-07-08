@@ -1,0 +1,119 @@
+[TECHNICAL] What is important for launch?
+1. Logo upload and displayed on all customer sites
+2. Having the three themes available on production
+
+[MARKETING] What is important for launch?
+1. LinkedIn business profile
+2. 3-4
+
+A few things that are different from how Hosto is used:
+1. Tenant and domain are created BEFORE a user is actually created
+2. There could be a Tenant and a Domain that exist without ever creating a User or Team (they just use the app view and never modify theme files)
+
+This means we need to consider a few things:
+1. How does authentication work for the first time? Someone who first used the app through Confluence admin then goes to "customize" should then be prompted to create an account with the cloud ID of the tenant hidden in the field so that we can make the association.
+2. We need to associate the newly created user/team to the tenant/domain pair so that the dashboard and page builder work as expected
+    1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
+
+TODO:
+- Something happened when I deleted the default theme, domain disapeared. Look into this...
+
+- Need to add more block components to each theme to let people build out their home page
+
+- Part of default pages should be the home page. Not deletable either.
+
+- Thinking of login flow. It might make more sense to force people to start in Confluence instead of astro-docs.com.
+    Like maybe you cannot register unless you have already installed the app? Not sure if that's ideal but it simplifies back-end stuff for sure.
+
+- Rework the publishing visuals for admin around themes and pages. Maybe have "active" section on the top.
+
+- Update Team name to Company name at some point
+    1) Also, make this editable so you can change company name or at least set it during registration
+
+- Let users upload their own logos and display it in the dashboard AND on the website
+    - User logos should be displayed on favicon
+    - User logos should also be able to be shown in components
+    - Logos on nav bar as well
+
+- Figure out how to include raw tailwind css instead of using CDN (Error message always pops about using the CDN)
+
+- Figure out how to get Confluence 'tags' and tag articles so that they can be filtered and searched using tags
+    Maybe even offer the ability to tag them in the astro-docs app. That way it could give them extra customizability.
+
+- So many of these queries can be cached. Try to start adding them where possible.
+
+- Need to figure out DNS routing for custom domains
+
+- Need a way to host images on CDN. Right now I can only see mine because I am logged in. So when we index the pages, we also need to store the content on a CDN (Cloudflare or AWS)
+
+
+Initial theme ideas:
+1. Public knowledge base
+2. Job postings
+3. Company blog
+4. API documentation
+
+
+THEMES 
+Need to think of a good way to manage themes.
+
+Themes are all different UI elements that can apply to different use cases. Each theme has blocks and layouts. 
+Layout files are strict and don't allow for drag and dropping, but they provide a lot of structure.
+Blocks are smaller pieces of UI (e.g: Title, subtitle, buttons, etc.)
+
+Themes are sort of the style, but pages are still required to be created in order to display things on the front-end. 
+So like Hosto, there will need to be pages created for each new theme (a base of X amount of pages per theme, 
+and they will vary per theme since each theme has a different use-case).
+
+So I think pages will need to be associated with themes. We will have a page <--> theme association so that the user can swap themes.
+
+There will also need to be a theme <--> tenant/domain association so we can render the proper theme. TBD if its domain vs tenant.
+Leaning towards domain right now for some reason but implemenation will tell.
+
+Start there, first goal should be the ability to 'publish' a new theme that is hard-coded in the app's file system before moving to 
+S3 and using more of a database driven system.
+
+Other things TODO are things like the clone/edit/delete funcitonality for each theme. Not necessary to implement yet. 
+Just get V1 done
+
+We may need to have a 'config.json' file for each theme. This file should explain how many 'default' pages should get created and what layouts they should have.
+For example:
+{
+    'name': 'discovery'
+    'pages': [
+        'home': {
+            'layout': 'home',
+            'url': '/'
+        },
+        'search': {
+            'layout': 'search',
+            'url': '/search'        
+        },
+        'resutls': {
+            'layout': 'results',
+            'url': '/search?query="abc"'
+        },
+        'content': {
+            'layout': 'content',
+            'url': '/page/{slug}'
+        }
+    ],
+    'assets': [
+        {
+            'type': 'css',
+            'name': 'styles.css'
+        }
+    ]
+}
+
+Another thing to consider is having to run `php artisan pagebuilder:publish-theme discovery` for any new theme. Obviously this gets messy if we use
+an S3 URL and different theme for every user. So how can we hot-symlink each active theme only?
+    One potential solution would be to upload anything in the /public directory into a CDN automatically so we don't have to symlink at all we just reference the CDN   
+    URL always.
+
+CDN 
+    Think about ways to maximize the use of a CDN to serve images/css/json
+    This will reduce load times and make the app more enduring.
+    Something like Cloudfront where we could recognize all images that are in Confluence, download the images and upload them to our own CDN for maximized efficiency. But then we will have to listen for any new updates and re-upload if required.
+    Heavy CDN integration should also help with the Symlink problem mentioned above ^^ where we won't have to symlink anything, just manade the public files from a CDN and ensure we modify the `phpb_theme_asset` function.
+

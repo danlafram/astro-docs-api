@@ -1,0 +1,38 @@
+h2 {
+    font-size: 28px !important;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+em {
+    font-weight: 700;
+}
+
+img {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin: auto;
+}
+
+p > a {
+    color: blue;
+}
+
+p {
+    margin-top: 2em;
+    line-height: 2;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+pre {
+    /* background-color: #D1D1D0; */
+    overflow: auto;
+    padding: 1em 1em;
+    font-family: monospace;
+    word-wrap: break-word;
+    box-decoration-break: clone;
+    border-radius: 30px;
+}

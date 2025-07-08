@@ -140,7 +140,6 @@ class IndexingController extends Controller
 
         try {
             $site = Site::where('cloud_id', '=', $cloud_id)->first();
-
             $pages = $site->pages;
 
             // Now loop over response body results and add a job to the batch with the ID of each page that isn't the space home page

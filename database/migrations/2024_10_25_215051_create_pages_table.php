@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('content_pages', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 256);
             $table->string('slug', 512);
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('content_pages');
     }
 };

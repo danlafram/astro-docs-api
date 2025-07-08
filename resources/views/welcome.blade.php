@@ -46,6 +46,8 @@
                     <a href="#contact" class="text-sm/6 font-semibold text-white">Contact</a>
                     <a href="#faq" class="text-sm/6 font-semibold text-white">FAQ</a>
                     <a target="_blank" href="https://marketplace.atlassian.com/apps/1236625/astro-docs?hosting=cloud&tab=overview" class="text-sm/6 font-semibold text-white">Install</a>
+                    <a href="/login" class="text-sm/6 font-semibold text-white">Login</a>
+                    <a href="/register" class="text-sm/6 font-semibold text-white">Sign up</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
 
@@ -123,7 +125,7 @@
                 </div>
             @endif
             {{-- Hero section --}}
-            <div class="relative isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
+            <div class="relative h-screen isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
                 {{-- TODO: Update this image --}}
                 {{-- <img src={{ asset('img/Background.avif')}}
                     alt="" class="absolute inset-0 -z-10 size-full object-cover"> --}}
@@ -141,7 +143,7 @@
                             <p class="mt-8 text-pretty text-2xl font-medium text-white sm:text-xl/8">Transform your
                                 Confluence spaces into a public searchable knowledge base</p>
                             <div class="mt-10 flex items-center justify-center gap-x-6">
-                                <a href="#"{{-- TODO: Send this URL to the marketplace --}}
+                                <a href="https://marketplace.atlassian.com/apps/1236625/astro-docs?hosting=cloud&tab=overview?utm_source=landing_page"
                                     class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">Get
                                     started</a>
                                 {{-- Send it down to another content page --}}
