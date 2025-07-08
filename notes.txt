@@ -1,3 +1,11 @@
+[TECHNICAL] What is important for launch?
+1. Logo upload and displayed on all customer sites
+2. Having the three themes available on production
+
+[MARKETING] What is important for launch?
+1. LinkedIn business profile
+2. 3-4
+
 A few things that are different from how Hosto is used:
 1. Tenant and domain are created BEFORE a user is actually created
 2. There could be a Tenant and a Domain that exist without ever creating a User or Team (they just use the app view and never modify theme files)
@@ -6,12 +14,6 @@ This means we need to consider a few things:
 1. How does authentication work for the first time? Someone who first used the app through Confluence admin then goes to "customize" should then be prompted to create an account with the cloud ID of the tenant hidden in the field so that we can make the association.
 2. We need to associate the newly created user/team to the tenant/domain pair so that the dashboard and page builder work as expected
     1) Consider using signed URLs for this use case: https://laravel.com/docs/12.x/urls#validating-signed-route-requests
-
-What is important for launch?
-- Custom domains - might not be 100% required at first, but any serious company will likely ask.
-- 3-4 basic themes with good enough components that will be usefull for early adopters
-- Authentication needs to work 100% in a secure way. Starting from the Confluence side OR the astro-docs.com side. Both need to work wherever the user starts
-- 
 
 TODO:
 - Something happened when I deleted the default theme, domain disapeared. Look into this...

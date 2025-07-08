@@ -3,12 +3,6 @@
 @section('content')
     <div class="min-h-screen bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-                <p class="mt-2 text-gray-600">Manage your website pages and themes</p>
-            </div>
-
             <div class="space-y-8">
                 {{-- Pages section --}}
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
